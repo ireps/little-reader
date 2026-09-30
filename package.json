@@ -1,0 +1,11 @@
+{
+  "name": "little-reader",
+  "private": true,
+  "description": "Dev-only tooling. The site itself has no dependencies and no build step.",
+  "scripts": {
+    "test": "node tests/run.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0"
+  }
+}

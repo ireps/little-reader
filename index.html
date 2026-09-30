@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Little Reader</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<header class="bar" id="bar">
+  <a class="home-btn" href="#home" aria-label="Home">🏠</a>
+  <span class="bar-title" id="bar-title"></span>
+</header>
+<main id="app"></main>
+
+<!-- Order matters: data, then shared modules, then lessons, then start. -->
+<script src="data/default-week.js"></script>
+<script src="js/words.js"></script>
+<script src="js/store.js"></script>
+<script src="js/speech.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/lessons/detective.js"></script>
+<script src="js/lessons/hearts.js"></script>
+<script src="js/lessons/story.js"></script>
+<script src="js/lessons/croc.js"></script>
+<script src="js/lessons/grownups.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

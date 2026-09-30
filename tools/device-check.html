@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Little Reader: device check</title>
+<!-- Phase 0 test page. Written in old-style JavaScript on purpose, so it runs even on an old browser. -->
+<style>
+@font-face{font-family:"AndikaTest";src:url(../fonts/Andika-Regular.woff2) format("woff2"),url(../fonts/Andika-Regular.ttf) format("truetype")}
+body{font-family:"Trebuchet MS",Verdana,sans-serif;margin:0;padding:16px 20px 40px;background:#E3F1F6;color:#1E2B38;font-size:18px}
+h1{font-size:26px;margin:4px 0 4px}
+p{margin:6px 0}
+table{border-collapse:collapse;width:100%;background:#fff;margin:12px 0}
+td{border-bottom:1px solid #E1EAEE;padding:8px 10px;vertical-align:top}
+td:first-child{width:34%;font-weight:bold}
+.pass{color:#1D6B3F;font-weight:bold}.fail{color:#B4234A;font-weight:bold}.info{color:#4A6272;font-weight:bold}
+button{font:inherit;font-size:18px;padding:10px 18px;margin:4px 6px 4px 0;border:0;border-radius:999px;background:#2E7D4F;color:#fff}
+textarea{width:100%;height:220px;font-family:monospace;font-size:13px;box-sizing:border-box}
+.andika{font-family:"AndikaTest",serif;font-size:40px}
+</style>
+</head>
+<body>
+<h1>Little Reader: device check</h1>
+<p>Open this on the Fire HD 10, tap each button once, then copy the box at the bottom (or take a screenshot).</p>
+<p>
+  <button id="b-word">1. Say “come” and “thorns”</button>
+  <button id="b-sentence">2. Say a sentence</button>
+  <button id="b-audio">3. Play a beep</button>
+  <button id="b-reload">4. Reload page</button>
+</p>
+<table id="t"></table>
+<p class="andika">Andika: a g come grow</p>
+<p>Results to copy:</p>
+<textarea id="out" readonly></textarea>
+
+<script>
+(function(){
+  var rows = {}, order = [];
+  function set(key, status, detail){
+    if (!rows[key]) order.push(key);
+    rows[key] = { s: status, d: detail || '' };
+    draw();
+  }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function draw(){
+    var h = '', txt = 'Little Reader device check, ' + new Date().toISOString() + '\n';
+    for (var i = 0; i < order.length; i++) {
+      var k = order[i], r = rows[k], cls = r.s === 'PASS' ? 'pass' : (r.s === 'FAIL' ? 'fail' : 'info');
+      h += '<tr><td>' + esc(k) + '</td><td><span class="' + cls + '">' + r.s + '</span> ' + esc(r.d) + '</td></tr>';
+      txt += r.s + '  ' + k + (r.d ? ': ' + r.d : '') + '\n';
+    }
+    document.getElementById('t').innerHTML = h;
+    document.getElementById('out').value = txt;
+  }
+
+  /* Browser and screen */
+  var ua = navigator.userAgent;
+  var chrome = (ua.match(/Chrome\/(\d+)/) || [])[1];
+  var silk = (ua.match(/Silk\/([\d.]+)/) || [])[1];
+  set('Browser', 'INFO', (silk ? 'Silk ' + silk + ', ' : '') + (chrome ? 'Chrome ' + chrome : 'Chrome version not found'));
+  set('User agent', 'INFO', ua);
+  set('Screen', 'INFO', window.innerWidth + ' x ' + window.innerHeight + ' CSS px, pixel ratio ' + (window.devicePixelRatio || 1));
+
+  /* JavaScript features: each compiled on its own so one failure doesn't hide the rest */
+  function js(name, code){
+    try { new Function(code); return name; } catch (e) { return null; }
+  }
+  var feats = [
+    js('let/const', 'let a = 1; const b = 2;'), js('arrow functions', 'var f = x => x;'),
+    js('template literals', 'var s = `a${1}`;'), js('classes', 'class A {}'),
+    js('async/await', 'async function f(){ await 1; }'), js('optional chaining ?.', 'var a = {}; a?.b;'),
+    js('?? operator', 'var a = null ?? 1;'), js('spread in objects', 'var a = {...{}};')
+  ];
+  var all = ['let/const','arrow functions','template literals','classes','async/await','optional chaining ?.','?? operator','spread in objects'];
+  var missing = [];
+  for (var i = 0; i < all.length; i++) if (feats[i] === null) missing.push(all[i]);
+  set('JavaScript features', missing.length ? 'INFO' : 'PASS', missing.length ? 'missing: ' + missing.join(', ') : 'all present');
+  set('Promise', typeof Promise !== 'undefined' ? 'PASS' : 'FAIL', typeof Promise !== 'undefined' ? '' : 'needed by the app');
+  set('Element.closest', Element.prototype.closest ? 'PASS' : 'FAIL', Element.prototype.closest ? '' : 'needed by the app');
+
+  /* CSS features */
+  var cs = window.CSS && CSS.supports;
+  function css(p, v){ try { return !!(cs && CSS.supports(p, v)); } catch (e) { return false; } }
+  var gapEl = document.createElement('div');
+  gapEl.style.cssText = 'display:flex;flex-direction:column;row-gap:3px;position:absolute;visibility:hidden';
+  gapEl.innerHTML = '<div></div><div></div>';
+  document.body.appendChild(gapEl);
+  var flexGap = gapEl.scrollHeight === 3;
+  document.body.removeChild(gapEl);
+  set('CSS features', 'INFO', 'custom properties ' + (css('--a', '0') ? 'yes' : 'no') + ', grid ' + (css('display', 'grid') ? 'yes' : 'no')
+    + ', flex gap ' + (flexGap ? 'yes' : 'no') + ', clamp() ' + (css('width', 'clamp(1px, 2px, 3px)') ? 'yes' : 'no')
+    + ', env() ' + (css('padding-top', 'env(safe-area-inset-top, 0px)') ? 'yes' : 'no'));
+
+  /* Storage: survives a reload? */
+  try {
+    var prev = localStorage.getItem('lr.devicecheck');
+    localStorage.setItem('lr.devicecheck', String(Date.now()));
+    var back = localStorage.getItem('lr.devicecheck');
+    if (!back) set('localStorage', 'FAIL', 'write then read failed');
+    else if (prev) set('localStorage', 'PASS', 'kept a value from ' + Math.round((Date.now() - (+prev)) / 1000) + ' s ago, so it survives reloads');
+    else set('localStorage', 'PASS', 'works; tap Reload to confirm it survives a reload');
+  } catch (e) { set('localStorage', 'FAIL', e.message); }
+
+  set('Service workers (offline)', 'serviceWorker' in navigator ? 'PASS' : 'INFO', 'serviceWorker' in navigator ? 'available' : 'not available; offline mode would not work');
+
+  /* Font */
+  if (document.fonts && document.fonts.load) {
+    document.fonts.load('40px AndikaTest').then(function(){
+      var ok = document.fonts.check('40px AndikaTest');
+      set('Andika font', ok ? 'PASS' : 'FAIL', ok ? 'loaded from /fonts' : 'not found: add the files to /fonts');
+    }, function(){ set('Andika font', 'FAIL', 'could not load'); });
+  } else set('Andika font', 'INFO', 'cannot check here; look at the sample line');
+
+  /* Speech */
+  var synth = window.speechSynthesis;
+  var canSpeak = !!(synth && window.SpeechSynthesisUtterance);
+  set('speechSynthesis', canSpeak ? 'PASS' : 'FAIL', canSpeak ? 'present' : 'missing: the app would need clips');
+  var FEMALE = /female|raveena|aditi|kajal|heera|veena|lekha|isha|neerja|swara|salli|joanna|kendra|kimberly|ivy|amy|emma|nicole|olivia|samantha|karen|moira|tessa|fiona|victoria|zira|hazel|susan|serena|kate|catherine|allison|ava|libby|sonia|natasha/i;
+  function listVoices(){
+    var v = [];
+    try { v = synth.getVoices() || []; } catch (e) {}
+    var en = [], fem = 0, inV = 0;
+    for (var i = 0; i < v.length; i++) {
+      if (!/^en/i.test(v[i].lang || '')) continue;
+      var f = FEMALE.test(v[i].name) && !/\bmale\b/i.test(v[i].name);
+      if (f) fem++;
+      if (/^en[-_]in/i.test(v[i].lang)) inV++;
+      en.push(v[i].name + ' [' + v[i].lang + (v[i].localService ? ', offline' : ', online') + (f ? ', female?' : '') + ']');
+    }
+    set('Voices (all)', v.length ? 'INFO' : 'FAIL', v.length + ' found');
+    set('English voices', en.length ? 'PASS' : 'FAIL', en.length ? en.join('; ') : 'none');
+    set('Female English voice', fem ? 'PASS' : 'INFO', fem ? fem + ' likely female (guessed from names)' : 'none recognised by name; pick by ear in Grown-ups');
+    set('Indian English voice', inV ? 'PASS' : 'INFO', inV ? inV + ' found' : 'none');
+  }
+  if (canSpeak) {
+    listVoices();
+    try { synth.onvoiceschanged = listVoices; } catch (e) {}
+    setTimeout(listVoices, 1500);
+  }
+
+  var keep = [];
+  function speak(text, key, cb){
+    if (!canSpeak) { set(key, 'FAIL', 'no speech'); return; }
+    var u = new SpeechSynthesisUtterance(text), started = false, ended = false, boundaries = 0, t0 = Date.now();
+    keep.push(u);
+    u.rate = 0.8;
+    u.onstart = function(){ started = true; };
+    u.onboundary = function(){ boundaries++; };
+    u.onend = function(){ ended = true; finish(); };
+    u.onerror = function(e){ set(key, 'FAIL', 'error: ' + (e.error || 'unknown')); };
+    var timer = setTimeout(function(){ if (!ended) set(key, 'FAIL', started ? 'started but end never fired (' + text + ')' : 'never started; is the volume up?'); }, 8000);
+    function finish(){
+      clearTimeout(timer);
+      set(key, 'PASS', '"' + text + '" spoke and ended in ' + (Date.now() - t0) + ' ms');
+      if (cb) cb(boundaries);
+    }
+    synth.speak(u);
+  }
+  document.getElementById('b-word').onclick = function(){
+    speak('come', 'Speak a word (come)', function(){ speak('thorns', 'Speak a word (thorns)'); });
+  };
+  document.getElementById('b-sentence').onclick = function(){
+    speak('Most plants grow in the soil.', 'Speak a sentence', function(n){
+      set('Word boundary events', n > 0 ? 'PASS' : 'INFO', n > 0 ? n + ' events: smooth pointing is possible' : 'none: word-by-word pointing it is');
+    });
+  };
+
+  /* Audio element: a short beep built in the page, so no file is needed */
+  function beepURI(){
+    var rate = 8000, n = 2400, i, b = '';
+    function u32(x){ return String.fromCharCode(x & 255, (x >> 8) & 255, (x >> 16) & 255, (x >> 24) & 255); }
+    function u16(x){ return String.fromCharCode(x & 255, (x >> 8) & 255); }
+    for (i = 0; i < n; i++) b += String.fromCharCode(128 + Math.round(60 * Math.sin(2 * Math.PI * 660 * i / rate)));
+    var h = 'RIFF' + u32(36 + n) + 'WAVEfmt ' + u32(16) + u16(1) + u16(1) + u32(rate) + u32(rate) + u16(1) + u16(8) + 'data' + u32(n);
+    return 'data:audio/wav;base64,' + btoa(h + b);
+  }
+  document.getElementById('b-audio').onclick = function(){
+    try {
+      var a = new Audio(beepURI()), t = setTimeout(function(){ set('Audio clips', 'FAIL', 'no end event within 5 s'); }, 5000);
+      a.onended = function(){ clearTimeout(t); set('Audio clips', 'PASS', 'played a clip with new Audio()'); };
+      a.onerror = function(){ clearTimeout(t); set('Audio clips', 'FAIL', 'could not play'); };
+      var p = a.play(); if (p && p.catch) p.catch(function(e){ clearTimeout(t); set('Audio clips', 'FAIL', e.message); });
+    } catch (e) { set('Audio clips', 'FAIL', e.message); }
+  };
+  document.getElementById('b-reload').onclick = function(){ location.reload(); };
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Backups exported from Grown-ups stay off the public repo
+*.littlereader.json
+.DS_Store
+Thumbs.db
+
+# Dev tooling
+node_modules/
+package-lock.json
+test-results/

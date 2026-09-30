@@ -1,0 +1,181 @@
+/* Andika: designed for early readers (single-story a and g, clear b/d/p/q).
+   Self-hosted: put the files in /fonts (see fonts/README.md). */
+@font-face{font-family:"Andika";font-style:normal;font-weight:400;font-display:swap;
+  src:url(../fonts/Andika-Regular.woff2) format("woff2"),url(../fonts/Andika-Regular.ttf) format("truetype")}
+@font-face{font-family:"Andika";font-style:normal;font-weight:700;font-display:swap;
+  src:url(../fonts/Andika-Bold.woff2) format("woff2"),url(../fonts/Andika-Bold.ttf) format("truetype")}
+
+:root{
+  --sky:#E3F1F6; --ink:#1E2B38; --muted:#4A6272; --leaf:#2E7D4F; --leaf-deep:#1D5535;
+  --sun:#FFCB45; --sun-soft:#FFE9A6; --berry:#D2335C; --line:#BCD3DC; --paper:#FFFFFF; --soil:#7A5236;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--sky);color:var(--ink);font-family:"Andika","Trebuchet MS",Verdana,sans-serif;font-size:22px;line-height:1.4;
+  -webkit-tap-highlight-color:transparent;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+button{font:inherit;color:inherit}
+button,a{touch-action:manipulation}
+a{color:inherit}
+:focus-visible{outline:4px solid var(--ink);outline-offset:3px}
+.w,.card,.chip,.big-word,.num,.sym,.tile{-webkit-user-select:none;user-select:none}
+
+/* Top bar */
+.bar{display:flex;align-items:center;padding:12px 20px}
+.home-btn{display:inline-block;width:64px;height:64px;line-height:60px;text-align:center;font-size:34px;background:var(--paper);
+  border-radius:50%;border-bottom:5px solid var(--line);text-decoration:none;margin-right:16px}
+.bar-title{font-size:30px;font-weight:700}
+main{padding:8px 20px 40px;max-width:1100px;margin:0 auto}
+
+/* Home */
+.home{text-align:center;padding-top:24px}
+.title{font-size:56px;margin:0 0 28px;font-weight:700;color:var(--leaf-deep)}
+.tiles{display:flex;flex-wrap:wrap;justify-content:center;max-width:660px;margin:0 auto}
+.tile{display:flex;flex-direction:column;align-items:center;justify-content:center;width:300px;height:190px;margin:10px;
+  border-radius:30px;text-decoration:none;font-size:30px;font-weight:700;border-bottom:10px solid rgba(0,0,0,.18)}
+.tile:active{transform:translateY(4px);border-bottom-width:6px}
+.tile-emoji{font-size:70px;line-height:1.1;margin-bottom:6px}
+.t-sun{background:#FFD45C}.t-berry{background:#F9C9D6}.t-mint{background:#BFE6CD}.t-leaf{background:#CDE7A6}
+.grown{display:inline-block;margin-top:34px;font-size:18px;color:var(--muted);padding:10px 18px;border-radius:999px;
+  border:2px solid var(--line);text-decoration:none}
+
+/* Buttons */
+.btn{display:inline-block;font-size:26px;padding:14px 28px;margin:8px;border:0;border-radius:999px;background:var(--leaf);color:#fff;
+  border-bottom:6px solid var(--leaf-deep);cursor:pointer;text-decoration:none;vertical-align:middle}
+.btn:active{transform:translateY(3px);border-bottom-width:3px}
+.btn.soft{background:var(--paper);color:var(--ink);border-bottom-color:var(--line)}
+.btn.small{font-size:16px;padding:6px 14px;border-bottom-width:4px}
+.row{text-align:center;margin:10px 0}
+.prompt{text-align:center;font-size:32px;margin:10px 0 6px}
+.tip{text-align:center;color:var(--muted);font-size:20px}
+
+/* Letters, hearts, the "finger sweep" */
+.l{position:relative;border-radius:5px;transition:background-color .1s}
+.l.h{color:var(--berry)}
+.l.h:after{content:"\2665";position:absolute;left:50%;width:2em;margin-left:-1em;top:-.95em;font-size:.42em;line-height:1;text-align:center;color:var(--berry)}
+.l.lit{background:var(--sun-soft);box-shadow:0 5px 0 var(--sun)}
+
+/* Word detective */
+.cards{display:flex;flex-wrap:wrap;justify-content:center;margin:22px 0}
+.card{min-width:220px;margin:12px;padding:30px 30px 22px;font-size:64px;line-height:1.1;background:var(--paper);border:3px solid var(--line);
+  border-bottom-width:10px;border-radius:26px;cursor:pointer}
+.card.right{background:#D6F2DE;border-color:var(--leaf)}
+.card.wrong{opacity:.5;animation:shake .4s}
+.card[disabled]{cursor:default}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.dots{text-align:center;margin-top:10px}
+.dot{display:inline-block;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--line);margin:0 5px;vertical-align:middle}
+.dot.on{background:var(--leaf);border-color:var(--leaf)}
+.dot.now{border-color:var(--ink);border-width:3px}
+.done{text-align:center}
+.stars{font-size:52px;margin-top:30px;letter-spacing:4px}
+
+/* Heart words */
+.hw{text-align:center}
+.big-word{display:inline-block;margin:36px auto 8px;padding:40px 54px 26px;font-size:110px;line-height:1.1;background:var(--paper);border:0;
+  border-bottom:10px solid var(--line);border-radius:34px;cursor:pointer}
+.big-word.say,.chip.say,.card.say{background:var(--sun-soft)}
+.heart-note{color:var(--berry);font-size:20px;min-height:28px;margin:6px 0}
+.family{margin-top:16px}
+.family p{margin:4px 0;font-size:20px;color:var(--muted)}
+.chip{display:inline-block;margin:6px;padding:14px 18px 6px;font-size:34px;line-height:1.2;background:var(--paper);border:2px solid var(--line);
+  border-bottom-width:5px;border-radius:18px;cursor:pointer}
+.nav{display:flex;align-items:center;justify-content:center;margin-top:18px}
+.nav .count{font-size:22px;margin:0 18px;min-width:90px;text-align:center}
+.nav .dots{margin:0 12px}
+
+/* Story */
+.sentence{max-width:1000px;margin:28px auto 16px;padding:34px 36px;background:var(--paper);border-radius:28px;font-size:46px;line-height:2}
+.w{border:0;background:transparent;padding:.08em .06em;border-radius:12px;cursor:pointer;font:inherit;line-height:1.3}
+.w.say{background:var(--sun)}
+.warm{text-align:center}
+
+/* Hungry crocodile */
+.cmp{display:flex;align-items:center;justify-content:center;margin:20px 0}
+.num{display:flex;flex-direction:column;align-items:center;width:230px;padding:16px 10px 20px;background:var(--paper);border:3px solid var(--line);
+  border-bottom-width:10px;border-radius:28px}
+button.num{cursor:pointer}
+.num .n{font-size:100px;line-height:1.1;font-weight:700}
+.num.big{border-color:var(--leaf);background:#D6F2DE}
+.shake{animation:shake .4s}
+/* A colour cue too: with reduced motion on (as on the Fire HD 10), the shake never plays. */
+.num.shake,.sym.shake{border-color:var(--berry);background:#FDE8EE}
+.slot{width:150px;height:150px;margin:0 18px;display:flex;align-items:center;justify-content:center;font-size:80px;color:#9DB6C2}
+.mouth{width:100%;height:100%;color:var(--leaf);display:block}
+.mouth.chomp{animation:chomp .7s ease-out}
+.mouth.bad{color:var(--berry)}
+@keyframes chomp{0%{transform:scaleY(.15)}45%{transform:scaleY(1.2)}70%{transform:scaleY(.85)}100%{transform:scaleY(1)}}
+.frame{display:block;width:150px;margin-top:10px;font-size:0;line-height:0}
+.cell{display:inline-block;width:28px;height:28px;margin:1px;border:2px solid var(--line);border-radius:6px;position:relative;vertical-align:top}
+.cell.fill:after{content:"";position:absolute;left:4px;top:4px;width:16px;height:16px;border-radius:50%;background:var(--soil)}
+.sym{width:130px;height:130px;padding:14px;margin:10px;background:var(--paper);border:3px solid var(--line);border-bottom-width:9px;border-radius:26px;cursor:pointer}
+.result{display:flex;align-items:center;justify-content:center;flex-wrap:wrap}
+.result-text{font-size:28px;margin-right:12px}
+.result-text b{font-size:46px;margin-right:16px}
+[hidden]{display:none!important}
+
+/* Grown-ups */
+.gp section{background:var(--paper);border-radius:22px;padding:18px 22px;margin:16px 0}
+.gp h2{margin:0 0 6px;font-size:24px}
+.help{margin:0 0 10px;color:var(--muted);font-size:18px}
+label{display:block;margin:12px 0 4px;font-weight:700;font-size:18px}
+textarea,input,select{font:inherit;font-size:20px;width:100%;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+input[type=range]{padding:0;border:0}
+.hrow{display:flex;align-items:center;flex-wrap:wrap;padding:8px 0;border-bottom:1px solid #E6EEF2}
+.hl{font-size:32px;min-width:44px;margin:2px;padding:8px 6px 4px;border:2px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;line-height:1.1}
+.hl.hl-on{color:var(--berry);border-color:var(--berry);background:#FDE8EE}
+.gate{text-align:center;max-width:420px;margin:40px auto}
+.msg{color:var(--berry);min-height:28px}
+.saved{color:var(--leaf);font-weight:700}
+.tchip{display:inline-block;margin:4px;padding:6px 12px;border:2px solid var(--line);border-radius:12px;font-size:22px}
+
+@media (max-width:700px){
+  body{font-size:19px}
+  .title{font-size:40px}
+  .tile{width:44%;height:150px;font-size:22px;margin:8px}
+  .tile-emoji{font-size:52px}
+  .card{font-size:44px;min-width:150px;padding:22px}
+  .big-word{font-size:72px;padding:28px 30px 20px}
+  .sentence{font-size:32px;padding:20px}
+  .num{width:130px}.num .n{font-size:64px}
+  .frame{width:120px}.cell{width:22px;height:22px}
+  .cell.fill:after{left:3px;top:3px;width:12px;height:12px}
+  .slot{width:90px;height:90px;margin:0 8px}
+}
+/* Fire HD 10 landscape leaves 1280 x 614 CSS px under Silk's toolbar. */
+@media (max-height:700px) and (min-width:701px){
+  .bar{padding:6px 20px}
+  .home-btn{width:52px;height:52px;line-height:48px;font-size:28px}
+  .bar-title{font-size:26px}
+  main{padding-bottom:16px}
+  .home{padding-top:6px}
+  .title{font-size:44px;margin-bottom:10px}
+  .tile{height:160px;margin:8px}
+  .tile-emoji{font-size:56px}
+  .grown{margin-top:12px}
+  .prompt{font-size:28px;margin:6px 0 4px}
+  .big-word{font-size:84px;margin-top:22px;padding:32px 44px 16px}
+  .heart-note{margin:2px 0}
+  .row{margin:6px 0}
+  .family{margin-top:4px}
+  .family p{margin:2px 0}
+  .chip{font-size:28px;margin:4px;padding:12px 14px 4px}
+  .nav{margin-top:8px}
+  .cards{margin:12px 0}
+  .cmp{margin:8px 0}
+  .num{padding:10px 10px 12px}
+  .num .n{font-size:80px}
+  .sentence{margin:16px auto 10px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Phase 2 additions */
+.big-word.find{cursor:default}
+.lbtn{font:inherit;color:inherit;background:transparent;border:0;padding:0 .04em;margin:0;cursor:pointer;line-height:1.1;min-width:.6em}
+.lbtn.plain{color:var(--muted)}
+.lbtn.h{color:var(--berry)}
+.modes{display:flex;justify-content:center;margin:4px 0 0}
+.mode{font-size:18px;padding:8px 18px;margin:0 4px;border:2px solid var(--line);border-radius:999px;background:var(--paper);cursor:pointer}
+.mode[aria-pressed="true"]{background:var(--leaf);border-color:var(--leaf);color:#fff}
+.say-btn{font-size:24px;padding:14px 26px;margin:8px;background:var(--paper);border:3px solid var(--line);border-bottom-width:8px;border-radius:22px;cursor:pointer}
+.say-btn.shake{border-color:var(--berry);background:#FDE8EE}
+.mix{display:inline-block;margin:4px;padding:6px 12px;border:2px dashed var(--line);border-radius:12px;font-size:20px}
