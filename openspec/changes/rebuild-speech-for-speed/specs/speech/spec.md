@@ -47,3 +47,20 @@ The app SHALL request no speech until the first touch on the page, and SHALL war
 #### Scenario: First load
 - **WHEN** the app opens
 - **THEN** no speech is requested until the first touch, and after it speech works
+
+### Requirement: Placeholder captions
+Until voice clips arrive (Phase 7), everything the app speaks SHALL also appear as a caption on screen for as long as it is being spoken.
+
+#### Scenario: Caption shown
+- **WHEN** the app says "Find the word you hear"
+- **THEN** a caption strip shows "Find the word you hear" while it is spoken and clears when speech ends
+
+#### Scenario: No voice available
+- **GIVEN** the tablet voice is unavailable or silent
+- **WHEN** the app speaks
+- **THEN** the caption still shows the text and the lesson carries on
+
+#### Scenario: Fits the screen
+- **GIVEN** the viewport is 1280x614
+- **WHEN** a caption is shown
+- **THEN** it does not cover any tap target and nothing scrolls

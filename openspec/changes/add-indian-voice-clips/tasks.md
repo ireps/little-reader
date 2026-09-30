@@ -6,12 +6,13 @@
 - [ ] 1.2 `tools/list-clips.js` collects units, maths output spaces, letter and grapheme names and phrases into `tools/clip-list.txt`
 - [ ] 1.3 Coverage test: every string in the list has a manifest entry (it is skipped until a manifest exists, then enforced)
 
-## 2. Clip tool
+## 2. Clip import
 
-- [ ] 2.1 `tools/make-clips.ps1`: System.Speech, Heera en-IN, SpeakProgress timings, ffmpeg to 32 kbps mono MP3, skipping existing clips
-- [ ] 2.2 `audio/README.md`: prerequisites (Heera voice, ffmpeg), how to run it, and how to add a string
-- [ ] 2.3 Owner runs the tool and commits `audio/clips/` and `audio/manifest.js`
-- [ ] 2.4 Load `audio/manifest.js` in `index.html` before `js/speech.js`
+- [ ] 2.1 `tools/import-clips.js`: check supplied files against `clip-list.txt`, convert WAV, read durations and timings, write `audio/clips/` and `audio/manifest.js`
+- [ ] 2.2 Optional `tools/make-clips.ps1` helper for Heera en-IN with SpeakProgress timings
+- [ ] 2.3 `audio/README.md`: how to supply clips, file naming, and how to add a string
+- [ ] 2.4 Owner supplies the clips; import and commit them
+- [ ] 2.5 Load `audio/manifest.js` in `index.html` before `js/speech.js`
 
 ## 3. Playback
 
@@ -19,7 +20,7 @@
 - [ ] 3.2 Clip lookup: whole text, then split parts, then the tablet voice
 - [ ] 3.3 Sequences with gaps under 150 ms; `onWord` from clip timings
 - [ ] 3.4 Watchdog, `play()` rejection fallback, and `playbackRate` from the speed setting
-- [ ] 3.5 Grown-ups clips switch; `clips` in schema 2 `validate()`
+- [ ] 3.5 Grown-ups clips and captions switches; `clips` and `captions` in schema 2 `validate()`
 
 ## 4. Tests
 

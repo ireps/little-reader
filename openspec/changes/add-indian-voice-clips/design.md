@@ -33,7 +33,18 @@
 - Joined strings such as "Yes! come" are split at runtime into the clips "Yes!" and "come".
 - Writes `tools/clip-list.txt`: one normalised string per line, sorted and de-duplicated.
 
-### D2. Clip generation (`tools/make-clips.ps1`, dev-only)
+### D2. Supplied clips and the importer (`tools/import-clips.js`, dev-only)
+- `clip-list.txt` gives each string a file name (its slug), for example `come.mp3` and
+  `the-frog-can-jump.mp3`. The owner supplies MP3 files (or WAV, which the importer converts with
+  ffmpeg) under those names.
+- The importer:
+  - reports missing and extra files;
+  - reads each clip's duration;
+  - takes word timings from a `<slug>.json` next to the clip if the voice tool gave them, or else
+    estimates them by splitting the duration by character count, the same way as Phase 3;
+  - writes `audio/clips/` and `audio/manifest.js`.
+
+### D2b. Optional Heera helper (`tools/make-clips.ps1`, dev-only)
 - Runs on the owner's Windows PC with System.Speech and the **Microsoft Heera (en-IN)** voice.
 - For each line of `clip-list.txt` it:
   - synthesises a WAV;
@@ -57,6 +68,8 @@
 - **Rate:** the speed setting maps to `audio.playbackRate`.
 - **Unlock:** the first touch also plays a silent clip.
 - **Clips switch:** with `clips: false`, speech skips the manifest and uses the tablet voice.
+- **Captions:** hidden while a clip plays, unless Grown-ups "Show captions" is on. They always show
+  when the tablet voice is used.
 
 ### D4. Spec upkeep
 - This change's speech deltas are written as ADDED because the Phase 3 requirements they build on
@@ -72,5 +85,5 @@
   cover it.
 - **Heera timings** come from System.Speech offsets and may drift by 20 to 40 ms. That's fine for
   highlighting.
-- **Only the owner can generate clips** (Windows). The coverage test names every missing string,
+- **Only the owner can supply clips.** The coverage test names every missing string,
   and the tablet voice still covers them at runtime.

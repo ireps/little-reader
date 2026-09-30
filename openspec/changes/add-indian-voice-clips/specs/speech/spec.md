@@ -1,7 +1,7 @@
 ## MODIFIED Requirements
 
 ### Requirement: Clip first, else tablet voice
-Speech SHALL play the pre-made clip for the text, made from an Indian English female computer voice, and use the tablet's text-to-speech only when no clip exists, the clip fails, or clips are switched off.
+Speech SHALL play the clip supplied for the text, in an Indian English female computer voice, and use the tablet's text-to-speech only when no clip exists, the clip fails, or clips are switched off.
 (Previously: clips were an unused hook and the tablet voice spoke everything.)
 
 #### Scenario: No clips

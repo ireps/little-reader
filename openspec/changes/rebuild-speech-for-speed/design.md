@@ -41,6 +41,12 @@
   speaking, `speak()` is called at once.
 - The clip hook (`LR.clips`) is unchanged and unused.
 
+### D1b. Placeholder captions
+- `say()` writes its text with `textContent` into a fixed caption strip (`#caption`, `aria-live="polite"`)
+  at the bottom edge, in the space kept clear of targets, and clears it when the promise settles or on
+  `stopAll()`.
+- The caption is a stand-in for the voice. Phase 7 hides it by default once clips exist.
+
 ### D2. Warm-up
 - The first `pointerdown` on the document speaks a single-space utterance at volume 0, which loads
   the engine, and creates the `AudioContext`.

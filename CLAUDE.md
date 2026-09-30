@@ -96,11 +96,11 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 
 | Phase | Change | What it delivers |
 | --- | --- | --- |
-| 3 | `rebuild-speech-for-speed` | With the tablet voice: one utterance per sentence, highlights during speech, no fixed waits, feedback under 100 ms, SVG icons, Andika, 120 px targets. Works on today's lessons. |
+| 3 | `rebuild-speech-for-speed` | With the tablet voice and on-screen placeholder captions: one utterance per sentence, highlights during speech, no fixed waits, feedback under 100 ms, SVG icons, Andika, 120 px targets. Works on today's lessons. |
 | 4 | `add-guided-daily-session` | Garden home with one Start, a self-advancing 10-minute session, spaced review, Read with me, first built-in units, tap-only Grown-ups with backup, restore and reset, schema 2. **It starts with prototype screenshots that the owner approves.** |
 | 5 | `add-kg2-english` | Letters and Sounds Phase 3 to 5 units (including the old "sound patterns" plan), Flash, Picture match, Build it, Silly sentences, the help ladder, language tasks, story questions. |
 | 6 | `add-kg2-maths` | The NCF-FS KG-2 numeracy skills, with the crocodile's = behind a Grown-ups switch (off by default). |
-| 7 | `add-indian-voice-clips` | Indian English clips (Heera, generated on the owner's PC) for every string, with word timings, preloading and a coverage test. Last, because the full list of strings is only known once Phases 4 to 6 exist. |
+| 7 | `add-indian-voice-clips` | Indian English clips supplied by the owner (matched to a generated list) for every string, with word timings, preloading and a coverage test. Last, because the full list of strings is only known once Phases 4 to 6 exist. |
 
 **Superseded:** the old Phase 3 (typed weekly content). Its backup, restore and reset items moved to Phase 4.
 
@@ -126,7 +126,7 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 ## Pending owner actions
 
 - Phase 3: give the OK to download Andika from SIL (or add the files yourself).
-- Phase 7: run `tools/make-clips.ps1` on a Windows PC with the Heera voice.
+- Phase 7: supply the voice clips for `tools/clip-list.txt` (an Indian English computer voice; `tools/make-clips.ps1` can make them with Heera on Windows).
 
 - Add the Andika files to `fonts/` (see fonts/README.md).
 - Turn on GitHub Pages from `main` (root), with Enforce HTTPS on.

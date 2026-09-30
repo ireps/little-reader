@@ -10,8 +10,10 @@ clips earlier would mean re-running the tool after every content change.
 
 ## What Changes
 
-- **Pre-made clips in an Indian English female computer voice** (Microsoft Heera, en-IN), generated
-  on the owner's Windows PC by a dev-only tool. Each clip comes with word timings.
+- **Voice clips supplied by the owner** at the end, in an Indian English female computer voice (no
+  recordings of a person). The app exports the exact list of strings and file names it needs
+  (`tools/clip-list.txt`), and an importer checks the files and builds `audio/manifest.js`. A helper
+  for Microsoft Heera on Windows (`tools/make-clips.ps1`) is optional.
 - **A single clip list, derived from the app's own content:** every string `say()` can receive,
   including units, stories, silly sentences, questions, maths prompts, number names, letter names,
   praise and prompts.
@@ -22,6 +24,8 @@ clips earlier would mean re-running the tool after every content change.
 - **Joined clip sequences** with gaps under 150 ms.
 - **A coverage test** that fails when any string lacks a clip, from this phase onward.
 - **A Grown-ups switch** turns clips on or off.
+- **Captions** (the Phase 3 placeholder) are hidden when clips play, with a Grown-ups switch to
+  keep them on.
 
 ## Capabilities
 
@@ -38,7 +42,8 @@ clips earlier would mean re-running the tool after every content change.
 
 - **New files:**
   - `tools/list-clips.js` (Node, dev-only);
-  - `tools/make-clips.ps1` (Windows, dev-only);
+  - `tools/import-clips.js` (Node, dev-only): checks the supplied files and builds the manifest;
+  - `tools/make-clips.ps1` (Windows, dev-only, optional);
   - `audio/clips/*.mp3` (about 1,500 clips, 15 to 20 MB);
   - `audio/manifest.js`.
 - **Code:** `js/speech.js` (preload, clip playback, clip timings, sequences) and `index.html`
@@ -47,6 +52,6 @@ clips earlier would mean re-running the tool after every content change.
 - **Tests:** a coverage test, a preload latency test, and clip fallback and stall tests.
 - **Docs:** README (voice, running the clip tool), SECURITY (clips come from a computer voice),
   CLAUDE.md.
-- **Owner:** runs the tool on a Windows PC with the Heera voice installed, and commits the output
-  (or sends it over).
+- **Owner:** supplies the clip files for `tools/clip-list.txt` (any Indian English computer voice),
+  or runs the optional Heera helper.
 - **Tablet try (owner, with her):** a few sessions. Is the voice right, and does it feel quicker?

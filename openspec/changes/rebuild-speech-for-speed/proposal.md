@@ -36,6 +36,8 @@ once Phases 4 to 6 have fixed every word, sentence and phrase is the full list o
   WebAudio (no file, no fetch), before any speech.
 - **Polish on today's lessons:** SVG interface icons instead of emoji, the Andika font bundled (with
   the owner's OK to download it from SIL), and child targets of at least 120 px.
+- **Placeholder captions:** everything `say()` speaks also shows as text in a caption strip until
+  the voice clips arrive in Phase 7. The tablet voice still speaks as a stand-in.
 - **The clip hook stays** (`LR.clips`), unused until Phase 7.
 
 ## Capabilities
@@ -46,7 +48,7 @@ once Phases 4 to 6 have fixed every word, sentence and phrase is the full list o
 
 ### Modified Capabilities
 - `speech`: stop-and-clear covers highlights, one utterance per sentence with synced highlighting,
-  joined phrases, and silence until the first touch.
+  joined phrases, silence until the first touch, and placeholder captions.
 - `platform`: child tap targets grow from 64 px to 120 px (Grown-ups stays at 64 px), and fonts are
   served from the same site.
 

@@ -6,6 +6,7 @@
 - [ ] 1.2 Duration calibration (moving average, in memory only)
 - [ ] 1.3 A watchdog on every utterance; the post-cancel delay only when the engine was speaking
 - [ ] 1.4 Warm-up on the first touch; no sound before it
+- [ ] 1.5 Placeholder caption strip for everything `say()` speaks
 
 ## 2. Lessons without waits
 
@@ -29,7 +30,8 @@
 - [ ] 4.3 Highlight test: words light in order during the sentence, and none stays lit after a stop
 - [ ] 4.4 Target size test: every child `[data-act]` is at least 120x120 px at both sizes
 - [ ] 4.5 Emoji test: no emoji in interface chrome
-- [ ] 4.6 Screenshots at 1280x614 and 800x1094 with reduced motion, reviewed against the UX checklist
+- [ ] 4.6 Caption test: the spoken text shows while speaking, clears after, and covers no target
+- [ ] 4.7 Screenshots at 1280x614 and 800x1094 with reduced motion, reviewed against the UX checklist
 
 ## 5. Docs
 
