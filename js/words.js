@@ -35,7 +35,8 @@ var BANK = ['cat','cot','cut','pot','pit','pet','pets','posts','plants','plans',
   'jump','junk','lamp','limp','hand','band','pond','bond','nest','next','tent','test','milk','mill','sink','silk','desk','dusk','belt','bent',
   'stop','step','spot','spin','snap','snip','slip','slap','slug','swim','star','stir','flag','flap','clap','clip','plum','plug',
   'drum','drip','frog','from','grin','grip','trip','trap','crab','grab','glad','plant','plan','stand','stamp','drink','dress',
-  'crisp','crust','blink','black','said','sad','like','lick','were','wet','there','then','little','lift','one','on','what','want','when','wet'];
+  'crisp','crust','blink','black','said','sad','like','lick','were','wet','there','then','little','lift','one','on','what','want','when','wet',
+  'and','ant','ask','act','sand','sun','sob','dot','dig','dog','went','them','list','only','owl','web','lake','sock','cot','fog','hut','mat','milk'];
 
 var LETTER_NAMES = {a:'ay',b:'bee',c:'see',d:'dee',e:'ee',f:'ef',g:'jee',h:'aitch',i:'eye',j:'jay',k:'kay',l:'el',m:'em',
   n:'en',o:'oh',p:'pee',q:'queue',r:'ar',s:'ess',t:'tee',u:'you',v:'vee',w:'double you',x:'ex',y:'why',z:'zed'};

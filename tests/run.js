@@ -88,7 +88,8 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   await seed();
   ok(await p.$$eval('#app [data-act=start]', x => x.length) === 1, 'Home has one Start');
   ok(await p.$$eval('#app .s-target', x => x.length) === 1, 'Home has one primary target');
-  ok(await p.$eval('.garden', g => g.dataset.flowers) === '0', 'a new garden is empty');
+  ok(await p.$eval('.garden', g => g.dataset.flowers) === '0', 'a new garden has no flowers yet');
+  ok(/6 sprouts/.test(await p.$eval('.garden', g => g.getAttribute('aria-label'))), 'the words she is learning show as sprouts');
   ok((await said()).length === 0, 'nothing is spoken before the first touch');
   ok(!(await p.isVisible('#bar')), 'the top bar is hidden on the child screens');
   ok(await p.evaluate(() => LR.state.unit === 'p4-01' && ['come', 'some', 'from', 'have', 'many', 'also'].every(w => LR.state.items['w:' + w].b === 1)), 'a new install starts at unit p4-01 with her known tricky words in review');
@@ -143,6 +144,12 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   await waitAt(c.at);
   ok(await p.evaluate(() => LR.state.items['w:come'].b === 1), 'after 2 misses the answer is shown and she moves on, without moving up');
   ok((await said()).some(t => /This one says come/.test(t)), 'the answer is said after 2 misses');
+
+  const firstLetter = await p.evaluate(() => {
+    const ws = LR.knownTricky.concat(...LR.units.map(u => u.words.concat(u.tricky)));
+    return ws.filter(w => !LR.words.lookalikes(w, [], [], 2).some(x => x.charAt(0) === w.charAt(0)));
+  });
+  ok(firstLetter.length === 0, 'every word has a look-alike with the same first letter, so first-letter guessing fails' + (firstLetter.length ? ': ' + firstLetter : ''));
 
   // ---------- New tricky word ----------
   /* All of unit 1's words are known and not due, so nothing is reviewed today. */

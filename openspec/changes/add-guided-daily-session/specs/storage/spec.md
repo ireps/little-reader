@@ -52,4 +52,4 @@ When saving fails, the app SHALL keep working from memory and show a warning in 
 #### Scenario: Quota error
 - **GIVEN** localStorage throws on setItem
 - **WHEN** an item is answered
-- **THEN** the session continues and Grown-ups shows "Storage is full; save a backup"
+- **THEN** the session continues and Grown-ups shows that storage is full and suggests a backup

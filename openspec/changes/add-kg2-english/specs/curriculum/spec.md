@@ -1,5 +1,13 @@
 ## ADDED Requirements
 
+### Requirement: Decodable guarantee
+Every sentence SHALL use only graphemes and tricky words taught up to its unit.
+
+#### Scenario: Untaught word
+- **GIVEN** a story in unit p4-02 uses "night" before "igh" is taught
+- **WHEN** npm test runs
+- **THEN** the decodability test fails and names the word and unit
+
 ### Requirement: Unit size
 Each unit SHALL have 8 to 12 decodable words, 1 to 3 tricky words, 2 stories of 4 to 6 sentences, 8 silly sentences and a picture for every picturable word.
 

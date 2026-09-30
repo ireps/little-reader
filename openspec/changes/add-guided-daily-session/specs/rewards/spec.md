@@ -17,8 +17,16 @@ The garden SHALL show one flower per item ever mastered, and SHALL never lose fl
 - **WHEN** a mastered item is missed
 - **THEN** the garden keeps the same number of flowers
 
+### Requirement: Sprouts
+The garden SHALL show a sprout for every word she is learning (box 1 or 2), so progress is visible from the first day.
+
+#### Scenario: First day
+- **GIVEN** a new install with 6 known tricky words at box 1
+- **WHEN** Home is shown
+- **THEN** the garden shows no flowers and 6 sprouts
+
 ### Requirement: End-of-session celebration
-The session end SHALL show today's new flowers placed one by one as static states, the guide's happy pose, a chime and a spoken summary, finishing within 10 s.
+The session end SHALL show the garden with today's new flowers ringed (a static cue), the guide's happy pose and a spoken summary, and one Done target once the summary has been said.
 
 #### Scenario: Two new flowers
 - **WHEN** a session with 2 new masteries ends

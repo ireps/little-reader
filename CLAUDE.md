@@ -47,6 +47,7 @@ Other facts:
 - Child tap targets are at least 120 x 120 px (words in a sentence: 60 px tall; letters of a word: 120 px tall, 60 px wide). Grown-ups controls: 64 px.
 - Call `LR.ui.feedback(el, 'right'|'wrong')` synchronously in the tap handler: a colour state, a mark and a WebAudio tone within 100 ms. Wrong answers are never punished: no buzzer, no red, no cross.
 - Interface icons come from `LR.icons.get(name)` (inline SVG), never emoji.
+- Session steps draw through the runner's `ctx` (`screen`, `prompt`, `done`, `miss`, `pose`, `live`); check `ctx.live()` in async chains rather than `LR.ui.gen`, since every tap bumps `gen`. Captions must never show an answer she is looking for (`say(w, { caption })`).
 - Keep words in the UI short and plain; she's 6. Grown-ups copy can be normal adult English.
 - Don't add emoji newer than about Unicode 8, because the tablet's font is old.
 
@@ -55,14 +56,18 @@ Other facts:
 ```
 index.html               shell, CSP, script order
 css/app.css              all styles, including the 614 px landscape query
-data/default-week.js     starter words and paragraph (LR.defaultWeek)
-js/words.js              heart-letter dictionary, word families, look-alike bank, letter names
-js/store.js              LR.state, load/save/validate, migration from readingGarden.v1
+data/units.js            the built-in course: LR.units (words, tricky words, stories) and LR.knownTricky
+js/words.js              heart-letter dictionary, word families, look-alikes, letter names
+js/progress.js           LR.progress: boxes, due dates, flowers, review plan, pacing, unit advance, dates
+js/store.js              LR.state schema 2, load/save/validate, migration from schema 1 and readingGarden.v1, reset
 js/speech.js             LR.speech: voice choice, clip hook, say() with timings and captions, cancel()
 js/icons.js              LR.icons: interface icons as inline SVG
-js/kit.js, guide.js, garden.js  Phase 4 session components, the guide (Tilly) and the garden; used by the prototype so far
-js/ui.js                 LR.ui helpers, letters and hearts, finger sweep, router, home screen
-js/lessons/*.js          detective, hearts, story, croc, grownups (each registers LR.routes.<name>)
+js/ui.js                 LR.ui helpers, letters and hearts, finger sweep, feedback, router
+js/guide.js, garden.js   Tilly the tortoise (4 still poses) and her garden (flowers and sprouts)
+js/kit.js                LR.kit: session screen components (path, seeds, target, cards, sentence, hold)
+js/session.js            Home, today's plan, the runner (routes home, session, practice-<step>)
+js/steps/*.js            find, tricky, read, maths: each registers LR.steps.<type> = { render, tap }
+js/lessons/grownups.js   Grown-ups (route grownups)
 js/main.js               load state, start router
 fonts/                   Andika Regular and Bold (Latin subset, SIL OFL)
 audio/                   empty; clips only if ever needed
@@ -75,12 +80,16 @@ openspec/                specs: config.yaml, specs/ (shipped), changes/ (Phases 
 .claude/                 OpenSpec skills and /opsx commands for Claude Code
 ```
 
-## State (`localStorage` key `littleReader.v1`, schema 1)
+## State (`localStorage` key `littleReader.v1`, schema 2)
 
 ```
-{ schema, words: [..], story: "..", hearts: { word: [letter indexes] }, tricky: { word: count },
-  confusions: { target: { pickedInstead: count } }, storyMode: "together"|"myturn", voice: "", rate: 0.8 }
+{ schema: 2, unit: "p4-01", items: { "w:come": { b: 0-5, d: due date, u: last up-move date, m: misses } },
+  flowers: [item ids ever mastered], confusions: { target: { pickedInstead: count } },
+  stories: { storyId: last read date }, resume: today's plan { date, steps: [{ id, items }], at: [step, item],
+  done, started, fresh, right, answered, mode }, days: [{ d, n, r, mins }] (last 30), rate: 0.9, last: date }
 ```
+
+Dates are local `YYYY-MM-DD`; "today" never goes back past `last`. Schema 1 and Reading Garden data migrate on load. Backups wrap the state as `{ app: "little-reader", schema, saved, state }`.
 
 Changing the shape means bumping `schema`, migrating in `store.js`, and extending `validate()`.
 
@@ -93,6 +102,8 @@ Changing the shape means bumping `schema`, migrating in `store.js`, and extendin
 - **No Amazon Kids profile** on the tablet.
 - **The grown-ups gate** is a sum question. It's a child lock, not security.
 - **Heart words:** "Find the ♥" replaced the planned "which one has the heart?" round.
+- **Garden:** flowers for mastered words (never taken away), sprouts for words being learned, so progress shows from day one.
+- **Choice screens have no primary target;** the sun-yellow target is only for single-action screens (Start, the tick, Go on, Done).
 
 ## Roadmap
 
@@ -100,7 +111,7 @@ The rebuild is specified in OpenSpec under `openspec/` (see "How to work"). Each
 folder in `openspec/changes/`, one commit or pull request, and the owner tries it on the tablet before
 the next phase starts.
 
-Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phase 3 is built and waits for a try on the tablet (then `openspec archive rebuild-speech-for-speed`). Phase 2 still needs a try on the tablet too.
+Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phases 3 and 4 are built and wait for a try on the tablet (then `openspec archive rebuild-speech-for-speed` and `add-guided-daily-session`, in that order).
 
 | Phase | Change | What it delivers |
 | --- | --- | --- |
@@ -133,10 +144,8 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 
 ## Pending owner actions
 
-- Phase 4: approve the prototype screenshots (`npm run prototype`, contact sheets in `test-results/prototype/`), or say what to change.
-- Phase 3: try every lesson on the tablet with her. Does it feel instant? Do the highlights keep up with the voice?
+- Phases 3 and 4: run one full session with her on the tablet. Note stray taps, "what do I do?" moments, help taps and how long it takes (target: at most 2 moments, 10 ± 2 minutes). Does it feel instant? Do the highlights keep up with the voice?
 - Phase 7: supply the voice clips for `tools/clip-list.txt` (an Indian English computer voice; `tools/make-clips.ps1` can make them with Heera on Windows).
 
 - Turn on GitHub Pages from `main` (root), with Enforce HTTPS on.
-- Try Phase 2 on the tablet: every lesson, with her, once.
 - Check whether the tablet's voice sounds female. If not, look in the tablet's text-to-speech settings.

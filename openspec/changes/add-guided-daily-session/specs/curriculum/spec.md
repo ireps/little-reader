@@ -14,14 +14,6 @@ All words, stories, sentences and pictures SHALL ship with the app, and grown-up
 - **WHEN** Start is tapped
 - **THEN** a full session runs with no setup
 
-### Requirement: Decodable guarantee
-Every sentence SHALL use only graphemes and tricky words taught up to its unit.
-
-#### Scenario: Untaught word
-- **GIVEN** a story in unit p4-02 uses "night" before "igh" is taught
-- **WHEN** npm test runs
-- **THEN** the decodability test fails and names the word and unit
-
 ### Requirement: Original text
 Unit text SHALL be original, with no third-party copyrighted content.
 

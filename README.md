@@ -1,18 +1,36 @@
 # little-reader
 
-A little web app to help a kindergartner read, spell, and compare numbers.
+A little web app to help a KG-2 child read, learn tricky words, and compare numbers, about 10 minutes a day.
 
 Live at **https://ireps.github.io/little-reader/**. Built for an old Fire HD 10 (Fire OS 5.7, Silk browser). No login, no server, no build step, no dependencies.
 
-## Lessons
+## Today's session
 
-| Lesson | What it helps with |
+Home is her garden and one **Start**. A session takes about 10 minutes and moves on by itself; there is nothing to choose and no Next button.
+
+| Step | What it helps with |
 | --- | --- |
-| Word detective | Hear a word, find it among look-alikes that start the same way (*pots*, *pets*, *posts*). Words she has mixed up before come back as the distractors. Breaks the first-letter-guessing habit. |
-| Heart words | One tricky word at a time. Letters that don't sound the way they look get a ♥. "Say, spell, say", "Find the ♥" (she taps the tricky letters), and a family of words with the same trick once she has heard the word. |
-| Read the story | Warm up the tricky words, then read the week's paragraph one sentence per screen. "Together" reads along; "My turn" lets her read first, then listen and check. "Read it to me" says the whole sentence and lights each word as it is spoken. Tap any word to hear it. |
-| Hungry crocodile | < and >: the mouth always opens toward the bigger number. Rounds mix tapping the bigger number, choosing the mouth, and choosing the words ("is greater than"). The next round starts by itself once the answer has been spoken. |
-| Grown-ups | This week's words and paragraph, heart letters, voice and speed, the words she needed help with, and her Word detective mix-ups. Opens after a sum question (a child lock, not security). |
+| Sounds and words (Find it) | She hears a word and finds it among look-alikes that start the same way (*jump* among *junk* and *jam*). Words she has mixed up before come back as the distractors. Breaks the first-letter-guessing habit. Words come back on a spaced schedule until she knows them. |
+| New tricky word | One or two a day. The word is said and spelled with its letters lit, she taps the ♥ letters (the ones that don't sound the way they look), then sees its family (*said*, *again*, *says*). |
+| Read with me | She reads a short story to her grown-up, one sentence at a time. Nothing is read to her first. The grown-up taps any word she stumbles on (it is said and noted), then the tick plays the sentence with each word lit. *Not today* (a 2 s hold) skips it. |
+| Maths | The hungry crocodile: which is more, and which mouth fits (< or >). The mouth always opens toward the bigger number. |
+| Garden | A flower for every word she has mastered (right on the first try on 3 separate days), and a sprout for every word she is learning. The garden only grows. |
+
+After two misses the answer is shown and said, and the session moves on. If nothing is tapped for a while, the instruction is repeated (three times), then a single **Go on** appears. Leaving mid-session needs a 1 s hold on Home, and Start picks up where she left off. When today's session is done, Home says *See you tomorrow!* and Start offers a little extra practice.
+
+## Grown-ups
+
+Hold the lock on Home for 2 seconds, then answer a sum on the number pad (a child lock, not security). Nothing is typed.
+
+- **Progress:** her unit, flowers, words to watch, mix-ups, and the last few days' minutes and first-try accuracy.
+- **Where is she?** Tap a unit to start there next time. The app moves on by itself when a unit is mastered.
+- **Practise one game:** any step on its own.
+- **Voice:** speed and a test.
+- **Backup:** *Save a backup* downloads `YYYY-MM-DD.littlereader.json`; *Restore* checks a backup and asks before replacing anything; *Reset everything* asks twice.
+
+## The course
+
+The words and stories are built in, so there is nothing to type or load each week. The first four units follow Letters and Sounds Phase 4 (adjacent consonants), the order Oxford's phonics uses; Phase 5 of this project adds the rest. All stories are original, written for this app.
 
 ## How it feels
 
@@ -23,12 +41,9 @@ Live at **https://ireps.github.io/little-reader/**. Built for an old Fire HD 10 
 - **Font:** Andika, made for early readers (single-storey *a* and *g*).
 - **Silent until touched:** nothing is spoken before the first tap.
 
-## Each week
+## Where it is saved
 
-1. Open **Grown-ups** on the tablet.
-2. Paste the school's word list and the paragraph, then tap **Save**.
-
-Everything is saved in the tablet's browser only.
+Everything is saved in the tablet's browser only. Save a backup now and then, in case Silk's data is cleared.
 
 ## Run it locally
 
@@ -77,16 +92,20 @@ Open `/tools/device-check.html` on the tablet, tap each button, and copy the res
 ```
 index.html               shell, Content Security Policy, script order
 css/app.css
-js/words.js              heart letters, families, look-alike bank
-js/store.js              load/save with validation, migration
-js/speech.js             clip first (if any), then the tablet's voice
-js/ui.js                 router, letters and hearts, finger sweep, home
-js/lessons/*.js          one file per lesson
-js/main.js               start
-data/default-week.js     starter words and paragraph
-fonts/                   Andika (Regular and Bold, Latin), SIL OFL
+data/units.js            the built-in course (words, tricky words, stories)
+js/words.js              heart letters, families, look-alikes
+js/progress.js           spaced review, flowers, unit progress
+js/store.js              load/save with validation, migration, reset
+js/speech.js             clip first (if any), then the tablet's voice; captions
 js/icons.js              interface icons as inline SVG
-js/kit.js, guide.js, garden.js  guided-session components (Phase 4, prototype only so far)
+js/ui.js                 router, letters and hearts, finger sweep, feedback
+js/guide.js, garden.js   Tilly the tortoise, and her garden
+js/kit.js                session screen components
+js/session.js            Home, today's plan, the session runner
+js/steps/*.js            find, tricky, read, maths
+js/lessons/grownups.js   Grown-ups
+js/main.js               start
+fonts/                   Andika (Regular and Bold, Latin), SIL OFL
 audio/                   empty unless the tablet can't speak
 tools/device-check.html  Phase 0 test page
 tools/prototype.html     Phase 4 prototype, every session screen (npm run prototype)
@@ -105,3 +124,5 @@ See [SECURITY.md](SECURITY.md).
 ## Licences
 
 Andika is © SIL International, under the SIL Open Font License 1.1 (`fonts/OFL.txt`).
+
+The words, stories and pictures are original to this project; Tilly the tortoise is drawn in SVG for it. No third-party teaching content is included.

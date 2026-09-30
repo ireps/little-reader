@@ -17,8 +17,15 @@ function flower(x, y, i, fresh){
   return s + '<circle cx="' + x + '" cy="' + (y - 34) + '" r="7" fill="#7A5236"/>';
 }
 
-/* garden(12, 2) draws 12 flowers, the last 2 marked as new. Past 42 flowers, a counter shows the rest. */
-function garden(count, fresh, tall){
+/* A sprout: a word she is learning (box 1 or 2). It becomes a flower when mastered. */
+function sprout(x, y){
+  return '<g transform="translate(' + x + ' ' + y + ') scale(1.8)"><path d="M0 0v-16" stroke="#3E8A4B" stroke-width="3" stroke-linecap="round"/>'
+    + '<path d="M0 -12q-12-2-14-12q12 0 14 9z" fill="#5BAE6A"/><path d="M0 -14q10-4 13-13q-11 1-13 10z" fill="#6FBF7C"/></g>';
+}
+
+/* garden(12, 2, tall, 5) draws 12 flowers (the last 2 marked as new) and 5 sprouts after them.
+   Past what fits, a counter shows the rest of the flowers. */
+function garden(count, fresh, tall, sprouts){
   count = Math.max(0, count | 0); fresh = Math.min(count, Math.max(0, fresh | 0));
   /* tall: a narrower, taller field (portrait), with fewer flowers to a row and more rows. */
   var COLS = tall ? 8 : 14, ROWS = tall ? 6 : 3, W = tall ? 600 : 1000, H = tall ? 460 : 300;
@@ -33,9 +40,14 @@ function garden(count, fresh, tall){
     var x = 50 + col * 64 + (row % 2) * 32, y = (tall ? top + 70 : 200) + row * 40;
     s += flower(x, y, i, i >= shown - Math.min(fresh, shown));
   }
+  var sp = Math.min(Math.max(0, sprouts | 0), COLS * ROWS - shown);
+  for (var j = shown; j < shown + sp; j++) {
+    var r2 = Math.floor(j / COLS), c2 = j % COLS;
+    s += sprout(50 + c2 * 64 + (r2 % 2) * 32, (tall ? top + 70 : 200) + r2 * 40);
+  }
   if (count > shown) s += '<text x="960" y="285" text-anchor="end" font-size="34" font-weight="700" fill="#1E2B38">+' + (count - shown) + '</text>';
   return '<svg class="garden" data-flowers="' + count + '" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMax slice" role="img" aria-label="'
-    + count + ' flower' + (count === 1 ? '' : 's') + '">' + s + '</svg>';
+    + count + ' flower' + (count === 1 ? '' : 's') + (sp ? ' and ' + sp + ' sprout' + (sp === 1 ? '' : 's') : '') + '">' + s + '</svg>';
 }
 
 LR.garden = { svg: garden };

@@ -144,9 +144,9 @@ function celebrate(){
   token++;
   U.stopAll();
   U.app().innerHTML = K.screen({ steps:stepIds(r), step:'garden', pose:'happy', say:'',
-    main:'<div class="s-celebrate">' + LR.garden.svg(total, n) + '</div>' + K.target('done', 'Done', 'home', ' disabled').replace('class="s-target"', 'class="s-target off"') });
+    main:'<div class="s-celebrate">' + LR.garden.svg(total, n, false, P.growing()) + '</div>' + K.target('done', 'Done', 'home', ' disabled').replace('class="s-target"', 'class="s-target off"') });
   var g = U.gen, tok = token;
-  S.say(n ? 'You grew ' + n + ' flower' + (n === 1 ? '' : 's') + '!' : 'Well done! Your garden is growing.').then(function(){
+  S.say(n ? 'You grew ' + n + ' flower' + (n === 1 ? '' : 's') + '!' : 'Well done! Your seeds are growing.').then(function(){
     if (tok !== token) return;
     var d = U.app().querySelector('[data-act=done]');
     if (d) { d.disabled = false; d.className = 's-target'; }
@@ -256,7 +256,8 @@ LR.routes.home = function(){
   var fresh = r && r.date === t ? r.fresh : 0, n = st.flowers.length;
   var app = U.app();
   app.className = 's-root';
-  app.innerHTML = '<div class="s-home"><div class="g-wide">' + LR.garden.svg(n, fresh) + '</div><div class="g-tall">' + LR.garden.svg(n, fresh, true) + '</div>'
+  var sp = P.growing();
+  app.innerHTML = '<div class="s-home"><div class="g-wide">' + LR.garden.svg(n, fresh, false, sp) + '</div><div class="g-tall">' + LR.garden.svg(n, fresh, true, sp) + '</div>'
     + '<div class="s-corner">' + K.hold('grownups', 'lock', 'Grown-ups', 2000, 0, 'small') + '</div>'
     + '<h1 class="s-title">Little Reader</h1>'
     + (doneToday ? '<p class="s-note">See you tomorrow!</p>' : '')

@@ -45,6 +45,8 @@ function miss(id){
   r.d = today();
   r.m = Math.min(999, r.m + 1);
 }
+/* Words she is learning (box 1 or 2): they show as sprouts in her garden. */
+function growing(){ var it = items(); return Object.keys(it).filter(function(id){ return it[id].b >= 1 && it[id].b <= 2; }).length; }
 function isMastered(w){ var r = items()[wid(w)]; return !!r && r.b >= 3; }
 
 function unitById(id){ for (var i = 0; i < LR.units.length; i++) if (LR.units[i].id === id) return LR.units[i]; return LR.units[0]; }
@@ -130,6 +132,6 @@ function recordDay(n, r, mins){
 LR.progress = {
   INTERVALS:INTERVALS, localDate:localDate, today:today, addDays:addDays, ensure:ensure, right:right, miss:miss, isMastered:isMastered,
   unit:unit, unitById:unitById, planWords:planWords, planExtra:planExtra, newTricky:newTricky, newTrickyCount:newTrickyCount,
-  lastAccuracy:lastAccuracy, nextStory:nextStory, unitDone:unitDone, advance:advance, recordDay:recordDay, wid:wid
+  lastAccuracy:lastAccuracy, growing:growing, nextStory:nextStory, unitDone:unitDone, advance:advance, recordDay:recordDay, wid:wid
 };
 })();

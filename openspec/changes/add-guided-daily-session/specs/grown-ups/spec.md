@@ -78,7 +78,7 @@ Grown-ups SHALL restore a backup file only after checking it, confirming, and pa
 
 #### Scenario: Bad JSON
 - **WHEN** a file that is not JSON is chosen
-- **THEN** "This isn't a Little Reader backup" is shown and nothing changes
+- **THEN** "That file isn't a Little Reader backup" is shown and nothing changes
 
 #### Scenario: Wrong app
 - **WHEN** a JSON file without the app marker is chosen
@@ -86,7 +86,7 @@ Grown-ups SHALL restore a backup file only after checking it, confirming, and pa
 
 #### Scenario: Newer schema
 - **WHEN** a backup with schema 3 is chosen
-- **THEN** "This backup is from a newer version" is shown and nothing changes
+- **THEN** "That backup is from a newer version of Little Reader" is shown and nothing changes
 
 #### Scenario: Too big
 - **WHEN** a file over 1 MB is chosen

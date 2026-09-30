@@ -77,7 +77,7 @@ classic scripts, the `LR` global, CSP, `esc()`, `validate()`, `say()` / `stopAll
   `opts.caption` with the instruction instead ("Find the word you hear").
 
 ### D2. Modules (classic scripts, in order after `ui.js`)
-- `data/units/p4-01.js` and on each call `LR.units.push({...})`.
+- `data/units.js` holds `LR.units` (the first 4 units) and `LR.knownTricky`. Phase 5 may split it by phase.
 - `js/progress.js` holds the item store and scheduler.
 - `js/session.js` plans the day, runs the steps, and handles resume, re-prompts and the target cue.
 - `js/guide.js` and `js/garden.js` are SVG string builders. `js/kit.js` holds the shared components
@@ -120,8 +120,9 @@ classic scripts, the `LR` global, CSP, `esc()`, `validate()`, `say()` / `stopAll
 
 ### D5. Read with me
 - The story is the unit's least-recently-read story (`stories[id] = lastDate`).
-- The screen opens with a spoken "Read to your grown-up", then the sentence, with no audio before
-  her attempt.
+- The first sentence opens with a spoken "Read to your grown-up"; later ones are silent. Nothing reads
+  the sentence before her attempt. Re-prompts wait 25 s (reading takes time) and say "Tap the tick when
+  done".
 - A tap on a word speaks the word and marks `w:<word>` stumbled. This is the grown-up's control.
 - ✓ reads the sentence aloud with highlighting and advances when it ends. ✓ is ignored during
   playback.
@@ -132,7 +133,7 @@ classic scripts, the `LR` global, CSP, `esc()`, `validate()`, `say()` / `stopAll
 ```
 { schema:2, unit:'p4-01', items:{ id:{b,d,u,m} }, flowers:[id], confusions:{ t:{ p:n } },
   stories:{ id:'YYYY-MM-DD' }, resume:{...}|null, days:[{ d, acc, mins }] (last 30),
-  rate:0.9, warn:'' }
+  rate:0.9, last:'YYYY-MM-DD' }
 ```
 - **Limits:** items ≤ 2000, flowers ≤ 2000, confusions 200x10, stories ≤ 500, days ≤ 30. Ids match
   `^[a-z]{1,2}:[a-z0-9'-]{1,30}$`.
@@ -143,8 +144,8 @@ classic scripts, the `LR` global, CSP, `esc()`, `validate()`, `say()` / `stopAll
   - `story`, `hearts`, `storyMode` and `voice` are dropped;
   - `rate` is kept.
 - Reading Garden goes readingGarden.v1 → schema 1 → schema 2.
-- **Storage full:** `save()` catches the quota error, keeps the in-memory state, and sets `warn`,
-  which Grown-ups shows.
+- **Storage full:** `save()` catches the quota error and keeps the in-memory state. `LR.store.failed()`
+  reports it (a runtime flag, since it can't be saved anyway), and Grown-ups shows a warning.
 
 ### D7. Grown-ups
 - **Gate:** "What is 7 + 5?" (sums of 11 to 18) on a 3x4 tap number pad. It's a child lock.
@@ -152,7 +153,8 @@ classic scripts, the `LR` global, CSP, `esc()`, `validate()`, `say()` / `stopAll
   - a progress card: unit, flowers, words to watch (most misses and mix-ups), last 7 days' minutes
     and accuracy;
   - the "Where is she?" unit list, tap to choose;
-  - "Practise one game" (each step alone);
+  - "Practise one game" (each step alone). A practice run lives in memory, so it never replaces the
+    day's saved plan;
   - voice: speed, and a test button;
   - backup;
   - restore (a file input; rejected with a clear message on bad JSON, wrong app, newer schema, or

@@ -95,7 +95,7 @@ Each session SHALL introduce 2 new tricky words when the previous session's firs
 - **THEN** no new tricky word is introduced
 
 ### Requirement: Unit advancement
-The next unit SHALL open when all of the current unit's items are at box 3 or more and silly-sentence accuracy is at least 80%.
+The next unit SHALL open when all of the current unit's words and tricky words are at box 3 or more (and, once silly sentences exist in Phase 5, silly-sentence accuracy is at least 80%).
 
 #### Scenario: Advance
 - **WHEN** both conditions are met at the session's end
