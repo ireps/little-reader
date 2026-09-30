@@ -1,11 +1,13 @@
 {
   "name": "little-reader",
   "private": true,
-  "description": "Dev-only tooling. The site itself has no dependencies and no build step.",
+  "description": "Dev-only tooling (Playwright tests, OpenSpec specs). The site itself has no dependencies and no build step.",
   "scripts": {
-    "test": "node tests/run.js"
+    "test": "node tests/run.js",
+    "spec": "openspec validate --all --strict"
   },
   "devDependencies": {
+    "@fission-ai/openspec": "^1.13.2",
     "playwright": "^1.49.0"
   }
 }
