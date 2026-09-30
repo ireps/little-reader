@@ -54,10 +54,10 @@ Each item and step SHALL advance with no Next, previous or forward control.
 - **THEN** only answer targets were tapped and no navigation control exists
 
 ### Requirement: One marked target
-Exactly one target SHALL carry the highlight cue (colour and thick outline, no motion), and only after the prompt audio ends.
+At most one target SHALL carry the highlight cue (colour and thick outline, no motion), and only after the prompt audio ends; choice items show their answer cards in one shared style instead.
 
 #### Scenario: Waiting
-- **WHEN** an item waits for her answer
+- **WHEN** a single-action item waits for her
 - **THEN** one element has the target style
 
 #### Scenario: Audio playing

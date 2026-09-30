@@ -19,7 +19,13 @@ var PATHS = {
   dot: '<circle cx="12" cy="12" r="5"/>',
   search: '<circle cx="10" cy="10" r="6.5" ' + S + ' stroke-width="2.6"/><path d="M15 15l6 6" ' + S + ' stroke-width="3"/>',
   book: '<path d="M2 5c3-1.5 6.5-1.5 10 1 3.5-2.5 7-2.5 10-1v14c-3-1.5-6.5-1.5-10 1-3.5-2.5-7-2.5-10-1z" ' + S + ' stroke-width="2"/><path d="M12 6v14" ' + S + ' stroke-width="2"/>',
-  croc: '<path d="M20 5 6 12l14 7" ' + S + ' stroke-width="3.2"/><circle cx="16.5" cy="4.2" r="1.7"/>'
+  croc: '<path d="M20 5 6 12l14 7" ' + S + ' stroke-width="3.2"/><circle cx="16.5" cy="4.2" r="1.7"/>',
+  thumb: '<path d="M2 10h4v11H2z"/><path d="M8 21h9.5a2 2 0 0 0 2-1.6l1.4-7A2 2 0 0 0 19 10h-5l.8-4.2A2 2 0 0 0 12.8 3.5L8 10z"/>',
+  dice: '<rect x="3" y="3" width="18" height="18" rx="4" ' + S + ' stroke-width="2.2"/><circle cx="8" cy="8" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="16" cy="16" r="1.8"/>',
+  play: '<path d="M7 4.5v15l13-7.5z"/>',
+  lock: '<rect x="5" y="10" width="14" height="11" rx="2.5"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10" ' + S + ' stroke-width="2.4"/>',
+  skip: '<path d="M5 5l9 7-9 7z"/><path d="M18 5v14" ' + S + ' stroke-width="2.6"/>',
+  ear: '<path d="M7 9a5 5 0 0 1 10 0c0 3-3 4-3.5 6.5S12 20 10 20" ' + S + ' stroke-width="2.4"/><path d="M10 10a2 2 0 0 1 4 0" ' + S + ' stroke-width="2.2"/>'
 };
 
 /* icon('check') returns an SVG string. It is hidden from screen readers; label the button instead. */

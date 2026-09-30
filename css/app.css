@@ -208,3 +208,125 @@ input[type=range]{padding:0;border:0}
 @media (max-width:900px){
   .ctl .modes{order:-1;width:100%;justify-content:center}
 }
+
+/* ---------- Phase 4: the guided session (LR.kit, LR.guide, LR.garden) ---------- */
+:root{--target:#FFC933; --target-line:#5A3E00}
+.s-root{padding:0;max-width:none;margin:0}
+.s-screen{display:grid;height:100vh;grid-template-columns:270px 1fr;grid-template-rows:100px 1fr;
+  grid-template-areas:"top top" "guide main"}
+.s-top{grid-area:top;display:flex;align-items:center;justify-content:space-between;padding:6px 20px}
+.s-guide{grid-area:guide;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 10px 20px}
+.s-guide .guide{width:230px;height:190px}
+.s-bubble{position:relative;margin:10px 0 0;padding:14px 18px;min-height:64px;width:100%;background:var(--paper);border-radius:22px;
+  font-size:28px;line-height:1.25;text-align:center;border:3px solid var(--line)}
+.s-bubble:empty{visibility:hidden}
+.s-bubble:before{content:"";position:absolute;left:50%;top:-14px;margin-left:-12px;border:12px solid transparent;border-top:0;border-bottom:14px solid var(--line)}
+.s-main{grid-area:main;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 24px 24px;min-width:0}
+.s-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center}
+
+/* The path of today's steps, and the seeds of the current step. */
+.s-path{display:flex;align-items:center;list-style:none;margin:0;padding:0}
+.s-step{position:relative;display:flex;align-items:center;justify-content:center;width:62px;height:62px;border-radius:50%;
+  background:var(--paper);border:3px solid var(--line);color:var(--muted)}
+.s-step .ic{width:30px;height:30px}
+.s-step.now{width:78px;height:78px;background:var(--target);border:5px solid var(--target-line);color:var(--ink)}
+.s-step.now .ic{width:40px;height:40px}
+.s-step.done{background:var(--right);border-color:var(--leaf);color:var(--leaf)}
+.s-tick{position:absolute;right:-6px;bottom:-6px;width:26px;height:26px;border-radius:50%;background:var(--leaf);color:#fff;display:flex;align-items:center;justify-content:center}
+.s-tick .ic{width:18px;height:18px}
+.s-link{width:34px;height:6px;border-radius:3px;background:var(--line)}
+.s-link.done{background:var(--leaf)}
+.s-seeds{display:flex;align-items:center}
+.s-seed{width:22px;height:22px;margin:0 4px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid var(--soil);background:transparent}
+.s-seed.on{background:var(--soil)}
+
+/* The one primary target: the only thing in sun yellow with a thick outline. */
+.s-target{display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:120px;padding:0 44px;margin:10px;
+  background:var(--target);color:var(--ink);border:5px solid var(--target-line);border-bottom-width:10px;border-radius:36px;
+  font-size:36px;font-weight:700;cursor:pointer}
+.s-target .ic{width:48px;height:48px;margin-right:14px}
+.s-target.big{min-width:300px;min-height:170px;font-size:48px;border-radius:48px}
+.s-target.big .ic{width:64px;height:64px}
+.s-target.check{min-width:170px;min-height:150px;padding:0}
+.s-target.check .ic{width:80px;height:80px;margin:0}
+/* Quiet controls: never louder than her answers. */
+.s-replay{display:inline-flex;align-items:center;justify-content:center;width:120px;height:120px;margin:10px;background:var(--paper);
+  border:3px solid var(--line);border-radius:50%;color:var(--muted);cursor:pointer}
+.s-replay .ic{width:50px;height:50px}
+.s-quiet{display:inline-flex;align-items:center;justify-content:center;min-width:120px;min-height:120px;margin:10px;padding:0 26px;background:transparent;
+  border:3px dashed var(--line);border-radius:30px;color:var(--muted);font-size:22px;cursor:pointer}
+
+/* Answer cards share one style, so none stands out before she chooses. */
+.s-card{min-width:250px;min-height:170px;margin:12px;padding:10px 26px;background:var(--paper);border:4px solid var(--line);border-bottom-width:12px;
+  border-radius:30px;font-size:92px;line-height:1.1;cursor:pointer;position:relative}
+.s-card[disabled]{cursor:default}
+.s-card.dim{opacity:.45}
+.s-word{display:inline-block;padding:34px 60px 20px;background:var(--paper);border-radius:36px;border-bottom:10px solid var(--line);font-size:130px;line-height:1.1}
+.s-sentence{max-width:980px;padding:30px 36px;background:var(--paper);border-radius:30px;font-size:60px;line-height:1.9}
+.s-sentence .w.helped{box-shadow:inset 0 -6px 0 var(--sun)}
+.s-letters{display:inline-flex;padding:10px 30px;background:var(--paper);border-radius:36px;border-bottom:10px solid var(--line);font-size:130px;line-height:1.1}
+.s-letters .lbtn{min-width:90px}
+
+/* Hold buttons: the ring fills while held. Colour, not motion, shows progress. */
+.s-hold{position:relative;display:inline-flex;align-items:center;justify-content:center;width:88px;height:88px;padding:0;background:var(--paper);
+  border:0;border-radius:50%;color:var(--ink);cursor:pointer;flex:none}
+.s-hold .ic{width:40px;height:40px}
+.s-ring{position:absolute;left:0;top:0;width:100%;height:100%}
+.s-ring-bg{fill:none;stroke:var(--line);stroke-width:8}
+.s-ring-fg{fill:none;stroke:var(--leaf);stroke-width:8;stroke-linecap:round}
+.s-hold.small{width:72px;height:72px;background:transparent;color:var(--muted)}
+.s-hold.small .ic{width:30px;height:30px}
+
+/* Home: her garden and one Start. */
+.s-home{position:relative;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow:hidden}
+.s-home .g-wide,.s-home .g-tall{position:absolute;left:0;right:0;bottom:0;height:62%}
+.s-home .g-tall{display:none}
+.s-home .garden{display:block;width:100%;height:100%}
+.s-home .s-title{margin:18px 0 6px;font-size:40px;font-weight:700;color:var(--leaf-deep);position:relative}
+.s-home .s-target{position:relative;margin-top:12px}
+.s-home .s-corner{position:absolute;right:18px;top:14px}
+.s-home .s-note{position:relative;margin:4px 0 0;font-size:26px;color:var(--muted)}
+.s-home .guide{position:absolute;top:84px;left:calc(50% - 420px);width:220px;height:182px}
+
+/* Celebration: the garden with today's new flowers. */
+.s-celebrate{width:100%;max-width:900px}
+.s-celebrate .garden{display:block;width:100%;height:auto;border-radius:30px}
+
+/* Portrait: guide and her words on one row above the activity. */
+@media (orientation:portrait){
+  .s-screen{grid-template-columns:1fr;grid-template-rows:auto 180px 1fr;grid-template-areas:"top" "guide" "main"}
+  .s-top{flex-wrap:wrap;padding:8px 20px 0}
+  .s-top .s-path{flex:1;justify-content:center}
+  .s-top .s-seeds{width:100%;justify-content:center;margin:8px 0 0}
+  .s-bubble{flex:1;width:auto}
+  .s-guide{flex-direction:row;justify-content:flex-start;padding:0 24px}
+  .s-guide .guide{width:190px;height:160px;flex:none}
+  .s-bubble{margin:0 0 0 16px}
+  .s-bubble:before{left:-14px;top:50%;margin:-12px 0 0;border:12px solid transparent;border-left:0;border-right:14px solid var(--line)}
+  .s-main .s-cards{max-width:600px}
+  .s-home .g-wide{display:none}
+  .s-home .g-tall{display:block;height:58%}
+  .s-home .guide{top:96px;left:24px;width:190px;height:158px}
+}
+/* Short landscape (the Fire HD 10 leaves 614 px under Silk's toolbar). */
+@media (max-height:700px) and (min-width:701px){
+  .s-screen{grid-template-rows:96px 1fr}
+  .s-card{min-height:150px;font-size:84px;margin:10px}
+  .s-word,.s-letters{font-size:110px;padding:22px 50px 12px}
+  .s-sentence{font-size:54px;padding:22px 32px}
+}
+.s-target.off{background:var(--paper);border-color:var(--line);color:var(--muted);cursor:default}
+.s-skip{display:inline-flex;align-items:center;margin-left:28px;color:var(--muted);font-size:20px}
+.s-skip span{margin-left:8px}
+.s-num{display:inline-flex;flex-direction:column;align-items:center;min-width:230px;font-size:inherit}
+.s-num .n{font-size:100px;line-height:1.1;font-weight:700}
+.s-sym{font-size:110px;font-weight:700;color:var(--leaf);margin:0 10px}
+.gp-page{max-width:1000px;margin:0 auto;padding:0 20px}
+.gp-head{display:flex;align-items:center;padding:14px 0}
+.gp-title{font-size:30px;font-weight:700}
+.gp .btn.small{min-height:64px;margin:4px}
+.gp .unit.on{background:var(--right);border-bottom-color:var(--leaf)}
+.gp-bars{width:100%;max-width:420px;height:auto}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:330px;margin:0 auto}
+.pad .btn{margin:0}
+.pad-show{font-size:40px;font-weight:700;min-height:64px;margin:8px auto;width:200px;border:2px solid var(--line);border-radius:14px;background:#fff}

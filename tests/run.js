@@ -164,7 +164,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   await p.evaluate(() => { __tts.calls.length = 0; });
   await go('detective');
   ok((await said()).length === 0, 'nothing is spoken before the first touch');
-  ok((await p.textContent('#caption')) === 'come', 'the caption shows the word before any touch');
+  ok((await p.textContent('#caption')) === 'Find the word you hear', 'the caption shows the prompt before any touch, not the word to find');
   await touch(); await p.waitForTimeout(50);
   await p.click('[data-act=hear]'); await p.waitForTimeout(80);
   ok((await said()).includes('come'), 'speech works after the first touch');
@@ -172,7 +172,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   // Captions: shown while speaking, cleared after, never covering a tap target
   await p.evaluate(() => { __tts.endMs = 600; });
   await p.click('[data-act=hear]'); await p.waitForTimeout(100);
-  ok((await p.textContent('#caption')) === 'come', 'the caption shows while speaking');
+  ok((await p.textContent('#caption')) === 'Find the word you hear', 'the caption shows while speaking, without giving the word away');
   const overlap = await p.evaluate(() => {
     const c = document.getElementById('caption').getBoundingClientRect();
     return [...document.querySelectorAll('[data-act]')].some(el => { const r = el.getBoundingClientRect();

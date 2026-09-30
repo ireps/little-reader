@@ -5,7 +5,8 @@
   "scripts": {
     "test": "node tests/run.js",
     "spec": "openspec validate --all --strict",
-    "screens": "node tests/screens.js"
+    "screens": "node tests/screens.js",
+    "prototype": "node tests/prototype.js"
   },
   "devDependencies": {
     "@fission-ai/openspec": "^1.13.2",

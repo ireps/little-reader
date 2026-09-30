@@ -2,10 +2,10 @@
 
 ## 1. Prototype and approval (stop here until the owner approves)
 
-- [ ] 1.1 Design tokens and components in `css/app.css`; `js/guide.js` with 4 SVG poses; garden SVG
-- [ ] 1.2 `tools/prototype.html` and `tools/prototype.js` with fixtures for every screen and state
-- [ ] 1.3 `tests/prototype.js` screenshots at 1280x614 and 800x1094 with reduced motion
-- [ ] 1.4 Review against the UX checklist; fix; send the screenshots to the owner
+- [x] 1.1 Design tokens and components in `css/app.css`; `js/guide.js` with 4 SVG poses; garden SVG
+- [x] 1.2 `tools/prototype.html` and `tools/prototype.js` with fixtures for every screen and state
+- [x] 1.3 `tests/prototype.js` screenshots at 1280x614 and 800x1094 with reduced motion
+- [x] 1.4 Review against the UX checklist; fix; send the screenshots to the owner
 - [ ] 1.5 **Owner approves the screenshots**
 
 ## 2. Data

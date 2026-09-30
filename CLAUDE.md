@@ -60,14 +60,17 @@ js/words.js              heart-letter dictionary, word families, look-alike bank
 js/store.js              LR.state, load/save/validate, migration from readingGarden.v1
 js/speech.js             LR.speech: voice choice, clip hook, say() with timings and captions, cancel()
 js/icons.js              LR.icons: interface icons as inline SVG
+js/kit.js, guide.js, garden.js  Phase 4 session components, the guide (Tilly) and the garden; used by the prototype so far
 js/ui.js                 LR.ui helpers, letters and hearts, finger sweep, router, home screen
 js/lessons/*.js          detective, hearts, story, croc, grownups (each registers LR.routes.<name>)
 js/main.js               load state, start router
 fonts/                   Andika Regular and Bold (Latin subset, SIL OFL)
 audio/                   empty; clips only if ever needed
 tools/device-check.html  device test page
+tools/prototype.html     Phase 4 prototype: every session screen and state from fixtures (dev only)
 tests/run.js             Playwright browser checks (with a speech-engine stand-in)
 tests/screens.js         screenshots of every screen and state (npm run screens)
+tests/prototype.js       prototype screenshots, checks and contact sheets (npm run prototype)
 openspec/                specs: config.yaml, specs/ (shipped), changes/ (Phases 3 to 7)
 .claude/                 OpenSpec skills and /opsx commands for Claude Code
 ```
@@ -130,6 +133,7 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 
 ## Pending owner actions
 
+- Phase 4: approve the prototype screenshots (`npm run prototype`, contact sheets in `test-results/prototype/`), or say what to change.
 - Phase 3: try every lesson on the tablet with her. Does it feel instant? Do the highlights keep up with the voice?
 - Phase 7: supply the voice clips for `tools/clip-list.txt` (an Indian English computer voice; `tools/make-clips.ps1` can make them with Heera on Windows).
 

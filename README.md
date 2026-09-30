@@ -86,8 +86,10 @@ js/main.js               start
 data/default-week.js     starter words and paragraph
 fonts/                   Andika (Regular and Bold, Latin), SIL OFL
 js/icons.js              interface icons as inline SVG
+js/kit.js, guide.js, garden.js  guided-session components (Phase 4, prototype only so far)
 audio/                   empty unless the tablet can't speak
 tools/device-check.html  Phase 0 test page
+tools/prototype.html     Phase 4 prototype, every session screen (npm run prototype)
 tests/run.js             browser checks (npm test)
 tests/screens.js         screenshots for review (npm run screens)
 openspec/                specs (npm run spec)

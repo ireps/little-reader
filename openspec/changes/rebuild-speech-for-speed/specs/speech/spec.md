@@ -60,6 +60,10 @@ Until voice clips arrive (Phase 7), everything the app speaks SHALL also appear 
 - **WHEN** the app speaks
 - **THEN** the caption still shows the text and the lesson carries on
 
+#### Scenario: Never gives the answer away
+- **WHEN** Word detective says the word she must find
+- **THEN** the caption shows "Find the word you hear" instead of the word
+
 #### Scenario: Fits the screen
 - **GIVEN** the viewport is 1280x614
 - **WHEN** a caption is shown

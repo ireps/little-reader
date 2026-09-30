@@ -37,7 +37,8 @@ classic scripts, the `LR` global, CSP, `esc()`, `validate()`, `say()` / `stopAll
 - **Type:** Andika. Reading word 110 to 140 px, sentence 56 to 64 px, answer card 72 px, grown-up
   UI 18 to 22 px.
 - **Components:**
-  - `Target`, the only element using `--sun`;
+  - `Target`, the only element using `--target` (sun yellow), used on single-action screens. On choice
+    screens the answer cards share one style and nothing uses `--target`;
   - `AnswerCard`;
   - `WordCard`;
   - `SentenceCard`, with per-word spans for highlighting;
@@ -69,11 +70,19 @@ classic scripts, the `LR` global, CSP, `esc()`, `validate()`, `say()` / `stopAll
   |                    [ ✓ ]  (Target, 160 px)                   |
   ```
 
+### D1b. Captions
+- The guide's speech bubble is the caption (`#caption`) on session screens. The top bar is hidden there,
+  so the id stays unique.
+- When the spoken text would give an answer away (Find it says the word to find), `say()` gets
+  `opts.caption` with the instruction instead ("Find the word you hear").
+
 ### D2. Modules (classic scripts, in order after `ui.js`)
 - `data/units/p4-01.js` and on each call `LR.units.push({...})`.
 - `js/progress.js` holds the item store and scheduler.
 - `js/session.js` plans the day, runs the steps, and handles resume, re-prompts and the target cue.
-- `js/guide.js` and `js/garden.js` are SVG string builders.
+- `js/guide.js` and `js/garden.js` are SVG string builders. `js/kit.js` holds the shared components
+  (path, seeds, target, replay, card, word, sentence, hold, screen). The garden has a tall variant
+  for portrait.
 - `js/steps/*.js` each register `LR.steps.<id> = { plan(day), run(item, done) }`.
 - `js/lessons/grownups.js` is rewritten.
 

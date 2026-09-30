@@ -106,7 +106,8 @@ function cancel(){
 /* Speaks text. Resolves when speaking ends, fails, is stopped or times out, so callers never get stuck.
    opts.parts: the pieces to report through opts.onWord (default: the words).
    opts.onStart(ms): called when speech starts, with the estimated length in ms.
-   opts.onWord(i): called as part i starts, from boundary events or the estimate. */
+   opts.onWord(i): called as part i starts, from boundary events or the estimate.
+   opts.caption: text to show instead of the spoken text, when showing it would give the answer away. */
 function say(text, opts){
   if (typeof opts === 'number') opts = { rate:opts };
   opts = opts || {};
@@ -145,7 +146,7 @@ function say(text, opts){
       });
     }
     me = current = { fin:function(){ fin(false); } };
-    caption(text);
+    caption(typeof opts.caption === 'string' ? opts.caption : text);
 
     if (!unlocked) { begin(); later(function(){ fin(false); }, est); return; }
 

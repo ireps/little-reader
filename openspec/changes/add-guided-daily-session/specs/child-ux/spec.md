@@ -19,11 +19,15 @@ Each child screen SHALL be usable by a child who cannot read its instruction tex
 - **THEN** every screen can still be completed from the speech, icons and the target cue
 
 ### Requirement: One primary target
-Exactly one child element SHALL use the primary style at any time.
+At most one child element SHALL use the primary style at any time; when she must choose between answers, the answer cards SHALL share one answer style and no other control SHALL be styled more prominently than them.
 
 #### Scenario: Waiting for an answer
-- **WHEN** an item waits
-- **THEN** one element has the primary style
+- **WHEN** a single-action item waits (Start, the check in Read with me, Go on)
+- **THEN** exactly one element has the primary style
+
+#### Scenario: Choosing between answers
+- **WHEN** a Find it item waits
+- **THEN** its cards share one style and no element has the primary style
 
 #### Scenario: After an answer
 - **WHEN** an item is answered
@@ -81,7 +85,7 @@ Heart marks in reading SHALL be hidden for mastered words and shown for the rest
 - **THEN** its hearts are shown
 
 ### Requirement: Holds to leave
-Leaving a session through Home SHALL need a 1 s hold, and opening Grown-ups from Home SHALL need a 2 s hold.
+Leaving a session through Home SHALL need a 1 s hold, and opening Grown-ups from Home SHALL need a 2 s hold; hold buttons are deliberately smaller than answer targets (at least 72 px) and quiet in style.
 
 #### Scenario: Quick tap
 - **WHEN** Home is tapped briefly during a session

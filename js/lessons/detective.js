@@ -3,6 +3,8 @@
 'use strict';
 var LR = window.LR, U = LR.ui, W = LR.words, S = LR.speech;
 var det;
+/* The caption must not show the word she is listening for. */
+var FIND = 'Find the word you hear';
 
 function pool(){ return U.unique(LR.state.words.map(U.clean).concat(U.storyWords())).filter(function(w){ return w.length >= 2; }); }
 
@@ -64,14 +66,14 @@ function round(){
     + '<div class="cards">' + opts.map(function(w){ return '<button class="card" data-act="pick" data-w="' + U.esc(w) + '">' + U.lettersHTML(w, true) + '</button>'; }).join('') + '</div>'
     + U.dotsHTML(det.total, det.round);
   app.onclick = click;
-  S.say(t);
+  S.say(t, { caption:FIND });
 }
 
 function click(e){
   var el = U.closestAct(e);
   if (!el) return;
   var act = el.getAttribute('data-act');
-  if (act === 'hear') { U.stopAll(); S.say(det.target); }
+  if (act === 'hear') { U.stopAll(); S.say(det.target, { caption:FIND }); }
   else if (act === 'again') { LR.routes.detective(); }
   else if (act === 'pick') {
     if (det.locked || el.disabled) return;

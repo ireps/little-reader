@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => {
     // Speech that lasts a while, so captions and highlights can be seen mid-way.
     await p.addInitScript(() => {
       function Utterance(text){ this.text = text; }
-      const synth = { speaking:false, pending:false, getVoices(){ return []; }, speak(u){ this.speaking = true; setTimeout(() => u.onstart && u.onstart({}), 5); }, cancel(){ this.speaking = false; } };
+      const synth = { speaking:false, pending:false, getVoices(){ return []; }, speak(u){ if (u.text.trim()) window.__last = u.text; this.speaking = true; setTimeout(() => u.onstart && u.onstart({}), 5); }, cancel(){ this.speaking = false; } };
       Object.defineProperty(window, 'speechSynthesis', { value: synth, configurable: true });
       window.SpeechSynthesisUtterance = Utterance;
     });
@@ -35,7 +35,7 @@ const server = http.createServer((req, res) => {
     await p.goto(U); await p.evaluate(() => localStorage.clear()); await p.reload();
     await go('home'); await shot('home');
     await go('detective'); await p.mouse.click(2, 300); await p.click('[data-act=hear]'); await p.waitForTimeout(100); await shot('detective');
-    const target = await p.textContent('#caption');
+    const target = await p.evaluate(() => window.__last);
     const wrong = await p.$$eval('.card', (cs, t) => cs.map(c => c.dataset.w).find(x => x !== t), target);
     await p.click(`.card[data-w="${wrong}"]`); await p.waitForTimeout(300); await shot('detective-wrong');
     await p.click(`.card[data-w="${target}"]`); await p.waitForTimeout(100); await shot('detective-right');
