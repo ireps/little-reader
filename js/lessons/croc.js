@@ -54,22 +54,26 @@ function draw(){
   app.onclick = click;
 }
 
-function solve(){
+function solve(el){
   var app = U.app();
   cr.solved = true;
+  U.stopAll();
+  if (el) U.feedback(el, 'right');
   document.getElementById('num-' + (cr.a > cr.b ? 'a' : 'b')).classList.add('big');
   document.getElementById('slot').innerHTML = mouthSVG(correctSym(), 'chomp');
-  /* The answer and Next replace the mouth buttons and the tip, so the screen fits 614 px of height. */
+  /* The answer replaces the mouth buttons and the tip, so the screen fits 614 px of height.
+     The next round starts as soon as the answer has been spoken. */
   var choices = document.getElementById('choices');
   if (choices) choices.hidden = true;
   document.getElementById('croc-tip').hidden = true;
   document.getElementById('result').innerHTML = '<span class="result-text"><b>' + cr.a + ' ' + U.esc(correctSym()) + ' ' + cr.b + '</b>'
-    + U.esc(statementText()) + '</span><button class="btn" data-act="nextc">Next ▶</button>';
+    + U.esc(statementText()) + '</span>';
   Array.prototype.forEach.call(app.querySelectorAll('button.num'), function(b){ b.disabled = true; });
-  U.stopAll();
-  S.say('Chomp! The crocodile eats ' + Math.max(cr.a, cr.b) + '. ' + statementText() + '.');
+  var g = U.gen;
+  S.say('Chomp! The crocodile eats ' + Math.max(cr.a, cr.b) + '. ' + statementText() + '.')
+    .then(function(){ if (g !== U.gen) return; cr.round++; round(); });
 }
-function shake(el){ el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+function miss(el, text){ U.stopAll(); U.feedback(el, 'wrong'); return S.say(text); }
 
 function click(e){
   var el = U.closestAct(e);
@@ -77,30 +81,26 @@ function click(e){
   var a = el.getAttribute('data-act');
   if (a === 'num' && !cr.solved) {
     var n = el.getAttribute('data-side') === 'a' ? cr.a : cr.b;
-    if (n === Math.max(cr.a, cr.b)) solve();
-    else { shake(el); U.stopAll(); S.say('Count the dots. Which has more?'); }
+    if (n === Math.max(cr.a, cr.b)) solve(el);
+    else miss(el, 'Count the dots. Which has more?');
   } else if (a === 'sym' && !cr.solved) {
     var s = el.getAttribute('data-s');
-    if (s === correctSym()) solve();
+    if (s === correctSym()) solve(el);
     else {
-      shake(el);
       var slot = document.getElementById('slot');
+      var p = miss(el, 'Oops! That mouth wants the smaller number. Try the other one.'), g = U.gen;
       slot.innerHTML = mouthSVG(s, 'bad');
-      U.stopAll();
-      var g = U.gen;
-      S.say('Oops! That mouth wants the smaller number. Try the other one.');
-      setTimeout(function(){ if (g === U.gen && !cr.solved) slot.innerHTML = '?'; }, 1600);
+      p.then(function(){ if (g === U.gen && !cr.solved) slot.innerHTML = '?'; });
     }
   } else if (a === 'words' && !cr.solved) {
-    if (el.getAttribute('data-s') === correctSym()) solve();
-    else { shake(el); U.stopAll(); S.say('Look at the mouth. It opens toward the bigger number.'); }
-  } else if (a === 'nextc') { cr.round++; U.stopAll(); round(); }
-  else if (a === 'again') { LR.routes.croc(); }
+    if (el.getAttribute('data-s') === correctSym()) solve(el);
+    else miss(el, 'Look at the mouth. It opens toward the bigger number.');
+  } else if (a === 'again') { LR.routes.croc(); }
 }
 
 function done(){
   var app = U.app();
-  app.innerHTML = '<div class="done"><div class="stars" aria-hidden="true">🐊</div><p class="prompt">You fed the crocodile ' + cr.total + ' times!</p>'
+  app.innerHTML = '<div class="done"><div class="stars">' + LR.icons.get('star') + LR.icons.get('star') + LR.icons.get('star') + '</div><p class="prompt">You fed the crocodile ' + cr.total + ' times!</p>'
     + '<div class="row"><button class="btn" data-act="again">Play again</button><a class="btn soft" href="#home">Home</a></div></div>';
   app.onclick = click;
   S.say('The crocodile is full. Well done!');

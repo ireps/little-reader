@@ -60,12 +60,11 @@ function round(){
   det.last = t; det.target = t; det.missed = false; det.locked = false;
   var opts = U.shuffle([t].concat(lookalikes(t, p)));
   app.innerHTML = '<p class="prompt">Find the word you hear</p>'
-    + '<div class="row"><button class="btn soft" data-act="hear">🔊 Hear it again</button></div>'
+    + '<div class="row"><button class="btn soft" data-act="hear">' + LR.icons.get('speaker') + ' Hear it again</button></div>'
     + '<div class="cards">' + opts.map(function(w){ return '<button class="card" data-act="pick" data-w="' + U.esc(w) + '">' + U.lettersHTML(w, true) + '</button>'; }).join('') + '</div>'
     + U.dotsHTML(det.total, det.round);
   app.onclick = click;
-  var g = U.gen;
-  setTimeout(function(){ if (g === U.gen) S.say(t); }, 400);
+  S.say(t);
 }
 
 function click(e){
@@ -79,32 +78,33 @@ function click(e){
     var w = el.getAttribute('data-w');
     if (w === det.target) {
       det.locked = true;
+      U.stopAll();
+      U.feedback(el, 'right');
       el.classList.add('right');
+      Array.prototype.forEach.call(U.app().querySelectorAll('.card'), function(c){ c.disabled = true; });
       if (!det.missed) det.firstTry++;
       U.bumpTricky(w, -1);
-      Array.prototype.forEach.call(U.app().querySelectorAll('.card'), function(c){ c.disabled = true; });
-      U.stopAll();
       var g = U.gen;
-      S.say('Yes! ' + w).then(function(){ setTimeout(function(){ if (g !== U.gen) return; det.round++; round(); }, 500); });
+      S.say('Yes! ' + w).then(function(){ if (g !== U.gen) return; det.round++; round(); });
     } else {
-      det.missed = true;
-      recordMixUp(det.target, w);
+      U.stopAll();
+      U.feedback(el, 'wrong');
       el.disabled = true;
       el.classList.add('wrong');
+      det.missed = true;
+      recordMixUp(det.target, w);
       U.bumpTricky(det.target, 1);
-      U.stopAll();
-      var g2 = U.gen;
-      U.lightLetters(el, function(){
-        S.say('That says ' + w + '.').then(function(){ if (g2 === U.gen) S.say('Look at every letter.'); });
-      });
+      /* The letters of the word she picked light while that word is spoken. */
+      var g2 = U.gen, n = el.querySelectorAll('.l').length, step = Math.max(80, Math.min(220, Math.round(S.estimate(w) / Math.max(1, n))));
+      S.say('That says ' + w + '. Look at every letter.', { onWord:function(i){ if (i === 2 && g2 === U.gen) U.lightLetters(el, step); } });
     }
   }
 }
 
 function done(){
   var app = U.app(), stars = '';
-  for (var i = 0; i < det.firstTry; i++) stars += '⭐';
-  app.innerHTML = '<div class="done"><div class="stars" aria-hidden="true">' + (stars || '🌱') + '</div>'
+  for (var i = 0; i < det.firstTry; i++) stars += LR.icons.get('star');
+  app.innerHTML = '<div class="done"><div class="stars">' + (stars || LR.icons.get('sprout')) + '</div>'
     + '<p class="prompt">You found all ' + det.total + ' words!</p>'
     + '<p class="tip">Each star is a word you found on the first look.</p>'
     + '<div class="row"><button class="btn" data-act="again">Play again</button><a class="btn soft" href="#home">Home</a></div></div>';

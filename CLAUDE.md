@@ -26,7 +26,7 @@ The owner is a developer. Public docs: README.md and SECURITY.md. Keep them accu
 | Speech | One voice only: "English United States", `en_US`, on-device. Test speech finished | Text-to-speech works. The app can't choose another voice |
 | Reduced motion | On | Animations don't play. Every animated cue needs a non-motion cue too (colour, text or sound) |
 | Service workers, localStorage, HTTPS | All yes | Offline mode is possible later |
-| Not tested | `onboundary` events, Andika font | "Read it to me" points word by word with separate utterances |
+| Not tested | `onboundary` events | `say()` lights words from boundary events if they arrive, else from a calibrated estimate |
 
 Other facts:
 
@@ -41,9 +41,12 @@ Other facts:
 - The Content Security Policy meta tag in `index.html` stays, with no `unsafe-inline` or `unsafe-eval`. That means no inline `<script>`, no `on…=` handlers and no `style="…"` attributes in markup. Setting `el.style` from JS is fine.
 - Anything a parent typed reaches the page only through `LR.ui.esc()` or `textContent`. Every new render function must follow this.
 - Everything read from storage goes through `LR.store.validate()`. Add every new state field there, with type and size limits.
-- All sound goes through `LR.speech.say(text)`, which returns a Promise that always settles. It has a timeout, and it plays a clip from `LR.clips` if one exists.
+- All sound goes through `LR.speech.say(text, opts)`, which returns a Promise that always settles (a watchdog of start-up + estimated length + 1 s). It plays a clip from `LR.clips` if one exists, shows the text as a caption in the top bar (a placeholder until Phase 7's clips), and speaks nothing before the first touch. `opts.onStart(ms)` and `opts.onWord(i)` (with `opts.parts`) drive highlights *during* speech. Join phrases into one utterance (`'Yes! ' + w`); a sentence is one utterance.
+- No fixed waits: advance when `say()` settles, never on a `setTimeout` pause.
 - Before starting new speech or animation, call `LR.ui.stopAll()`. Guard async chains with `var g = LR.ui.gen; … if (g !== LR.ui.gen) return;`.
-- Tap targets are at least 64 px. Feedback comes within about 200 ms of a tap. Wrong answers are never punished: no buzzer, no red cross.
+- Child tap targets are at least 120 x 120 px (words in a sentence: 60 px tall; letters of a word: 120 px tall, 60 px wide). Grown-ups controls: 64 px.
+- Call `LR.ui.feedback(el, 'right'|'wrong')` synchronously in the tap handler: a colour state, a mark and a WebAudio tone within 100 ms. Wrong answers are never punished: no buzzer, no red, no cross.
+- Interface icons come from `LR.icons.get(name)` (inline SVG), never emoji.
 - Keep words in the UI short and plain; she's 6. Grown-ups copy can be normal adult English.
 - Don't add emoji newer than about Unicode 8, because the tablet's font is old.
 
@@ -55,14 +58,16 @@ css/app.css              all styles, including the 614 px landscape query
 data/default-week.js     starter words and paragraph (LR.defaultWeek)
 js/words.js              heart-letter dictionary, word families, look-alike bank, letter names
 js/store.js              LR.state, load/save/validate, migration from readingGarden.v1
-js/speech.js             LR.speech: voice choice, clip hook, say(), cancel()
+js/speech.js             LR.speech: voice choice, clip hook, say() with timings and captions, cancel()
+js/icons.js              LR.icons: interface icons as inline SVG
 js/ui.js                 LR.ui helpers, letters and hearts, finger sweep, router, home screen
 js/lessons/*.js          detective, hearts, story, croc, grownups (each registers LR.routes.<name>)
 js/main.js               load state, start router
-fonts/                   Andika (the owner adds the files; see fonts/README.md)
+fonts/                   Andika Regular and Bold (Latin subset, SIL OFL)
 audio/                   empty; clips only if ever needed
 tools/device-check.html  device test page
-tests/run.js             Playwright browser checks
+tests/run.js             Playwright browser checks (with a speech-engine stand-in)
+tests/screens.js         screenshots of every screen and state (npm run screens)
 openspec/                specs: config.yaml, specs/ (shipped), changes/ (Phases 3 to 7)
 .claude/                 OpenSpec skills and /opsx commands for Claude Code
 ```
@@ -92,7 +97,7 @@ The rebuild is specified in OpenSpec under `openspec/` (see "How to work"). Each
 folder in `openspec/changes/`, one commit or pull request, and the owner tries it on the tablet before
 the next phase starts.
 
-Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phase 2 still needs a try on the tablet.
+Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phase 3 is built and waits for a try on the tablet (then `openspec archive rebuild-speech-for-speed`). Phase 2 still needs a try on the tablet too.
 
 | Phase | Change | What it delivers |
 | --- | --- | --- |
@@ -117,7 +122,7 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 - The owner prefers cost-effective model use: a stronger model for planning and review, a cheaper one for routine implementation.
 - Before every commit:
   1. `npm test` passes. First time: `npm install && npx playwright install chromium`.
-  2. For UI changes, take screenshots at 1280x614 and 800x1094 with reduced motion on, and look at them. Nothing may scroll at 1280x614.
+  2. For UI changes, run `npm run screens` (1280x614 and 800x1094, reduced motion) and look at them. Nothing may scroll at 1280x614.
   3. No console errors or CSP violations, and no requests to other hosts.
   4. Nothing personal is committed: her name, voice, photos, school, backups or help-word data.
   5. README.md and SECURITY.md still match the behaviour.
@@ -125,10 +130,9 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 
 ## Pending owner actions
 
-- Phase 3: give the OK to download Andika from SIL (or add the files yourself).
+- Phase 3: try every lesson on the tablet with her. Does it feel instant? Do the highlights keep up with the voice?
 - Phase 7: supply the voice clips for `tools/clip-list.txt` (an Indian English computer voice; `tools/make-clips.ps1` can make them with Heera on Windows).
 
-- Add the Andika files to `fonts/` (see fonts/README.md).
 - Turn on GitHub Pages from `main` (root), with Enforce HTTPS on.
 - Try Phase 2 on the tablet: every lesson, with her, once.
 - Check whether the tablet's voice sounds female. If not, look in the tablet's text-to-speech settings.

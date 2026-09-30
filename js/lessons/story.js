@@ -9,7 +9,7 @@ function warmUp(words){
   app.innerHTML = '<div class="warm"><p class="prompt">Warm up: tricky words in this story</p>'
     + '<p class="tip">Tap each one to hear it.</p><div class="cards">'
     + words.map(function(w){ return '<button class="chip" data-act="chip" data-w="' + U.esc(w) + '">' + U.lettersHTML(w) + '</button>'; }).join('')
-    + '</div><div class="row"><button class="btn" data-act="start">Start reading 📖</button></div></div>';
+    + '</div><div class="row"><button class="btn" data-act="start">' + LR.icons.get('book') + ' Start reading</button></div></div>';
   app.onclick = function(e){
     var el = U.closestAct(e);
     if (!el) return;
@@ -37,14 +37,16 @@ function read(){
   var app = U.app(), ss = U.sentences();
   if (st.i >= ss.length) { done(); return; }
   var s = ss[st.i], mine = LR.state.storyMode === 'myturn';
+  var I = LR.icons.get;
   var controls = mine
-    ? '<button class="btn" data-act="tried">✓ I read it</button><button class="btn soft" data-act="read" hidden>🔊 Now listen</button>'
-    : '<button class="btn" data-act="read">🔊 Read it to me</button>';
-  app.innerHTML = modesHTML() + '<div class="sentence">' + sentenceHTML(s) + '</div>'
-    + '<div class="row">' + controls + '</div>'
-    + '<div class="nav"><button class="btn soft" data-act="prev" aria-label="Previous sentence">◀</button>'
+    ? '<button class="btn" data-act="tried">' + I('check') + ' I read it</button><button class="btn soft" data-act="read" hidden>' + I('speaker') + ' Now listen</button>'
+    : '<button class="btn" data-act="read">' + I('speaker') + ' Read it to me</button>';
+  /* One row of controls (arrows, modes, reading), so the screen fits 614 px of height. */
+  app.innerHTML = '<div class="sentence">' + sentenceHTML(s) + '</div>'
+    + '<div class="ctl"><button class="btn soft arrow" data-act="prev" aria-label="Previous sentence">' + I('left') + '</button>'
+    + modesHTML() + controls
+    + '<button class="btn soft arrow" data-act="next" aria-label="Next sentence">' + I('right') + '</button></div>'
     + U.dotsHTML(ss.length, st.i)
-    + '<button class="btn soft" data-act="next" aria-label="Next sentence">▶</button></div>'
     + '<p class="tip">' + (mine ? 'Read it out loud. Stuck on a word? Tap it.' : 'Stuck on a word? Tap it.') + '</p>';
   app.onclick = function(e){
     var el = U.closestAct(e);
@@ -64,24 +66,19 @@ function read(){
   };
 }
 
-/* Word by word with a highlight (pointing), then the whole sentence smoothly. */
+/* The whole sentence in one go, each word lit (pointing) while it is spoken. */
 function readSentence(s){
   U.stopAll();
-  var g = U.gen, els = U.app().querySelectorAll('.sentence .w'), i = 0;
-  function next(){
-    if (g !== U.gen) return;
-    if (i > 0) els[i - 1].classList.remove('say');
-    if (i >= els.length) { setTimeout(function(){ if (g === U.gen) S.say(s); }, 350); return; }
-    var el = els[i]; i++;
-    el.classList.add('say');
-    S.say(el.getAttribute('data-w')).then(function(){ setTimeout(next, 120); });
-  }
-  next();
+  var g = U.gen, els = U.app().querySelectorAll('.sentence .w');
+  var words = Array.prototype.map.call(els, function(el){ return el.getAttribute('data-w'); });
+  function light(i){ Array.prototype.forEach.call(els, function(el, k){ el.classList.toggle('say', k === i); }); }
+  S.say(s, { parts:words, onWord:function(i){ if (g === U.gen) light(i); } })
+    .then(function(){ if (g === U.gen) light(-1); });
 }
 
 function done(){
   var app = U.app();
-  app.innerHTML = '<div class="done"><div class="stars" aria-hidden="true">🌻</div><p class="prompt">You read the whole story!</p>'
+  app.innerHTML = '<div class="done"><div class="stars">' + LR.icons.get('flower') + '</div><p class="prompt">You read the whole story!</p>'
     + '<div class="row"><button class="btn" data-act="again">Read it again</button><a class="btn soft" href="#home">Home</a></div></div>';
   app.onclick = function(e){
     var el = U.closestAct(e);

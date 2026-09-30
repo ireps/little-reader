@@ -81,9 +81,16 @@
 
 ### D6. Sizes
 - Child targets have `min-width` and `min-height` of 120 px.
-- The mode switch, previous and next, Hear it again and Home grow to 120 px.
+- The mode switch, previous and next, Hear it again, chips, number and mouth buttons grow to 120 px.
+- Home grows to 88 px only. It isn't an answer target, a bigger one is easier to hit by accident,
+  and Phase 4 turns it into a 1 s hold.
+- Words in a sentence stay at text size (at least 60 px tall), and the letters of a word in Find the
+  heart are 120 px tall and at least 60 px wide. Making them 120 px squares would break up the reading.
 - The 614 px landscape query is rebalanced so nothing scrolls: the word font drops before the
   targets shrink.
+- **Heart words** puts the previous and next arrows beside the word. **The story** puts previous,
+  the modes, the read button and next on one row (in portrait the modes get a row of their own).
+- **The crocodile** starts the next round once the answer has been spoken, so its Next button goes.
 
 ## Risks / Trade-offs
 
