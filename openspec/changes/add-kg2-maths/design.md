@@ -46,7 +46,7 @@ Each skill has an id, a range that grows (level 1, then level 2) and a represent
   `validate()`. No schema bump is needed, because a missing field defaults.
 
 ### D3. Generators
-- `gen(skill, level, rnd)` returns `{ prompt, promptClips, rep, options, answer }`.
+- `gen(skill, level, rnd)` returns `{ prompt, rep, options, answer }`.
 - Options are always 3 (or 2 for < >, and 3 with =).
 - The same numbers are never repeated in consecutive items of one skill.
 - Distractors are near misses (±1, a reversed digit order for 2-digit numbers).
@@ -58,8 +58,8 @@ Each skill has an id, a range that grows (level 1, then level 2) and a represent
 - **Shapes and scenes:** inline SVG with `currentColor` fills and no inline styles.
 
 ### D5. Wrong answers
-- The right answer is shown with a count-along: each dot or step lights in time with the number
-  clips, using the Phase 3 timing engine. There is no red and no cross.
+- The right answer is shown with a count-along: each dot or step lights in time with the spoken
+  numbers, using the Phase 3 timing engine. There is no red and no cross.
 
 ## Risks / Trade-offs
 

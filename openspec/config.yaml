@@ -17,8 +17,8 @@ context: |
   sentence). She can't pick her way through choices or read instructions. She reads with a parent.
 
   Owner constraints: grown-ups never type content, so everything is built in. Sessions last about
-  10 minutes. Speech uses an Indian English female computer voice (pre-made clips), and never a
-  recording of a person. Speed and responsiveness come first. The owner is a developer.
+  10 minutes. Speech will use an Indian English female computer voice (pre-made clips, Phase 7,
+  once all content is known). Until then it uses the tablet voice. It never uses a recording of a person. Speed and responsiveness come first. The owner is a developer.
 
   Research sources:
   - Retrieval practice in 4-6 year olds: https://pmc.ncbi.nlm.nih.gov/articles/PMC11087082/ ,
@@ -42,7 +42,7 @@ context: |
 
 rules:
   proposal:
-    - Name the phase (3 to 6) the change belongs to, and what the owner tries on the tablet before the next phase starts.
+    - Name the phase (3 to 7) the change belongs to, and what the owner tries on the tablet before the next phase starts.
     - Keep it under 2 pages; the "how" goes in design.md.
   specs:
     - Every child-facing requirement states its speed budget (visible response within 100 ms of a tap) where it applies.

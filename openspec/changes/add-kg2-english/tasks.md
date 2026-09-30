@@ -22,7 +22,7 @@
 - [ ] 3.1 Units p3-review to p4-06, written and reviewed by the planning model
 - [ ] 3.2 Units p5-01 onwards, drafted by a cheaper model to the template and reviewed by the planning model
 - [ ] 3.3 `data/pictures.js` with a Unicode 8 check; SVG for gaps
-- [ ] 3.4 Re-run the clip tool (owner); the coverage test passes
+- [ ] 3.4 Every spoken string goes through `LR.phrases` or unit data, so Phase 7 can list it
 
 ## 4. Tests
 

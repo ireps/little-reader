@@ -2,58 +2,49 @@
 
 ## Context
 
-The app runs on Silk 108 on Android 5.1. Android's TTS engine starts slowly for each utterance, and
-`onboundary` has not been tested there. The CSP has `connect-src 'none'`, so audio is loaded through
-`<audio>` or `Audio` elements (`media-src 'self'`), never through fetch or XHR. The site is static,
-has no build step and uses classic scripts.
+- The app runs on Silk 108 on Android 5.1, with one tablet voice (en_US). Android's TTS engine
+  starts slowly for each utterance, so fewer utterances means less waiting.
+- `onboundary` has not been tested on the tablet.
+- The CSP has `connect-src 'none'`, and WebAudio oscillators need no network.
+- The site is static, has no build step and uses classic scripts.
 
 ## Goals / Non-Goals
 
 **Goals:**
-- Sub-100 ms visible feedback and sub-150 ms audio start for preloaded clips.
-- Clip coverage for every string the current lessons say.
-- A tablet voice fallback that never stalls.
+- Visible feedback under 100 ms, and `speechSynthesis.speak()` called within 50 ms of a tap.
+- The fewest utterances possible per action.
+- No stalls, whatever the TTS engine does.
 
 **Non-Goals:**
-- New lessons or flow changes (those are Phase 4).
-- Offline caching with a service worker (Later).
+- Indian English clips (Phase 7).
+- New lessons or flow changes (Phase 4).
+- Offline mode (Later).
 
 ## Decisions
 
-### D1. Clip generation: `tools/make-clips.ps1` (dev-only)
-- Runs on the owner's Windows PC with System.Speech and the **Microsoft Heera (en-IN)** voice.
-- Input is `tools/clip-list.txt`, generated from `LR.words`, the lessons' phrase tables and number
-  names by `node tools/list-clips.js`.
-- For each string it:
-  - synthesises a WAV;
-  - records `SpeakProgress` word offsets in ms;
-  - encodes it with ffmpeg to MP3, 32 kbps, mono, 22.05 kHz.
-- It writes `audio/clips/<slug>.mp3` and `audio/manifest.js`:
-  `LR.clips = { "come": { f: "come.mp3", t: [0] }, "come from plants": { f: "...", t: [0, 310, 690] } }`,
-  where `t` holds the start time in ms of each word.
-- The slug is a lowercase ASCII key; a collision gets a numeric suffix.
-- *Alternatives rejected:*
-  - The tablet's TTS: US-only, slow to start, no timings.
-  - Cloud TTS: needs a key and a network.
-  - Recording a person: "no recordings, ever".
+### D1. `say(text, opts)` in `speech.js`
+- `text` is one string, so callers join phrases (`'Yes! ' + w`).
+- `opts.words` is an array of the word spans to light, for sentences.
+- `opts.onWord(i)` fires as each word starts:
+  - from `onboundary` events (`charIndex` mapped to a word index) when the engine sends them;
+  - otherwise from a timer schedule built from the calibration below.
+- Once `onboundary` has fired on this device, `LR.speech.hasBoundary` stays true for the page's life,
+  and the timer schedule is skipped.
+- **Calibration:** after every utterance that ends normally, the app records
+  `ms per character = duration / text.length` at the current rate. It keeps a moving average of the
+  last 10, which starts at 75 ms at rate 1. The average stays in memory only (no storage).
+- Each word's start time comes from the character offsets scaled by that average. The first word
+  starts at 0 on `onstart`, or at `speak()` if `onstart` never fires.
+- **Watchdog:** `estimate + 1000 ms` settles the promise, where `estimate` is the calibrated
+  duration, or `600 + 90 ms × characters` before any calibration.
+- The 80 ms post-cancel delay is kept only when the engine was actually speaking. With nothing
+  speaking, `speak()` is called at once.
+- The clip hook (`LR.clips`) is unchanged and unused.
 
-### D2. `speech.js`
-- **`preload(texts)`** creates `Audio` objects for the next screen's clips, with `preload = 'auto'`,
-  and keeps up to 40 in an LRU cache.
-- **`say(textOrArray, opts)`**:
-  - an array plays the clips back to back, starting each one on the previous clip's `ended`
-    event, so gaps stay under 150 ms;
-  - `opts.onWord(i)` fires from a `timeupdate` / `requestAnimationFrame` loop that compares
-    `currentTime` against `t[i]`;
-  - with no clip, it falls back to one tablet utterance for the whole text, and word highlighting
-    uses `onboundary` if it fires, else times estimated from the text length and rate.
-- **Watchdog.** Each play arms a timer for `duration + 1000 ms`, or `600 + 90 ms × characters`
-  for TTS, which settles the promise. `play()` rejections settle at once, then the TTS fallback runs.
-- **Rate.** The speed setting maps to `audio.playbackRate` (0.75 to 1.1) for clips and `u.rate`
-  for TTS.
-- The 80 ms post-cancel delay applies to TTS only.
-- **Unlock.** The first `pointerdown` on the document plays a silent clip and a zero-volume
-  utterance, so both paths are warm. Nothing plays before that.
+### D2. Warm-up
+- The first `pointerdown` on the document speaks a single-space utterance at volume 0, which loads
+  the engine, and creates the `AudioContext`.
+- Nothing speaks before that first touch.
 
 ### D3. Feedback layers (`LR.ui.feedback(el, 'right'|'wrong')`)
 - Called synchronously in the tap handler, before any speech:
@@ -64,11 +55,15 @@ has no build step and uses classic scripts.
 - **Right** is leaf green with an SVG ✓. **Wrong** is grey at 45% opacity with a small dot. No red,
   no ✗.
 
-### D4. Sweep during audio
-- `sayWord` and `saySpellSay` start the audio first.
-- Letter or word lighting is driven by the clip's time offsets. A single word lights its letters
-  evenly across the clip's duration.
-- Say-spell-say becomes one joined sequence: word, then the letter names, then the word.
+### D4. Sweeps and sequences
+- **`sayWord`** calls `say(word)` first. The letters light evenly across the estimated duration,
+  starting from `onstart`.
+- **`saySpellSay`** runs 3 utterances: the word, then the letter names joined with commas in one
+  utterance with letters lit by boundary or estimate, then the word.
+- **Story "Read it to me"** is one utterance with words lit via `onWord`. The word-by-word pass
+  and the repeat are removed.
+- **Waits:** detective, hearts, story and croc lose their fixed `setTimeout` waits and advance on
+  `say()` settling.
 
 ### D5. Icons and font
 - `js/icons.js` exports `LR.icons.home`, `speaker`, `check`, `star`, `flower`, `heart`, `arrow`
@@ -86,11 +81,8 @@ has no build step and uses classic scripts.
 
 ## Risks / Trade-offs
 
-- **Repo size** grows by about 10 MB. That's acceptable on Pages, and clips are fetched only
-  when needed.
-- **Silk may not honour `preload`** on cellular or data-saver. The 600 ms first-play budget and the
-  TTS fallback cover it.
-- **Heera timings** come from System.Speech offsets, which may drift by 20 to 40 ms. That's fine
-  for highlighting.
-- **Only the owner can generate clips** (Windows). The coverage test fails fast when a string lacks
-  a clip, and the tablet voice still covers it at runtime.
+- **The tablet voice's own start-up time is out of our control.** We can only stop adding to it.
+  Phase 7's preloaded clips remove it.
+- **Estimated word timings may drift** on long sentences. Punctuation adds a fixed pause to the
+  estimate, and the tablet try checks it.
+- **The US voice stays** until Phase 7.

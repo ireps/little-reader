@@ -31,7 +31,6 @@ first maths skill to fix.
 
 - **Code:** `js/steps/maths.js` (runner and generators), `js/maths/*.js` (one file per skill family)
   and `js/svg/money.js`, `shapes.js`, `frames.js`. The Phase 4 croc step is replaced.
-- **Clips:** number names 0 to 100, "rupees", comparison phrases, shape and day names.
 - **Tests:** generator ranges, no immediate repeats, a right and a wrong scenario per skill,
   screenshots.
 - **Docs:** README (maths) and CLAUDE.md (roadmap; the "= taught?" question becomes a setting).

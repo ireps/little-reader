@@ -35,7 +35,7 @@
 
 - [ ] 4.1 Number-pad gate
 - [ ] 4.2 Progress view, "Where is she?" picker and "Practise one game"
-- [ ] 4.3 Speed and clips on or off
+- [ ] 4.3 Speed and test voice
 - [ ] 4.4 Backup, restore (with all rejection cases) and two-step reset
 
 ## 5. Tests

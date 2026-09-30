@@ -66,7 +66,7 @@ LR.units.push({ id:'p4-02', phase:4, theme:'animals', graphemes:['st','nd'], tri
 ### D5. Help ladder
 - The first tap lights the word's hearts and plays a hint: "Like *some*", taken from a mastered word
   in the same family or rhyme.
-- With no such word, it plays the first grapheme's sound clip ("sh"), then the word, on the same tap.
+- With no such word, it speaks the first grapheme's sound ("sh"), then the word, on the same tap.
 - The second tap plays the word. Either tap marks a miss.
 
 ### D6. Step mix
@@ -82,4 +82,3 @@ LR.units.push({ id:'p4-02', phase:4, theme:'animals', graphemes:['st','nd'], tri
   planner reviews. The decodability test catches most errors automatically.
 - **Emoji pictures on an old font** may not match. Each unit's pictures are checked on the tablet in
   the Try group, and inline SVG replaces any that fail.
-- **Clip count grows to about 1500.** That's roughly 12 MB more, loaded on demand.

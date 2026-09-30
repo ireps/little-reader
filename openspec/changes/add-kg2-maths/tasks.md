@@ -21,11 +21,11 @@
 - [ ] 3.1 Maths rows in the progress view
 - [ ] 3.2 Equals sign switch
 
-## 4. Tests and clips
+## 4. Tests
 
 - [ ] 4.1 Generator range and no-repeat tests for every skill
 - [ ] 4.2 A right and a wrong scenario per skill
-- [ ] 4.3 Re-run the clip tool (owner); the coverage test passes
+- [ ] 4.3 Every generator can list its full output space, for Phase 7's clip list
 - [ ] 4.4 Screenshots at both sizes, reviewed against the UX checklist
 
 ## 5. Docs

@@ -63,7 +63,7 @@ fonts/                   Andika (the owner adds the files; see fonts/README.md)
 audio/                   empty; clips only if ever needed
 tools/device-check.html  device test page
 tests/run.js             Playwright browser checks
-openspec/                specs: config.yaml, specs/ (shipped), changes/ (Phases 3 to 6)
+openspec/                specs: config.yaml, specs/ (shipped), changes/ (Phases 3 to 7)
 .claude/                 OpenSpec skills and /opsx commands for Claude Code
 ```
 
@@ -96,10 +96,11 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 
 | Phase | Change | What it delivers |
 | --- | --- | --- |
-| 3 | `rebuild-speech-for-speed` | Indian English clips (Heera, generated on the owner's PC), one clip per sentence, no fixed waits, feedback under 100 ms, SVG icons, Andika, 120 px targets. Works on today's lessons. |
+| 3 | `rebuild-speech-for-speed` | With the tablet voice: one utterance per sentence, highlights during speech, no fixed waits, feedback under 100 ms, SVG icons, Andika, 120 px targets. Works on today's lessons. |
 | 4 | `add-guided-daily-session` | Garden home with one Start, a self-advancing 10-minute session, spaced review, Read with me, first built-in units, tap-only Grown-ups with backup, restore and reset, schema 2. **It starts with prototype screenshots that the owner approves.** |
 | 5 | `add-kg2-english` | Letters and Sounds Phase 3 to 5 units (including the old "sound patterns" plan), Flash, Picture match, Build it, Silly sentences, the help ladder, language tasks, story questions. |
 | 6 | `add-kg2-maths` | The NCF-FS KG-2 numeracy skills, with the crocodile's = behind a Grown-ups switch (off by default). |
+| 7 | `add-indian-voice-clips` | Indian English clips (Heera, generated on the owner's PC) for every string, with word timings, preloading and a coverage test. Last, because the full list of strings is only known once Phases 4 to 6 exist. |
 
 **Superseded:** the old Phase 3 (typed weekly content). Its backup, restore and reset items moved to Phase 4.
 
@@ -124,8 +125,8 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 
 ## Pending owner actions
 
-- Approve the OpenSpec rebuild (Phases 3 to 6), or say what to change.
-- Phase 3: run `tools/make-clips.ps1` on a Windows PC with the Heera voice, and give the OK to download Andika from SIL.
+- Phase 3: give the OK to download Andika from SIL (or add the files yourself).
+- Phase 7: run `tools/make-clips.ps1` on a Windows PC with the Heera voice.
 
 - Add the Andika files to `fonts/` (see fonts/README.md).
 - Turn on GitHub Pages from `main` (root), with Enforce HTTPS on.

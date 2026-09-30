@@ -1,7 +1,7 @@
 ## MODIFIED Requirements
 
 ### Requirement: Storage key and schema
-The app SHALL save state under localStorage key littleReader.v1 with schema 2: unit, items, flowers, confusions, stories, resume, days, rate, clips and warn.
+The app SHALL save state under localStorage key littleReader.v1 with schema 2: unit, items, flowers, confusions, stories, resume, days, rate and warn.
 (Previously: schema 1 with words, story, hearts, tricky, confusions, storyMode, voice and rate.)
 
 #### Scenario: Save

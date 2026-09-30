@@ -13,16 +13,16 @@ The Grown-ups area SHALL open only after the right answer to a sum from 11 to 18
 - **THEN** the pad clears and a new sum is shown
 
 ### Requirement: Voice and speed
-Grown-ups SHALL let a parent set speech speed from 0.75 to 1.1 and turn clips on or off, and test the voice.
+Grown-ups SHALL let a parent set speech speed from 0.75 to 1.1 and test the voice.
 (Previously: a voice picker and speed from 0.5 to 1.1.)
 
 #### Scenario: Speed
 - **WHEN** the speed is changed
 - **THEN** it is saved and used for all speech
 
-#### Scenario: Clips off
-- **WHEN** clips are turned off
-- **THEN** the tablet voice speaks everything
+#### Scenario: Test
+- **WHEN** Test voice is tapped
+- **THEN** a short sentence is spoken at the chosen speed
 
 ## REMOVED Requirements
 

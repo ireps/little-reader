@@ -2,8 +2,8 @@
 
 ## Context
 
-After Phase 3, speech is fast, clips cover every string, and feedback layers, icons, Andika and
-120 px targets exist. This phase changes the flow and the data. All the Phase 3 rules still hold:
+After Phase 3, speech is fast (joined utterances, highlights during speech, no waits), and feedback
+layers, icons, Andika and 120 px targets exist. Speech still uses the tablet voice until Phase 7. This phase changes the flow and the data. All the Phase 3 rules still hold:
 classic scripts, the `LR` global, CSP, `esc()`, `validate()`, `say()` / `stopAll()` / `gen`.
 
 ## Goals / Non-Goals
@@ -113,8 +113,8 @@ classic scripts, the `LR` global, CSP, `esc()`, `validate()`, `say()` / `stopAll
 - The story is the unit's least-recently-read story (`stories[id] = lastDate`).
 - The screen opens with a spoken "Read to your grown-up", then the sentence, with no audio before
   her attempt.
-- A tap on a word plays the word's clip and marks `w:<word>` stumbled. This is the grown-up's control.
-- ✓ plays the sentence clip with highlighting and advances when it ends. ✓ is ignored during
+- A tap on a word speaks the word and marks `w:<word>` stumbled. This is the grown-up's control.
+- ✓ reads the sentence aloud with highlighting and advances when it ends. ✓ is ignored during
   playback.
 - Skipping the step needs a 2 s hold on a small "Not today" control, and the story is then offered
   first next time.
@@ -123,7 +123,7 @@ classic scripts, the `LR` global, CSP, `esc()`, `validate()`, `say()` / `stopAll
 ```
 { schema:2, unit:'p4-01', items:{ id:{b,d,u,m} }, flowers:[id], confusions:{ t:{ p:n } },
   stories:{ id:'YYYY-MM-DD' }, resume:{...}|null, days:[{ d, acc, mins }] (last 30),
-  rate:0.9, clips:true, warn:'' }
+  rate:0.9, warn:'' }
 ```
 - **Limits:** items ≤ 2000, flowers ≤ 2000, confusions 200x10, stories ≤ 500, days ≤ 30. Ids match
   `^[a-z]{1,2}:[a-z0-9'-]{1,30}$`.
@@ -144,7 +144,7 @@ classic scripts, the `LR` global, CSP, `esc()`, `validate()`, `say()` / `stopAll
     and accuracy;
   - the "Where is she?" unit list, tap to choose;
   - "Practise one game" (each step alone);
-  - voice: speed and clips on or off;
+  - voice: speed, and a test button;
   - backup;
   - restore (a file input; rejected with a clear message on bad JSON, wrong app, newer schema, or
     over 1 MB);

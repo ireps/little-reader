@@ -39,7 +39,7 @@ Watching her use Phases 0 to 2 showed the app asks a 5-year-old to do what she c
   - a progress view;
   - a "Where is she?" unit picker;
   - "Practise one game";
-  - speed and clips on or off;
+  - speed and a voice test;
   - backup, restore and reset.
 - **BREAKING:** the four tiles, Together / My turn and the typing boxes are removed. Schema 1 data
   is migrated.

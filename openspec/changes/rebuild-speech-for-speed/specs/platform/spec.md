@@ -13,9 +13,9 @@ Child tap targets SHALL be at least 120x120 CSS px (about 2 cm on the tablet); G
 - **THEN** every control is at least 64 px in both dimensions
 
 ### Requirement: Same-site only
-The app SHALL make no requests to any host other than its own, including for audio clips and fonts.
-(Previously: no audio clips or fonts were loaded.)
+The app SHALL make no requests to any host other than its own, including for fonts.
+(Previously: no fonts were loaded.)
 
 #### Scenario: Request log
-- **WHEN** every screen is opened and clips play
-- **THEN** every request, including MP3 and WOFF2 files, goes to the page's own host
+- **WHEN** every screen is opened
+- **THEN** every request, including WOFF2 font files, goes to the page's own host

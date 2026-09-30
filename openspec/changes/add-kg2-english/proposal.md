@@ -50,8 +50,6 @@ main specs as ADDED requirements.)
 
 - **Code:** `js/steps/*.js` (new activity renderers), `js/words.js` (grapheme table, families,
   rhymes), `data/units/*.js` (about 30 units) and `data/pictures.js`.
-- **Clips:** the Phase 3 clip tool is re-run for the new words and sentences. The coverage test
-  enforces it.
 - **Tests:** decodability, unit counts, each activity's right and wrong scenarios, a Build it digraph
   tile, the help ladder.
 - **Docs:** README (activities, content licence) and CLAUDE.md (roadmap).
