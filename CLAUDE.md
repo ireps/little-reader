@@ -4,13 +4,16 @@ Context for Claude Code. Read this before making changes. It replaces the planni
 
 ## Project
 
-Little Reader: a reading, spelling and number-comparison web app for the owner's daughter, a kindergartner (about 6). It is a static site on GitHub Pages at https://ireps.github.io/little-reader/ and runs in Silk on an Amazon Fire HD 10.
+Little Reader: a reading and early-maths web app for the owner's daughter, in KG-2 (UKG) in India, about 5 to 6. Her school uses OUP India's Oxford Advantage (NCF-FS 2022); phonics follows the Letters and Sounds order. It is a static site on GitHub Pages at https://ireps.github.io/little-reader/ and runs in Silk on an Amazon Fire HD 10.
 
 Where she is: past 3-letter word families, now on 4-letter words and her first paragraphs. Her main problems:
 
 - **Tricky (sight) words** like *come*, *some*, *from*, which she forgets between sessions.
 - **First-letter guessing:** she reads the start of a word and guesses the rest (*pots* read as *plants*, *grow* as *gome*, *come* as *coh*).
 - **Mixing up < and >.** Her class teaches them; it's not known whether they use the crocodile idea.
+- **Using read-aloud as a crutch,** and not knowing what to tap when a screen offers choices. She reads with a parent.
+
+Owner constraints: grown-ups never type content (everything is built in), sessions are about 10 minutes, the voice is Indian English, and speed matters.
 
 The owner is a developer. Public docs: README.md and SECURITY.md. Keep them accurate when behaviour changes.
 
@@ -60,6 +63,8 @@ fonts/                   Andika (the owner adds the files; see fonts/README.md)
 audio/                   empty; clips only if ever needed
 tools/device-check.html  device test page
 tests/run.js             Playwright browser checks
+openspec/                specs: config.yaml, specs/ (shipped), changes/ (Phases 3 to 6)
+.claude/                 OpenSpec skills and /opsx commands for Claude Code
 ```
 
 ## State (`localStorage` key `littleReader.v1`, schema 1)
@@ -75,39 +80,39 @@ Changing the shape means bumping `schema`, migrating in `store.js`, and extendin
 
 - **Voice:** "any female voice". The tablet has only one voice, so `chooseVoice()` prefers a female one where there's a choice. If the tablet's voice isn't female, the owner can change it in the tablet's text-to-speech settings.
 - **No recordings, ever.** If clips are ever needed, generate them from a computer voice.
-- **Old words** keep coming back until she gets each one right 3 times in a row (Phase 3).
-- **Sound patterns** lesson: yes (Phase 4).
+- **Old words** keep coming back until she gets each one right first try on 3 separate days (box 3, mastered; Phase 4). After that they return about every 2 weeks, and a miss drops them one box.
+- **Sound patterns:** yes, folded into Phase 5 (`add-kg2-english`).
 - **No Amazon Kids profile** on the tablet.
 - **The grown-ups gate** is a sum question. It's a child lock, not security.
 - **Heart words:** "Find the ♥" replaced the planned "which one has the heart?" round.
 
 ## Roadmap
 
+The rebuild is specified in OpenSpec under `openspec/` (see "How to work"). Each phase is one change
+folder in `openspec/changes/`, one commit or pull request, and the owner tries it on the tablet before
+the next phase starts.
+
 Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phase 2 still needs a try on the tablet.
 
-**Phase 3: weekly content.** Aim: loading a new week takes under 2 minutes, and nothing is lost if Silk's data is cleared.
+| Phase | Change | What it delivers |
+| --- | --- | --- |
+| 3 | `rebuild-speech-for-speed` | Indian English clips (Heera, generated on the owner's PC), one clip per sentence, no fixed waits, feedback under 100 ms, SVG icons, Andika, 120 px targets. Works on today's lessons. |
+| 4 | `add-guided-daily-session` | Garden home with one Start, a self-advancing 10-minute session, spaced review, Read with me, first built-in units, tap-only Grown-ups with backup, restore and reset, schema 2. **It starts with prototype screenshots that the owner approves.** |
+| 5 | `add-kg2-english` | Letters and Sounds Phase 3 to 5 units (including the old "sound patterns" plan), Flash, Picture match, Build it, Silly sentences, the help ladder, language tasks, story questions. |
+| 6 | `add-kg2-maths` | The NCF-FS KG-2 numeracy skills, with the crocodile's = behind a Grown-ups switch (off by default). |
 
-- [ ] Save weeks, not one list: `weeks: [{ start, words, story }]`. "Start new week" archives the current one. Migrate the current `words`/`story` into the first week.
-- [ ] Word detective draws about 70% from this week and 30% from older weeks. An old word retires after 3 correct in a row. Track a streak per word.
-- [ ] Heart-letter editor: this week's words first, with story words under "More".
-- [ ] Backup: "Save a backup" downloads `*.littlereader.json`, and "Restore" loads one through `validate()`, rejecting a bad file with a clear message.
-- [ ] Reset everything, behind a second confirmation.
-- [ ] Help-words list covers the last 2 weeks, with a per-word "She's got it" button.
+**Superseded:** the old Phase 3 (typed weekly content). Its backup, restore and reset items moved to Phase 4.
 
-**Phase 4: sound patterns lesson.** A fifth tile teaching letter pairs through whole words, so no isolated sounds are needed:
+**Later (not specified yet):** `add-letter-tracing`, `add-offline-mode` (service worker).
 
-- Start with *ow*, *oi*, *or*, *ee*, *ai*, then *oa*, *ou*, *ar*, *sh*, *ch*, *th*.
-- *ow* gets two families side by side: *grow* and *snow* against *cow* and *flower*.
-- Rounds: she hears a word and taps the pair it uses; sorts words into pattern houses; builds words from tiles where a pair is one tile.
-- Done when she finishes 8 rounds alone and a pair always moves as a single tile.
-
-**Later:** offline mode with a service worker (supported on the tablet).
-
-**Still open:** whether = is taught yet, and whether there's a weekly spelling test. Ask the owner before building for either.
+**Still open:** whether there's a weekly spelling test. Ask the owner before building for it. Whether = is taught is now a Grown-ups setting (Phase 6).
 
 ## How to work
 
 - Plan each phase and wait for the owner's approval before writing code. One commit or pull request per phase.
+- Specs use OpenSpec 1.13 (dev-only dependency). `openspec/config.yaml` holds the context and rules; `openspec/specs/` is what has shipped; `openspec/changes/<id>/` holds proposal, design, tasks and delta specs.
+  The loop: propose (`/opsx:propose`), owner approves, apply (`/opsx:apply`, working through `tasks.md`), owner tries it on the tablet, archive (`/opsx:archive`).
+  `npm run spec` (`openspec validate --all --strict`) must pass before every commit.
 - The owner prefers cost-effective model use: a stronger model for planning and review, a cheaper one for routine implementation.
 - Before every commit:
   1. `npm test` passes. First time: `npm install && npx playwright install chromium`.
@@ -118,6 +123,9 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 - Add a test to `tests/run.js` for each new behaviour.
 
 ## Pending owner actions
+
+- Approve the OpenSpec rebuild (Phases 3 to 6), or say what to change.
+- Phase 3: run `tools/make-clips.ps1` on a Windows PC with the Heera voice, and give the OK to download Andika from SIL.
 
 - Add the Andika files to `fonts/` (see fonts/README.md).
 - Turn on GitHub Pages from `main` (root), with Enforce HTTPS on.

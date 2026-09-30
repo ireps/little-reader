@@ -43,6 +43,14 @@ npm test
 
 They open every screen at the Fire HD 10's size (1280 x 614 and 800 x 1094) with reduced motion on.
 
+## Specs
+
+The app's behaviour and the planned rebuild (Phases 3 to 6) are written up with [OpenSpec](https://github.com/Fission-AI/OpenSpec) in `openspec/`. `openspec/specs/` describes what ships today, and `openspec/changes/` holds one proposed change per phase. Check them with:
+
+```
+npm run spec
+```
+
 ## Check a device
 
 Open `/tools/device-check.html` on the tablet, tap each button, and copy the results box. It reports speech support, voices, audio, storage, fonts and browser features.
@@ -63,6 +71,7 @@ fonts/                   Andika (add the files, see fonts/README.md)
 audio/                   empty unless the tablet can't speak
 tools/device-check.html  Phase 0 test page
 tests/run.js             browser checks (npm test)
+openspec/                specs (npm run spec)
 CLAUDE.md                context for Claude Code
 ```
 
