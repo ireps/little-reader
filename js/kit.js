@@ -92,7 +92,7 @@ kit.screen = function(o){
     + '<div class="s-top">' + kit.hold('home', 'home', 'Home', 1000, o.homeHold || 0, 'home')
     + (o.steps ? kit.path(o.steps, o.step) : '<span></span>')
     + (o.seeds ? kit.seeds(o.seeds[0], o.seeds[1]) : '<span></span>') + '</div>'
-    + '<div class="s-guide">' + LR.guide.svg(o.pose) + '<p class="s-bubble" id="caption" aria-live="polite">' + esc(o.say || '') + '</p></div>'
+    + '<div class="s-guide">' + LR.guide.svg(o.pose) + '<p class="s-bubble" data-caption aria-live="polite">' + esc(o.say || '') + '</p></div>'
     + '<div class="s-main">' + o.main + '</div></div>';
 };
 })();

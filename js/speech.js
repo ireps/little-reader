@@ -52,7 +52,8 @@ function clipFor(text){
 
 /* ---------- Captions (placeholder for the voice) ---------- */
 function caption(text){
-  var el = document.getElementById('caption');
+  /* On session screens the guide's speech bubble is the caption; elsewhere, the top bar. */
+  var el = document.querySelector('#app [data-caption]') || document.getElementById('caption');
   if (el) el.textContent = text || '';
 }
 

@@ -303,7 +303,7 @@ input[type=range]{padding:0;border:0}
   .s-guide .guide{width:190px;height:160px;flex:none}
   .s-bubble{margin:0 0 0 16px}
   .s-bubble:before{left:-14px;top:50%;margin:-12px 0 0;border:12px solid transparent;border-left:0;border-right:14px solid var(--line)}
-  .s-main .s-cards{max-width:600px}
+  .s-main .s-cards:not(.s-nums){max-width:600px}
   .s-home .g-wide{display:none}
   .s-home .g-tall{display:block;height:58%}
   .s-home .guide{top:96px;left:24px;width:190px;height:158px}
@@ -330,3 +330,18 @@ input[type=range]{padding:0;border:0}
 .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:330px;margin:0 auto}
 .pad .btn{margin:0}
 .pad-show{font-size:40px;font-weight:700;min-height:64px;margin:8px auto;width:200px;border:2px solid var(--line);border-radius:14px;background:#fff}
+/* Session pieces used by the steps. */
+.s-still{cursor:default}
+.s-mouth{min-width:160px;min-height:150px;padding:14px}
+.s-mouth .mouth{width:110px;height:110px;color:var(--leaf)}
+.s-cards .s-sym{min-width:110px;text-align:center}
+.s-letters .lbtn.h{color:var(--berry)}
+/* Grown-ups */
+.gp{max-width:1000px;margin:0 auto}
+.gp .file{position:relative;overflow:hidden}
+.gp .file input{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.gp .confirm p{font-size:22px}
+/* Maths numbers are a little smaller, so two rows fit 614 px. */
+.s-nums .s-num{min-height:0;padding:6px 18px 12px}
+.s-nums .s-num .n{font-size:84px}
+.s-nums{flex-wrap:nowrap}

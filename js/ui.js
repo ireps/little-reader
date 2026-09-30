@@ -24,25 +24,10 @@ ui.lettersHTML = function(word, plain){
   for (var i = 0; i < word.length; i++) out += '<span class="l' + (h.indexOf(i) > -1 ? ' h' : '') + '">' + ui.esc(word.charAt(i)) + '</span>';
   return out;
 };
-ui.storyWords = function(){ return ui.unique((LR.state.story.match(/[A-Za-z']+/g) || []).map(ui.clean)).filter(Boolean); };
-ui.sentences = function(){
-  var t = LR.state.story.replace(/\s+/g, ' ').trim();
-  return (t.match(/[^.!?]+[.!?]*/g) || []).map(function(s){ return s.trim(); }).filter(Boolean)
-    .map(function(s){ return s.charAt(0).toUpperCase() + s.slice(1); });
-};
 ui.dotsHTML = function(total, current){
   var s = '<div class="dots" aria-label="' + Math.min(current + 1, total) + ' of ' + total + '">';
   for (var i = 0; i < total; i++) s += '<span class="dot' + (i < current ? ' on' : (i === current ? ' now' : '')) + '"></span>';
   return s + '</div>';
-};
-ui.bumpTricky = function(w, d){
-  var t = LR.state.tricky, n = (t[w] || 0) + d;
-  if (n > 0) t[w] = n; else delete t[w];
-  LR.store.save();
-};
-ui.noWords = function(){
-  app.innerHTML = '<p class="prompt">No words yet.</p><p class="tip">Ask a grown-up to add this week’s words.</p>';
-  app.onclick = null;
 };
 ui.setTitle = function(t){ barTitle.textContent = t; document.title = t + ' – Little Reader'; };
 
@@ -146,7 +131,9 @@ ui.route = function(){
   LR.speech.onVoices(null);
   var r = (location.hash || '#home').replace('#', '');
   if (!ui.has(LR.routes, r)) r = 'home';
-  bar.style.display = r === 'home' ? 'none' : 'flex';
+  /* The top bar is for Grown-ups only; the child's screens are the garden and the session. */
+  bar.style.display = r === 'grownups' ? 'flex' : 'none';
+  app.className = r === 'grownups' ? '' : 's-root';
   LR.routes[r]();
   window.scrollTo(0, 0);
 };
@@ -160,18 +147,4 @@ ui.start = function(){
   ui.route();
 };
 
-/* ---------- Home ---------- */
-function tile(r, icon, label, cls){
-  return '<a class="tile ' + cls + '" href="#' + r + '"><span class="tile-ic">' + LR.icons.get(icon) + '</span><span>' + label + '</span></a>';
-}
-LR.routes.home = function(){
-  document.title = 'Little Reader';
-  app.innerHTML = '<div class="home"><h1 class="title">Little Reader ' + LR.icons.get('sprout') + '</h1><div class="tiles">'
-    + tile('detective', 'search', 'Word detective', 't-sun')
-    + tile('hearts', 'heart', 'Heart words', 't-berry')
-    + tile('story', 'book', 'Read the story', 't-mint')
-    + tile('croc', 'croc', 'Hungry crocodile', 't-leaf')
-    + '</div><a class="grown" href="#grownups">Grown-ups</a></div>';
-  app.onclick = null;
-};
 })();

@@ -1,114 +1,142 @@
-/* Grown-ups: weekly words and story, heart letters, voice, and the words she needed help with.
-   The sum question keeps a young child out. It is a child lock, not security. */
+/* Grown-ups: her progress, where she is in the course, single games, voice speed, backup, restore and reset.
+   Reached by a 2 s hold on Home, then a sum on a tap-only number pad. It is a child lock, not security. Nothing is typed. */
 (function(){
 'use strict';
-var LR = window.LR, U = LR.ui, W = LR.words, S = LR.speech;
-var unlocked = false;
+var LR = window.LR, U = LR.ui, P = LR.progress, S = LR.speech;
+var unlocked = false, MAX_BACKUP = 1024 * 1024;
 
+/* ---------- The gate ---------- */
 function gate(){
-  var app = U.app(), x = U.rand(40) + 21, y = U.rand(40) + 21;
-  app.innerHTML = '<div class="gate"><p class="prompt">For grown-ups</p><label for="ans">What is ' + x + ' + ' + y + '?</label>'
-    + '<input id="ans" type="number" inputmode="numeric" autocomplete="off">'
-    + '<div class="row"><button class="btn" data-act="open">Open</button></div><p class="msg" id="msg"></p></div>';
-  var inp = document.getElementById('ans');
-  function check(){
-    if (parseInt(inp.value, 10) === x + y) { unlocked = true; settings(); }
-    else document.getElementById('msg').textContent = 'That’s not it. Try again.';
-  }
-  app.onclick = function(e){ var el = U.closestAct(e); if (el && el.getAttribute('data-act') === 'open') check(); };
-  inp.onkeydown = function(e){ if (e.key === 'Enter' || e.keyCode === 13) check(); };
+  /* Two single digits that add up to 11 to 18. */
+  var a = 2 + U.rand(8), lo = Math.max(2, 11 - a), b = lo + U.rand(10 - lo), typed = '';
+  var app = U.app(), keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'Clear', '0', 'OK'];
+  app.innerHTML = '<div class="gate"><p class="prompt">What is ' + a + ' + ' + b + '?</p><div class="pad-show" id="pad-show" aria-live="polite"></div>'
+    + '<div class="pad">' + keys.map(function(k){ return '<button class="btn soft" data-act="key" data-k="' + k + '">' + k + '</button>'; }).join('') + '</div>'
+    + '<p class="msg" id="msg"></p></div>';
+  app.onclick = function(e){
+    var el = U.closestAct(e);
+    if (!el) return;
+    var k = el.getAttribute('data-k');
+    if (k === 'Clear') typed = '';
+    else if (k === 'OK') {
+      if (+typed === a + b) { unlocked = true; settings(); return; }
+      document.getElementById('msg').textContent = 'That’s not it. Try this one.';
+      var msg = document.getElementById('msg').textContent;
+      gate(); document.getElementById('msg').textContent = msg; return;
+    } else if (typed.length < 2) typed += k;
+    document.getElementById('pad-show').textContent = typed;
+  };
 }
 
+/* ---------- Settings ---------- */
+function progressHTML(){
+  var st = LR.state, u = P.unit(), ui = LR.units.indexOf(u) + 1, it = st.items;
+  var watch = Object.keys(it).filter(function(id){ return it[id].m > 0; }).sort(function(a, b){ return it[b].m - it[a].m; }).slice(0, 8);
+  var mixes = [];
+  Object.keys(st.confusions).forEach(function(k){ Object.keys(st.confusions[k]).forEach(function(p){ mixes.push({ t:k, p:p, n:st.confusions[k][p] }); }); });
+  mixes.sort(function(a, b){ return b.n - a.n; });
+  var days = st.days.slice(-7), n = 0, r = 0, bars = '';
+  days.forEach(function(d, i){
+    n += d.n; r += d.r;
+    var h = Math.min(60, d.mins * 5);
+    bars += '<rect x="' + (i * 44 + 6) + '" y="' + (66 - h) + '" width="30" height="' + Math.max(2, h) + '" rx="5" fill="#8FC7A0"/>'
+      + '<text x="' + (i * 44 + 21) + '" y="84" text-anchor="middle" font-size="12" fill="#4A6272">' + U.esc(d.d.slice(5)) + '</text>';
+  });
+  return '<section><h2>Progress</h2>'
+    + (LR.store.failed() ? '<p class="msg">Storage is full, so progress isn’t being saved. Save a backup, then Reset.</p>' : '')
+    + '<p>Unit ' + ui + ' of ' + LR.units.length + ': ' + U.esc(u.title) + '. ' + st.flowers.length + ' flower' + (st.flowers.length === 1 ? '' : 's') + ' (words mastered).</p>'
+    + '<p class="help">Words to watch (most misses first): ' + (watch.length ? watch.map(function(id){ return '<span class="tchip">' + U.esc(id.slice(2)) + ' ×' + it[id].m + '</span>'; }).join('') : 'none yet.') + '</p>'
+    + (mixes.length ? '<p class="help">Mix-ups (the word, then what she picked): ' + mixes.slice(0, 8).map(function(m){ return '<span class="mix">' + U.esc(m.t) + ', picked ' + U.esc(m.p) + ' ×' + m.n + '</span>'; }).join('') + '</p>' : '')
+    + (days.length ? '<p class="help">Last ' + days.length + ' day' + (days.length === 1 ? '' : 's') + ': minutes each day, and first-try accuracy ' + (n ? Math.round(100 * r / n) + '%' : 'not yet measured') + '.</p>'
+      + '<svg viewBox="0 0 310 90" class="gp-bars" role="img" aria-label="Minutes per day">' + bars + '</svg>' : '<p class="help">No sessions yet.</p>')
+    + '</section>';
+}
 function settings(){
   var app = U.app(), st = LR.state;
-  app.innerHTML = '<div class="gp">'
-    + '<section><h2>This week’s words</h2><p class="help">From the school list. Separate them with commas or new lines.</p><textarea id="gw" rows="3" aria-label="This week’s words"></textarea></section>'
-    + '<section><h2>This week’s story</h2><p class="help">Type or paste the paragraph she’s reading.</p><textarea id="gs" rows="6" aria-label="This week’s story" maxlength="' + LR.store.MAX_STORY + '"></textarea></section>'
-    + '<div class="row"><button class="btn" data-act="save">Save</button> <span id="saved" class="saved"></span></div>'
-    + '<section><h2>Heart letters</h2><p class="help">Tap letters that don’t sound the way they look. They get a ♥ in every lesson. Common tricky words are marked already.</p><div id="hed"></div></section>'
-    + '<section><h2>Voice</h2><p class="help" id="vstatus"></p><label for="voice">Voice</label><select id="voice"></select>'
-    + '<label for="rate">Speed</label><input id="rate" type="range" min="0.5" max="1.1" step="0.1">'
-    + '<div class="row"><button class="btn soft" data-act="test">Test voice</button></div></section>'
-    + '<section><h2>Words she needed help with</h2><p class="help">Words she tapped for help in the story or missed in Word detective. These come up more often in Word detective.</p><div id="tricky"></div></section>'
+  app.innerHTML = '<div class="gp">' + progressHTML()
+    + '<section><h2>Where is she?</h2><p class="help">Tap a unit to start there next time. The app moves on by itself when a unit is mastered.</p>'
+    + LR.units.map(function(u, i){ return '<button class="btn soft small unit' + (u.id === st.unit ? ' on' : '') + '" data-act="unit" data-u="' + U.esc(u.id) + '" aria-pressed="' + (u.id === st.unit) + '">'
+      + (i + 1) + '. ' + U.esc(u.title) + '</button>'; }).join('') + '</section>'
+    + '<section><h2>Practise one game</h2><p class="help">Opens one activity on its own. It still counts towards her progress.</p>'
+    + [['words', 'Find it'], ['tricky', 'Tricky word'], ['read', 'Read with me'], ['maths', 'Crocodile']].map(function(g){
+      return '<a class="btn soft small" href="#practice-' + g[0] + '">' + g[1] + '</a>'; }).join('') + '</section>'
+    + '<section><h2>Voice</h2><p class="help" id="vstatus"></p><label for="rate">Speed</label><input id="rate" type="range" min="0.75" max="1.1" step="0.05">'
+    + '<div class="row"><button class="btn soft small" data-act="test">Test voice</button></div></section>'
+    + '<section><h2>Backup</h2><p class="help">Everything is saved in this tablet’s browser only. A backup keeps it safe if Silk’s data is cleared.</p>'
+    + '<button class="btn soft small" data-act="backup">Save a backup</button>'
+    + '<label class="btn soft small file">Restore from a backup<input type="file" id="restore" accept=".json,application/json"></label>'
+    + '<button class="btn soft small" data-act="reset">Reset everything</button><p class="msg" id="bmsg"></p></section>'
     + '</div>';
-  document.getElementById('gw').value = st.words.join(', ');
-  document.getElementById('gs').value = st.story;
-  drawHearts(); fillVoices(); drawTricky();
   var rate = document.getElementById('rate');
   rate.value = st.rate;
-  rate.onchange = function(){ var r = parseFloat(rate.value); LR.state.rate = r >= 0.5 && r <= 1.2 ? r : 0.8; LR.store.save(); };
-  document.getElementById('voice').onchange = function(){ LR.state.voice = this.value; LR.store.save(); };
-  S.onVoices(fillVoices);
+  rate.onchange = function(){ var r = parseFloat(rate.value); LR.state.rate = r >= 0.75 && r <= 1.1 ? r : 0.9; LR.store.save(); };
+  document.getElementById('vstatus').textContent = S.canSpeak ? 'Speech uses this tablet’s voice. Everything said also shows as a caption until the voice clips arrive.' : 'This browser can’t read aloud. Captions still show what would be said.';
+  document.getElementById('restore').onchange = function(){ if (this.files && this.files[0]) restore(this.files[0]); this.value = ''; };
   app.onclick = function(e){
     var el = U.closestAct(e);
     if (!el) return;
     var a = el.getAttribute('data-act');
-    if (a === 'save') {
-      var words = U.unique(document.getElementById('gw').value.split(/[,\n]+/).map(LR.store.cleanWord)).filter(Boolean);
-      LR.state.words = words.slice(0, LR.store.MAX_WORDS);
-      LR.state.story = document.getElementById('gs').value.trim().slice(0, LR.store.MAX_STORY);
-      LR.store.save(); drawHearts();
-      document.getElementById('saved').textContent = 'Saved';
-    } else if (a === 'toggle') {
-      var w = el.getAttribute('data-w'), i = parseInt(el.getAttribute('data-i'), 10);
-      var arr = W.heartsFor(w).slice(), k = arr.indexOf(i);
-      if (k > -1) arr.splice(k, 1); else arr.push(i);
-      arr.sort(function(p, q){ return p - q; });
-      LR.state.hearts[w] = arr; LR.store.save(); drawHearts();
-    } else if (a === 'reset') {
-      delete LR.state.hearts[el.getAttribute('data-w')]; LR.store.save(); drawHearts();
-    } else if (a === 'test') {
-      U.stopAll(); S.say('Come and read with me.');
-    } else if (a === 'clear') {
-      LR.state.tricky = {}; LR.state.confusions = {}; LR.store.save(); drawTricky();
+    if (a === 'unit') {
+      LR.state.unit = el.getAttribute('data-u');
+      /* An unfinished plan for today is dropped, so the next session starts from the chosen unit. */
+      if (LR.state.resume && !LR.state.resume.done) LR.state.resume = null;
+      LR.store.save(); settings();
     }
+    else if (a === 'test') { U.stopAll(); S.say('Come and read with me.'); }
+    else if (a === 'backup') backup();
+    else if (a === 'reset') confirmReset();
   };
 }
 
-function drawHearts(){
-  var words = U.unique(LR.state.words.map(U.clean).concat(U.storyWords())).filter(Boolean);
-  document.getElementById('hed').innerHTML = words.map(function(w){
-    var h = W.heartsFor(w), ls = '';
-    for (var i = 0; i < w.length; i++) {
-      var on = h.indexOf(i) > -1;
-      ls += '<button class="hl' + (on ? ' hl-on' : '') + '" data-act="toggle" data-w="' + U.esc(w) + '" data-i="' + i + '" aria-pressed="' + on + '">' + U.esc(w.charAt(i)) + '</button>';
-    }
-    return '<div class="hrow">' + ls + (U.has(LR.state.hearts, w) ? ' <button class="btn soft small" data-act="reset" data-w="' + U.esc(w) + '">Undo my changes</button>' : '') + '</div>';
-  }).join('');
+/* ---------- Backup, restore, reset ---------- */
+function backup(){
+  var d = P.localDate(), data = { app:'little-reader', schema:LR.store.SCHEMA, saved:d, state:LR.state };
+  var blob = new Blob([JSON.stringify(data)], { type:'application/json' }), a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = d + '.littlereader.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  document.getElementById('bmsg').textContent = 'Backup saved to Downloads.';
+}
+/* Checks a backup file; returns { state, saved } or { error }. */
+function checkBackup(text, size){
+  if (size > MAX_BACKUP) return { error:'That file is too big to be a Little Reader backup.' };
+  var data;
+  try { data = JSON.parse(text); } catch(e) { return { error:'That file isn’t a Little Reader backup.' }; }
+  if (!data || typeof data !== 'object' || data.app !== 'little-reader' || !data.state || typeof data.state !== 'object') return { error:'That file isn’t a Little Reader backup.' };
+  if (typeof data.schema !== 'number' || data.schema > LR.store.SCHEMA) return { error:'That backup is from a newer version of Little Reader. Reload the app and try again.' };
+  var st = LR.store.isOld(data.state) ? LR.store.migrate(data.state, P.localDate()) : LR.store.validate(data.state);
+  return { state:st, saved:typeof data.saved === 'string' ? data.saved.slice(0, 10) : '' };
+}
+function restore(file){
+  var reader = new FileReader();
+  reader.onload = function(){
+    var r = checkBackup(String(reader.result), file.size);
+    if (r.error) { document.getElementById('bmsg').textContent = r.error; return; }
+    confirmScreen('Replace everything on this tablet with the backup' + (r.saved ? ' from ' + r.saved : '') + '? ' + r.state.flowers.length + ' flowers, unit ' + (LR.units.indexOf(LR.progress.unitById(r.state.unit)) + 1) + '.',
+      'Replace', function(){ LR.state = r.state; LR.store.save(); settings(); document.getElementById('bmsg').textContent = 'Restored.'; });
+  };
+  reader.onerror = function(){ document.getElementById('bmsg').textContent = 'That file couldn’t be read.'; };
+  if (file.size > MAX_BACKUP) { document.getElementById('bmsg').textContent = 'That file is too big to be a Little Reader backup.'; return; }
+  reader.readAsText(file);
+}
+function confirmReset(){
+  confirmScreen('Reset everything? Her progress, garden and mix-ups are deleted from this tablet, and she starts again at unit 1. Save a backup first if you might want them.',
+    'Yes, reset', function(){ LR.store.reset(); settings(); document.getElementById('bmsg').textContent = 'Everything was reset.'; });
+}
+/* A second screen for anything that replaces or deletes her data. */
+function confirmScreen(text, yes, fn){
+  var app = U.app();
+  app.innerHTML = '<div class="gp"><section class="confirm"><p id="ctext"></p><div class="row"><button class="btn small" data-act="yes"></button> <button class="btn soft small" data-act="no">Cancel</button></div></section></div>';
+  document.getElementById('ctext').textContent = text;
+  app.querySelector('[data-act=yes]').textContent = yes;
+  app.onclick = function(e){
+    var el = U.closestAct(e);
+    if (!el) return;
+    if (el.getAttribute('data-act') === 'yes') fn(); else settings();
+  };
 }
 
-/* Female voices are listed first; the automatic choice already prefers one. */
-function fillVoices(){
-  var sel = document.getElementById('voice'), vs = document.getElementById('vstatus');
-  if (!sel) return;
-  if (!S.canSpeak) {
-    vs.textContent = 'This browser can’t read aloud. The lessons still work, but words won’t be spoken.';
-    sel.disabled = true;
-    return;
-  }
-  var en = S.englishVoices().slice().sort(function(a, b){ return (S.isFemale(b) ? 1 : 0) - (S.isFemale(a) ? 1 : 0); });
-  var auto = S.chooseVoice();
-  vs.textContent = en.length
-    ? 'This tablet can read aloud. Automatic picks ' + (auto ? auto.name : 'the default voice') + '.'
-    : 'No English voices found yet. Tap Test voice to check.';
-  sel.innerHTML = '<option value="">Automatic</option>' + en.map(function(v){
-    return '<option value="' + U.esc(v.voiceURI) + '"' + (v.voiceURI === LR.state.voice ? ' selected' : '') + '>'
-      + U.esc(v.name + ' (' + v.lang + ')' + (S.isFemale(v) ? ', female' : '')) + '</option>';
-  }).join('');
-}
-
-/* Help-word counts, plus mix-ups from Word detective ("pots, picked plants"). */
-function drawTricky(){
-  var t = LR.state.tricky, c = LR.state.confusions, l = Object.keys(t).sort(function(a, b){ return t[b] - t[a]; });
-  var mixes = [];
-  Object.keys(c).forEach(function(k){ Object.keys(c[k]).forEach(function(p){ mixes.push({ t:k, p:p, n:c[k][p] }); }); });
-  mixes.sort(function(a, b){ return b.n - a.n; });
-  var html = l.length ? l.map(function(w){ return '<span class="tchip">' + U.esc(w) + ' ×' + t[w] + '</span>'; }).join('') : '<p class="help">None yet.</p>';
-  if (mixes.length) html += '<p class="help">Mix-ups in Word detective (the word, then what she picked):</p>'
-    + mixes.slice(0, 20).map(function(m){ return '<span class="mix">' + U.esc(m.t) + ', picked ' + U.esc(m.p) + ' ×' + m.n + '</span>'; }).join('');
-  if (l.length || mixes.length) html += '<div class="row"><button class="btn soft small" data-act="clear">Clear list</button></div>';
-  document.getElementById('tricky').innerHTML = html;
-}
-
+LR.grownups = { checkBackup:checkBackup };
 LR.routes.grownups = function(){ U.setTitle('Grown-ups'); if (unlocked) settings(); else gate(); };
 })();
