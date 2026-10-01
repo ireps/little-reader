@@ -785,6 +785,13 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
     ok(JSON.stringify(r.words) === '[0,1,2]', 'words light in order from the clips’ word times: ' + JSON.stringify(r.words));
     r = await run('Come and read with me.', { parts: ['Come and', 'read with me.'] });
     ok(JSON.stringify(r.words) === '[0,1]' && r.tts.length === 0, 'a whole-sentence clip maps its word times onto the parts: ' + JSON.stringify(r.words));
+    /* Sync: a word lights when the clip's own clock reaches its time, and sweeps get the clip's voice length. */
+    const sync = await q.evaluate(() => { const at = [], t0 = performance.now();
+      return LR.speech.say('That says come.', { onWord: i => at.push([i, performance.now() - t0]) }).then(() => at); });
+    const w1 = sync.find(x => x[0] === 1), w0 = sync.find(x => x[0] === 0);
+    ok(w0 && w1 && w1[1] - w0[1] >= 80, 'a clip’s second word lights at its time (100 ms), not with the first: ' + JSON.stringify(sync.map(x => [x[0], Math.round(x[1])])));
+    ok(await q.evaluate(() => { LR.clips.look = { f: 'come.wav', d: 1000, t: [250] }; const ms = LR.speech.voiceMs('Look', 0.9); delete LR.clips.look; return ms === 550; }),
+      'a sweep lasts as long as the clip’s voice (first word to the end of the sound), not the tablet-voice estimate');
     r = await run('That says cone.');
     ok(r.tts.join() === 'That says cone.' && r.caps.includes('That says cone.'), 'a sentence without all its clips is spoken by the tablet voice, with the caption');
     r = await run('Some');
