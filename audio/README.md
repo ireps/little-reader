@@ -30,6 +30,15 @@ phrases and words in turn. For example, "That says cone." plays as `that-says.mp
 3. Bump `?v=` in `index.html`, run `npm test`, and commit `audio/clips/` and `audio/manifest.js`.
    `audio/incoming/` is not committed.
 
+## If the clips sound muffled
+
+Listen to a WAV in `audio/incoming/` and to the same clip in `audio/clips/`.
+- **Only the MP3 is muffled:** re-run `node tools/import-clips.js`. It now encodes at 96 kbps and keeps the WAV's own
+  sample rate. Earlier versions used 48 kbps at 22.05 kHz.
+- **The WAV is muffled too:** delete the WAVs and run `make-clips.ps1` again. It now records in the voice's own
+  format. Earlier versions forced 22.05 kHz, which resampled the voice. If it still sounds dull, the voice itself is
+  the limit: Heera is an older Windows voice.
+
 ## On the tablet
 
 Grown-ups > Voice shows how many clips are installed. It has a switch to turn voice clips off, which goes back

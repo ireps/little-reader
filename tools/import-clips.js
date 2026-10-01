@@ -3,7 +3,7 @@
    Run: node tools/import-clips.js [folder]        default folder: audio/incoming/ (not committed)
         node tools/import-clips.js [folder] --out <dir>   write clips/ and manifest.js under <dir> (the tests use this)
    Each clip is named as in the second column of tools/clip-list.txt. MP3 is copied as it is; WAV is converted to
-   MP3 with ffmpeg (which must then be installed). An optional <name>.json next to a clip holds the start of each
+   MP3 (96 kbps mono, at the WAV's own sample rate, so the voice stays clear) with ffmpeg (which must then be installed). An optional <name>.json next to a clip holds the start of each
    word in ms ([0, 420, 900]), as tools/make-clips.ps1 writes; without it the app spreads the words evenly.
    Missing clips are fine: the app says those with the tablet's voice and shows the caption. */
 'use strict';
@@ -15,7 +15,7 @@ const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
 const outAt = args.indexOf('--out');
 const OUT = outAt > -1 ? path.resolve(args[outAt + 1]) : path.join(ROOT, 'audio');
-const IN = path.resolve(args.find((a, i) => !a.startsWith('--') && i !== outAt + 1) || path.join(ROOT, 'audio/incoming'));
+const IN = path.resolve(args.find((a, i) => !a.startsWith('--') && (outAt < 0 || i !== outAt + 1)) || path.join(ROOT, 'audio/incoming'));
 const CLIPS = path.join(OUT, 'clips');
 
 /* The list: key <TAB> file name. */
@@ -50,7 +50,7 @@ for (const c of list) {
   const mp3 = path.join(IN, c.base + '.mp3'), wav = path.join(IN, c.base + '.wav'), dest = path.join(CLIPS, c.file);
   if (have.has(c.base + '.mp3')) fs.copyFileSync(mp3, dest);
   else if (have.has(c.base + '.wav')) {
-    const r = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', wav, '-ac', '1', '-ar', '22050', '-b:a', '48k', dest]);
+    const r = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', wav, '-ac', '1', '-codec:a', 'libmp3lame', '-b:a', '96k', dest]);
     if (r.error) { console.error('Converting WAV to MP3 needs ffmpeg on the PATH (Windows: winget install Gyan.FFmpeg, then open a new terminal): ' + r.error.message); process.exit(1); }
     if (r.status !== 0) { console.error('ffmpeg could not convert ' + c.base + '.wav: ' + r.stderr); process.exit(1); }
     converted++;

@@ -55,7 +55,8 @@
 - For each line of `clip-list.txt` it:
   - synthesises a WAV;
   - records `SpeakProgress` word offsets in ms;
-  - (the importer encodes it with ffmpeg to MP3, 48 kbps, mono, 22.05 kHz).
+  - (the importer encodes it with ffmpeg to MP3, 96 kbps, mono, at the voice's own sample rate; an
+    earlier 48 kbps, 22.05 kHz setting sounded muffled).
 - It writes `audio/incoming/<slug>.wav` and `<slug>.json`; the importer then converts and measures them
   and writes `audio/manifest.js`:
   `LR.clips = { "come": { f: "come.mp3", d: 480 }, "the frog can jump": { f: "...", d: 1300, t: [0, 140, 520, 760] } }`,

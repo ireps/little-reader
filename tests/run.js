@@ -61,7 +61,9 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   await p.addInitScript(ttsStub);
   // Quick looks and no pause between items, so the checks run fast (the pace beat has its own test).
   await p.addInitScript(() => { window.addEventListener('DOMContentLoaded', () => { if (window.LR && LR.steps && LR.steps.flash) LR.steps.flash.SHOW_MS = 150;
-    if (window.LR && LR.ui && LR.ui.PACE && !window.__realPace) Object.keys(LR.ui.PACE).forEach(k => { LR.ui.PACE[k].beat = 0; }); }); });
+    if (window.LR && LR.ui && LR.ui.PACE && !window.__realPace) Object.keys(LR.ui.PACE).forEach(k => { LR.ui.PACE[k].beat = 0; });
+    /* The installed voice clips are set aside here, so the stand-in voice speaks; clip playback has its own checks below. */
+    if (window.LR) LR.clips = {}; }); });
   const said = () => p.evaluate(() => __tts.calls.map(c => c.text).filter(t => t.trim()));
   const clearSaid = () => p.evaluate(() => { __tts.calls.length = 0; });
   const touch = () => p.mouse.click(640, 5);
@@ -831,6 +833,24 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
     ok(imp.status === 0 && Object.keys(m).length === 2 && m['that says'].d === 993 && JSON.stringify(m['that says'].t) === '[0,400]' && !m.come.t && !m.yes
       && fs.readdirSync(path.join(tmp, 'clips')).sort().join() === 'come.mp3,that-says.mp3', 'the clip importer copies the clips, measures them, keeps good word times and skips bad files');
     fs.rmSync(tmp, { recursive: true, force: true });
+  }
+  {
+    /* The installed clips (audio/manifest.js, from tools/import-clips.js): every entry is in the list, its file exists and has a length. */
+    const sb = {}; sb.window = sb;
+    require('vm').runInNewContext(fs.readFileSync(path.join(ROOT, 'audio/manifest.js'), 'utf8'), sb);
+    const man = sb.LR.clips, keys = Object.keys(man);
+    const badClips = keys.filter(k => !clipKeys.has(k) || !man[k] || typeof man[k].f !== 'string' || !(man[k].d > 0) || !fs.existsSync(path.join(ROOT, 'audio/clips', man[k].f)));
+    ok(!badClips.length, `audio/manifest.js is valid: ${keys.length} of ${clipKeys.size} clips installed` + (badClips.length ? '; bad or missing files: ' + badClips.slice(0, 20).join(', ') : ''));
+    if (keys.length) {
+      /* One real clip plays in the browser, without the tablet voice. */
+      const k = keys.includes('come') ? 'come' : keys[0];
+      const q = await ctx.newPage();
+      await q.addInitScript(ttsStub);
+      await q.goto(U + '#home'); await q.evaluate(() => localStorage.clear()); await q.reload(); await q.mouse.click(640, 5);
+      const res = await q.evaluate(t => { __tts.calls.length = 0; const t0 = performance.now(); return LR.speech.say(t).then(() => ({ tts: __tts.calls.length, ms: performance.now() - t0 })); }, k);
+      ok(res.tts === 0 && res.ms > 100, `an installed clip plays in the browser ("${k}", ${Math.round(res.ms)} ms, no tablet voice)`);
+      await q.close();
+    }
   }
   const stale = require('child_process').spawnSync(process.execPath, [path.join(ROOT, 'tools/list-clips.js'), '--check']);
   ok(stale.status === 0, 'tools/clip-list.txt is up to date with the course and phrases');
