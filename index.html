@@ -10,21 +10,39 @@
 </head>
 <body>
 <header class="bar" id="bar">
-  <a class="home-btn" href="#home" aria-label="Home">🏠</a>
+  <a class="home-btn" href="#home" aria-label="Home"></a>
   <span class="bar-title" id="bar-title"></span>
+  <!-- Placeholder for the voice: everything the app says shows here until voice clips arrive. -->
+  <p class="caption" id="caption" aria-live="polite"></p>
 </header>
 <main id="app"></main>
 
-<!-- Order matters: data, then shared modules, then lessons, then start. -->
-<script src="data/default-week.js"></script>
+<!-- Order matters: data, then shared modules, then the session and its steps, then Grown-ups, then start. -->
+<script src="data/units.js"></script>
+<script src="data/units-p5.js"></script>
+<script src="data/pictures.js"></script>
 <script src="js/words.js"></script>
+<script src="js/progress.js"></script>
 <script src="js/store.js"></script>
 <script src="js/speech.js"></script>
+<script src="js/icons.js"></script>
 <script src="js/ui.js"></script>
-<script src="js/lessons/detective.js"></script>
-<script src="js/lessons/hearts.js"></script>
-<script src="js/lessons/story.js"></script>
-<script src="js/lessons/croc.js"></script>
+<script src="js/guide.js"></script>
+<script src="js/garden.js"></script>
+<script src="js/kit.js"></script>
+<script src="js/session.js"></script>
+<script src="js/steps/choice.js"></script>
+<script src="js/steps/help.js"></script>
+<script src="js/steps/find.js"></script>
+<script src="js/steps/flash.js"></script>
+<script src="js/steps/pic.js"></script>
+<script src="js/steps/build.js"></script>
+<script src="js/steps/silly.js"></script>
+<script src="js/steps/lang.js"></script>
+<script src="js/steps/q.js"></script>
+<script src="js/steps/tricky.js"></script>
+<script src="js/steps/read.js"></script>
+<script src="js/steps/maths.js"></script>
 <script src="js/lessons/grownups.js"></script>
 <script src="js/main.js"></script>
 </body>

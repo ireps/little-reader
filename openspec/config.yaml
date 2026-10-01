@@ -1,0 +1,73 @@
+schema: spec-driven
+
+# Project context, shown to the AI whenever it writes artifacts. CLAUDE.md remains the full reference.
+context: |
+  Little Reader is a static web app (GitHub Pages, https://ireps.github.io/little-reader/) that helps
+  one KG-2 (UKG) child in India learn to read and do early maths, about 10 minutes a day.
+
+  Device (measured): Amazon Fire HD 10, Silk 108 (Chromium 108) on Android 5.1.1. 1280x614 CSS px
+  landscape, 800x1094 portrait, pixel ratio 1.5. Reduced motion is ON, so animations don't play. The
+  tablet has one text-to-speech voice (en_US). It doesn't trust Let's Encrypt's root, so the site
+  stays on github.io. Audio needs a prior user tap.
+
+  Child profile: KG-2, and her school uses OUP India's Oxford Advantage (pre-primary, NCF-FS 2022).
+  She is at Letters and Sounds Phase 4 (adjacent consonants). Known tricky words: come, some, from,
+  have, many, also. Habits to break: guessing from the first letter (pots -> plants, grow -> gome);
+  mixing up < and >; using read-aloud as a crutch (she flipped Together / My turn on every
+  sentence). She can't pick her way through choices or read instructions. She reads with a parent.
+
+  Owner constraints: grown-ups never type content, so everything is built in. Sessions last about
+  10 minutes. Speech will use an Indian English female computer voice (pre-made clips, Phase 7,
+  once all content is known). Until then it uses the tablet voice. It never uses a recording of a person. Speed and responsiveness come first. The owner is a developer.
+
+  Research sources:
+  - Retrieval practice in 4-6 year olds: https://pmc.ncbi.nlm.nih.gov/articles/PMC11087082/ ,
+    https://pmc.ncbi.nlm.nih.gov/articles/PMC12533569
+  - Incremental rehearsal: https://charts.intensiveintervention.org/intervention/toolGRP/8fbb8fbd654288b6 ,
+    https://link.springer.com/article/10.1007/s10864-020-09398-y
+  - Orthographic mapping and heart words:
+    https://www.readingrockets.org/reading-101/reading-and-writing-basics/sight-words-and-orthographic-mapping
+  - Decodable text over three-cueing:
+    https://www.readingrockets.org/topics/curriculum-and-instruction/articles/what-are-decodable-books-and-why-are-they-important ,
+    https://www.nifdi.org/resources/hempenstall-blog/402-the-three-cueing-system-in-reading-will-it-ever-go-away
+  - Oxford phonics (Letters and Sounds order):
+    https://global.oup.com/education/content/primary/series/oxford-reading-tree/floppys-phonics/
+  - Oxford Advantage and NCF-FS: https://india.oup.com/content/courses/oxford-advantage/ ,
+    https://ncert.nic.in/pdf/NCF_for_Foundational_Stage_20_October_2022.pdf
+  - NCF-FS outcome codes (IL / ILM):
+    https://ssa.megeducation.gov.in/Document/Publications/Final_FS_Key_Competencies_&_Learning_Outcomes_10.6.23.pdf
+  - Cambridge Early Years: https://www.cambridge.org/us/education/subject/early-childhood-education/cambridge-early-years
+  - Dolch lists (public domain): https://www.fldoe.org/core/fileparse.php/16294/urlt/SightWord.pdf
+  - Children's UX (NN/g): https://www.nngroup.com/articles/children-ux-physical-development/
+
+rules:
+  proposal:
+    - Name the phase (3 to 7) the change belongs to, and what the owner tries on the tablet before the next phase starts.
+    - Keep it under 2 pages; the "how" goes in design.md.
+  specs:
+    - Every child-facing requirement states its speed budget (visible response within 100 ms of a tap) where it applies.
+    - Every animated or coloured cue has a non-motion equivalent (colour plus shape, icon, or sound).
+    - Privacy stays explicit. No personal data, no microphone, no recordings of people, no requests to other hosts.
+    - Wrong answers are never punished. No red, no cross, no buzzer, no streak loss, no timers shown to the child.
+    - Child-facing text is short and plain, and every instruction is also spoken.
+  design:
+    - Classic script tags sharing one global, LR. No ES modules, bundler, framework, build step, runtime dependencies or CDN.
+    - The CSP meta tag stays, with no unsafe-inline or unsafe-eval, no inline scripts, on...= handlers or style attributes.
+    - Anything built in or typed by a parent reaches the page through LR.ui.esc() or textContent.
+    - Everything read from storage goes through LR.store.validate(), with type and size limits.
+    - All sound goes through LR.speech.say(). Call LR.ui.stopAll() before starting new sound, and guard async chains with the LR.ui.gen check.
+    - Dev-only tools (Playwright, OpenSpec, clip generation) never ship to the tablet.
+  tasks:
+    - Every scenario group gets a check in tests/run.js.
+    - For UI changes, take screenshots at 1280x614 and 800x1094 with reduced motion on and review them against the UX checklist in CLAUDE.md.
+    - No console errors, CSP violations or other-host requests. Nothing personal committed.
+    - Update README.md, SECURITY.md and CLAUDE.md in the same change when behaviour changes.
+    - The last task group is always "Try on the tablet"; the owner does it before the next phase starts.
+
+operations:
+  apply:
+    guidance:
+      - One commit or pull request per change. npm test and npm run spec pass before each commit.
+  archive:
+    guidance:
+      - Archive only after the owner has tried the change on the tablet.

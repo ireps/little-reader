@@ -4,13 +4,16 @@ Context for Claude Code. Read this before making changes. It replaces the planni
 
 ## Project
 
-Little Reader: a reading, spelling and number-comparison web app for the owner's daughter, a kindergartner (about 6). It is a static site on GitHub Pages at https://ireps.github.io/little-reader/ and runs in Silk on an Amazon Fire HD 10.
+Little Reader: a reading and early-maths web app for the owner's daughter, in KG-2 (UKG) in India, about 5 to 6. Her school uses OUP India's Oxford Advantage (NCF-FS 2022); phonics follows the Letters and Sounds order. It is a static site on GitHub Pages at https://ireps.github.io/little-reader/ and runs in Silk on an Amazon Fire HD 10.
 
 Where she is: past 3-letter word families, now on 4-letter words and her first paragraphs. Her main problems:
 
 - **Tricky (sight) words** like *come*, *some*, *from*, which she forgets between sessions.
 - **First-letter guessing:** she reads the start of a word and guesses the rest (*pots* read as *plants*, *grow* as *gome*, *come* as *coh*).
 - **Mixing up < and >.** Her class teaches them; it's not known whether they use the crocodile idea.
+- **Using read-aloud as a crutch,** and not knowing what to tap when a screen offers choices. She reads with a parent.
+
+Owner constraints: grown-ups never type content (everything is built in), sessions are about 10 minutes, the voice is Indian English, and speed matters.
 
 The owner is a developer. Public docs: README.md and SECURITY.md. Keep them accurate when behaviour changes.
 
@@ -23,7 +26,7 @@ The owner is a developer. Public docs: README.md and SECURITY.md. Keep them accu
 | Speech | One voice only: "English United States", `en_US`, on-device. Test speech finished | Text-to-speech works. The app can't choose another voice |
 | Reduced motion | On | Animations don't play. Every animated cue needs a non-motion cue too (colour, text or sound) |
 | Service workers, localStorage, HTTPS | All yes | Offline mode is possible later |
-| Not tested | `onboundary` events, Andika font | "Read it to me" points word by word with separate utterances |
+| Not tested | `onboundary` events | `say()` lights words from boundary events if they arrive, else from a calibrated estimate |
 
 Other facts:
 
@@ -38,9 +41,13 @@ Other facts:
 - The Content Security Policy meta tag in `index.html` stays, with no `unsafe-inline` or `unsafe-eval`. That means no inline `<script>`, no `on…=` handlers and no `style="…"` attributes in markup. Setting `el.style` from JS is fine.
 - Anything a parent typed reaches the page only through `LR.ui.esc()` or `textContent`. Every new render function must follow this.
 - Everything read from storage goes through `LR.store.validate()`. Add every new state field there, with type and size limits.
-- All sound goes through `LR.speech.say(text)`, which returns a Promise that always settles. It has a timeout, and it plays a clip from `LR.clips` if one exists.
+- All sound goes through `LR.speech.say(text, opts)`, which returns a Promise that always settles (a watchdog of start-up + estimated length + 1 s). It plays a clip from `LR.clips` if one exists, shows the text as a caption in the top bar (a placeholder until Phase 7's clips), and speaks nothing before the first touch. `opts.onStart(ms)` and `opts.onWord(i)` (with `opts.parts`) drive highlights *during* speech. Join phrases into one utterance (`'Yes! ' + w`); a sentence is one utterance.
+- No fixed waits: advance when `say()` settles, never on a `setTimeout` pause.
 - Before starting new speech or animation, call `LR.ui.stopAll()`. Guard async chains with `var g = LR.ui.gen; … if (g !== LR.ui.gen) return;`.
-- Tap targets are at least 64 px. Feedback comes within about 200 ms of a tap. Wrong answers are never punished: no buzzer, no red cross.
+- Child tap targets are at least 120 x 120 px (words in a sentence: 60 px tall; letters of a word: 120 px tall, 60 px wide). Grown-ups controls: 64 px.
+- Call `LR.ui.feedback(el, 'right'|'wrong')` synchronously in the tap handler: a colour state, a mark and a WebAudio tone within 100 ms. Wrong answers are never punished: no buzzer, no red, no cross.
+- Interface icons come from `LR.icons.get(name)` (inline SVG), never emoji.
+- Session steps draw through the runner's `ctx` (`screen`, `prompt`, `done`, `miss`, `pose`, `live`); check `ctx.live()` in async chains rather than `LR.ui.gen`, since every tap bumps `gen`. Captions must never show an answer she is looking for (`say(w, { caption })`).
 - Keep words in the UI short and plain; she's 6. Grown-ups copy can be normal adult English.
 - Don't add emoji newer than about Unicode 8, because the tablet's font is old.
 
@@ -49,25 +56,43 @@ Other facts:
 ```
 index.html               shell, CSP, script order
 css/app.css              all styles, including the 614 px landscape query
-data/default-week.js     starter words and paragraph (LR.defaultWeek)
-js/words.js              heart-letter dictionary, word families, look-alike bank, letter names
-js/store.js              LR.state, load/save/validate, migration from readingGarden.v1
-js/speech.js             LR.speech: voice choice, clip hook, say(), cancel()
-js/ui.js                 LR.ui helpers, letters and hearts, finger sweep, router, home screen
-js/lessons/*.js          detective, hearts, story, croc, grownups (each registers LR.routes.<name>)
+data/units.js            the course, part 1: LR.units (Phase 3 review, Phase 4), LR.startUnit, LR.knownTricky
+data/units-p5.js         the course, part 2 (Phase 5). Every word must pass LR.words.checkUnits() (npm test)
+data/pictures.js         LR.pictures (emoji, Unicode 6 only) and LR.lang (rhymes, a/an, plurals, positions)
+js/words.js              graphemes (Letters and Sounds), segment(), decodable(), checkUnits(), hearts, families, look-alikes
+js/progress.js           LR.progress: boxes, due dates, flowers, review plan, pacing, unit advance, dates
+js/store.js              LR.state schema 2, load/save/validate, migration from schema 1 and readingGarden.v1, reset
+js/speech.js             LR.speech: voice choice, clip hook, say() with timings and captions, cancel()
+js/icons.js              LR.icons: interface icons as inline SVG
+js/ui.js                 LR.ui helpers, letters and hearts, finger sweep, feedback, router
+js/guide.js, garden.js   Tilly the tortoise (4 still poses) and her garden (flowers and sprouts)
+js/kit.js                LR.kit: session screen components (path, seeds, target, cards, sentence, hold)
+js/session.js            Home, today's plan, the runner (routes home, session, practice-<step>)
+js/steps/*.js            find, flash, pic, build, tricky, silly, read, q, lang (rhyme, an, plural, pos, caps), maths:
+                         each registers LR.steps.<type> = { render, tap }; choice.js (shared answer logic), help.js (help ladder)
+js/lessons/grownups.js   Grown-ups (route grownups)
 js/main.js               load state, start router
-fonts/                   Andika (the owner adds the files; see fonts/README.md)
+fonts/                   Andika Regular and Bold (Latin subset, SIL OFL)
 audio/                   empty; clips only if ever needed
 tools/device-check.html  device test page
-tests/run.js             Playwright browser checks
+tools/prototype.html     Phase 4 prototype: every session screen and state from fixtures (dev only)
+tests/run.js             Playwright browser checks (with a speech-engine stand-in)
+tests/screens.js         screenshots of every screen and state (npm run screens)
+tests/prototype.js       prototype screenshots, checks and contact sheets (npm run prototype)
+openspec/                specs: config.yaml, specs/ (shipped), changes/ (Phases 3 to 7)
+.claude/                 OpenSpec skills and /opsx commands for Claude Code
 ```
 
-## State (`localStorage` key `littleReader.v1`, schema 1)
+## State (`localStorage` key `littleReader.v1`, schema 2)
 
 ```
-{ schema, words: [..], story: "..", hearts: { word: [letter indexes] }, tricky: { word: count },
-  confusions: { target: { pickedInstead: count } }, storyMode: "together"|"myturn", voice: "", rate: 0.8 }
+{ schema: 2, unit: "p4-01", items: { "w:come": { b: 0-5, d: due date, u: last up-move date, m: misses } },
+  flowers: [item ids ever mastered], confusions: { target: { pickedInstead: count } },
+  stories: { storyId: last read date }, silly: { unitId: [answered, right] }, resume: today's plan { date, steps: [{ id, items }], at: [step, item],
+  done, started, fresh, right, answered, mode }, days: [{ d, n, r, mins }] (last 30), rate: 0.9, last: date }
 ```
+
+Dates are local `YYYY-MM-DD`; "today" never goes back past `last`. Schema 1 and Reading Garden data migrate on load. Backups wrap the state as `{ app: "little-reader", schema, saved, state }`.
 
 Changing the shape means bumping `schema`, migrating in `store.js`, and extending `validate()`.
 
@@ -75,43 +100,48 @@ Changing the shape means bumping `schema`, migrating in `store.js`, and extendin
 
 - **Voice:** "any female voice". The tablet has only one voice, so `chooseVoice()` prefers a female one where there's a choice. If the tablet's voice isn't female, the owner can change it in the tablet's text-to-speech settings.
 - **No recordings, ever.** If clips are ever needed, generate them from a computer voice.
-- **Old words** keep coming back until she gets each one right 3 times in a row (Phase 3).
-- **Sound patterns** lesson: yes (Phase 4).
+- **Old words** keep coming back until she gets each one right first try on 3 separate days (box 3, mastered; Phase 4). After that they return about every 2 weeks, and a miss drops them one box.
+- **Sound patterns:** yes, folded into Phase 5 (`add-kg2-english`).
 - **No Amazon Kids profile** on the tablet.
 - **The grown-ups gate** is a sum question. It's a child lock, not security.
 - **Heart words:** "Find the ♥" replaced the planned "which one has the heart?" round.
+- **Garden:** flowers for mastered words (never taken away), sprouts for words being learned, so progress shows from day one.
+- **Pictures are emoji up to Unicode 6** (not 8), because the tablet runs Android 5.1. A word without one never appears in a picture task.
+- **Course content is checked, not trusted:** every word she reads must pass the decodability check for its unit.
+- **Choice screens have no primary target;** the sun-yellow target is only for single-action screens (Start, the tick, Go on, Done).
 
 ## Roadmap
 
-Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phase 2 still needs a try on the tablet.
+The rebuild is specified in OpenSpec under `openspec/` (see "How to work"). Each phase is one change
+folder in `openspec/changes/`, one commit or pull request, and the owner tries it on the tablet before
+the next phase starts.
 
-**Phase 3: weekly content.** Aim: loading a new week takes under 2 minutes, and nothing is lost if Silk's data is cleared.
+Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phases 3, 4 and 5 are built and wait for a try on the tablet (then `openspec archive` for `rebuild-speech-for-speed`, `add-guided-daily-session` and `add-kg2-english`, in that order).
 
-- [ ] Save weeks, not one list: `weeks: [{ start, words, story }]`. "Start new week" archives the current one. Migrate the current `words`/`story` into the first week.
-- [ ] Word detective draws about 70% from this week and 30% from older weeks. An old word retires after 3 correct in a row. Track a streak per word.
-- [ ] Heart-letter editor: this week's words first, with story words under "More".
-- [ ] Backup: "Save a backup" downloads `*.littlereader.json`, and "Restore" loads one through `validate()`, rejecting a bad file with a clear message.
-- [ ] Reset everything, behind a second confirmation.
-- [ ] Help-words list covers the last 2 weeks, with a per-word "She's got it" button.
+| Phase | Change | What it delivers |
+| --- | --- | --- |
+| 3 | `rebuild-speech-for-speed` | With the tablet voice and on-screen placeholder captions: one utterance per sentence, highlights during speech, no fixed waits, feedback under 100 ms, SVG icons, Andika, 120 px targets. Works on today's lessons. |
+| 4 | `add-guided-daily-session` | Garden home with one Start, a self-advancing 10-minute session, spaced review, Read with me, first built-in units, tap-only Grown-ups with backup, restore and reset, schema 2. **It starts with prototype screenshots that the owner approves.** |
+| 5 | `add-kg2-english` | Letters and Sounds Phase 3 to 5 units (including the old "sound patterns" plan), Flash, Picture match, Build it, Silly sentences, the help ladder, language tasks, story questions. |
+| 6 | `add-kg2-maths` | The NCF-FS KG-2 numeracy skills, with the crocodile's = behind a Grown-ups switch (off by default). |
+| 7 | `add-indian-voice-clips` | Indian English clips supplied by the owner (matched to a generated list) for every string, with word timings, preloading and a coverage test. Last, because the full list of strings is only known once Phases 4 to 6 exist. |
 
-**Phase 4: sound patterns lesson.** A fifth tile teaching letter pairs through whole words, so no isolated sounds are needed:
+**Superseded:** the old Phase 3 (typed weekly content). Its backup, restore and reset items moved to Phase 4.
 
-- Start with *ow*, *oi*, *or*, *ee*, *ai*, then *oa*, *ou*, *ar*, *sh*, *ch*, *th*.
-- *ow* gets two families side by side: *grow* and *snow* against *cow* and *flower*.
-- Rounds: she hears a word and taps the pair it uses; sorts words into pattern houses; builds words from tiles where a pair is one tile.
-- Done when she finishes 8 rounds alone and a pair always moves as a single tile.
+**Later (not specified yet):** `add-letter-tracing`, `add-offline-mode` (service worker).
 
-**Later:** offline mode with a service worker (supported on the tablet).
-
-**Still open:** whether = is taught yet, and whether there's a weekly spelling test. Ask the owner before building for either.
+**Still open:** whether there's a weekly spelling test. Ask the owner before building for it. Whether = is taught is now a Grown-ups setting (Phase 6).
 
 ## How to work
 
 - Plan each phase and wait for the owner's approval before writing code. One commit or pull request per phase.
+- Specs use OpenSpec 1.13 (dev-only dependency). `openspec/config.yaml` holds the context and rules; `openspec/specs/` is what has shipped; `openspec/changes/<id>/` holds proposal, design, tasks and delta specs.
+  The loop: propose (`/opsx:propose`), owner approves, apply (`/opsx:apply`, working through `tasks.md`), owner tries it on the tablet, archive (`/opsx:archive`).
+  `npm run spec` (`openspec validate --all --strict`) must pass before every commit.
 - The owner prefers cost-effective model use: a stronger model for planning and review, a cheaper one for routine implementation.
 - Before every commit:
   1. `npm test` passes. First time: `npm install && npx playwright install chromium`.
-  2. For UI changes, take screenshots at 1280x614 and 800x1094 with reduced motion on, and look at them. Nothing may scroll at 1280x614.
+  2. For UI changes, run `npm run screens` (1280x614 and 800x1094, reduced motion) and look at them. Nothing may scroll at 1280x614.
   3. No console errors or CSP violations, and no requests to other hosts.
   4. Nothing personal is committed: her name, voice, photos, school, backups or help-word data.
   5. README.md and SECURITY.md still match the behaviour.
@@ -119,7 +149,9 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 
 ## Pending owner actions
 
-- Add the Andika files to `fonts/` (see fonts/README.md).
+- Phase 5: check that every picture shows on the tablet (emoji are Unicode 6, which Android 5.1 should draw), and note which new activities needed explaining over a week of sessions.
+- Phases 3 and 4: run one full session with her on the tablet. Note stray taps, "what do I do?" moments, help taps and how long it takes (target: at most 2 moments, 10 ± 2 minutes). Does it feel instant? Do the highlights keep up with the voice?
+- Phase 7: supply the voice clips for `tools/clip-list.txt` (an Indian English computer voice; `tools/make-clips.ps1` can make them with Heera on Windows).
+
 - Turn on GitHub Pages from `main` (root), with Enforce HTTPS on.
-- Try Phase 2 on the tablet: every lesson, with her, once.
 - Check whether the tablet's voice sounds female. If not, look in the tablet's text-to-speech settings.
