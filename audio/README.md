@@ -24,7 +24,7 @@ phrases and words in turn. For example, "That says cone." plays as `that-says.mp
    You can use any other computer voice instead: save one MP3 or WAV per line of the list in
    `audio/incoming/`, named as in the list. The `.json` files are optional.
 2. **Import them.** `node tools/import-clips.js` checks the files against the list, converts WAV to MP3 with
-   ffmpeg (needed only for WAV), measures each clip and writes `audio/clips/` and `audio/manifest.js`. Import the
+   ffmpeg (needed only for WAV; on Windows: `winget install Gyan.FFmpeg`, then open a new terminal), measures each clip and writes `audio/clips/` and `audio/manifest.js`. Import the
    whole set each time: clips that aren't in the folder are removed. Missing clips are fine, because the tablet's voice says
    those and shows the caption.
 3. Bump `?v=` in `index.html`, run `npm test`, and commit `audio/clips/` and `audio/manifest.js`.

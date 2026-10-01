@@ -812,7 +812,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   }
 
   // ---------- Voice clips (Phase 7) ----------
-  const clipKeys = new Set(fs.readFileSync(path.join(ROOT, 'tools/clip-list.txt'), 'utf8').split('\n').filter(l => l && l[0] !== '#').map(l => l.split('\t')[0]));
+  const clipKeys = new Set(fs.readFileSync(path.join(ROOT, 'tools/clip-list.txt'), 'utf8').split(/\r?\n/).filter(l => l && l[0] !== '#').map(l => l.split('\t')[0]));
   const missing = await p.evaluate(([texts, keys]) => { const k = new Set(keys); return texts.filter(t => !LR.speech.resolve(t, x => k.has(x))); }, [[...heard].filter(t => !/still being spoken/.test(t)), [...clipKeys]]);
   ok(heard.size > 100 && !missing.length, `everything said in the tests (${heard.size} texts) can be played from tools/clip-list.txt` + (missing.length ? ': ' + missing.slice(0, 30).join(' | ') : ''));
   {

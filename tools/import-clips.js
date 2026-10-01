@@ -19,7 +19,7 @@ const IN = path.resolve(args.find((a, i) => !a.startsWith('--') && i !== outAt +
 const CLIPS = path.join(OUT, 'clips');
 
 /* The list: key <TAB> file name. */
-const list = fs.readFileSync(path.join(__dirname, 'clip-list.txt'), 'utf8').split('\n')
+const list = fs.readFileSync(path.join(__dirname, 'clip-list.txt'), 'utf8').split(/\r?\n/)
   .filter(l => l && l[0] !== '#').map(l => { const [key, file] = l.split('\t'); return { key, file, base: file.replace(/\.mp3$/, '') }; });
 
 /* Length of an MP3 in ms, from its frame headers (MPEG 1, 2 and 2.5, Layer III). */
@@ -51,7 +51,8 @@ for (const c of list) {
   if (have.has(c.base + '.mp3')) fs.copyFileSync(mp3, dest);
   else if (have.has(c.base + '.wav')) {
     const r = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', wav, '-ac', '1', '-ar', '22050', '-b:a', '48k', dest]);
-    if (r.error || r.status !== 0) { console.error('Converting ' + c.base + '.wav needs ffmpeg: ' + (r.error ? r.error.message : r.stderr)); process.exit(1); }
+    if (r.error) { console.error('Converting WAV to MP3 needs ffmpeg on the PATH (Windows: winget install Gyan.FFmpeg, then open a new terminal): ' + r.error.message); process.exit(1); }
+    if (r.status !== 0) { console.error('ffmpeg could not convert ' + c.base + '.wav: ' + r.stderr); process.exit(1); }
     converted++;
   } else { missing.push(c.file); continue; }
   const d = mp3Ms(fs.readFileSync(dest));
