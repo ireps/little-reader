@@ -2,8 +2,8 @@
 line of tools/clip-list.txt, plus <name>.json with the start of each word in ms (for the highlights). Then run:
     node tools/import-clips.js audio/incoming
 
-Setup (once):  pip install edge-tts        (Python 3.8+)
-Run:           python tools/make-clips-neerja.py [--rate -10%] [--voice en-IN-NeerjaNeural] [--out audio/incoming] [--jobs 4]
+Setup (once):  uv venv .venv && uv pip install --python .venv edge-tts   (or pip install edge-tts; Python 3.8+)
+Run:           .venv/Scripts/python tools/make-clips-neerja.py [--rate -10%] [--pitch +15Hz] [--voice en-IN-NeerjaNeural] [--out audio/incoming] [--jobs 4]
 
 It uses Microsoft Edge's online read-aloud voices through the edge-tts package, so it needs the internet while it
 runs (the app itself never does). Dev only; never shipped. Clips already made are skipped, so it can be re-run after
@@ -41,7 +41,7 @@ async def make(key, base, args):
     mp3 = os.path.join(args.out, base + ".mp3")
     tmp = mp3 + ".part"
     times = []
-    comm = edge_tts.Communicate(key, args.voice, rate=args.rate, boundary="WordBoundary")
+    comm = edge_tts.Communicate(key, args.voice, rate=args.rate, pitch=args.pitch, boundary="WordBoundary")
     with open(tmp, "wb") as f:
         async for chunk in comm.stream():
             if chunk["type"] == "audio":
@@ -65,7 +65,8 @@ async def make(key, base, args):
 async def main():
     ap = argparse.ArgumentParser(description="Make the voice clips with Neerja (en-IN).")
     ap.add_argument("--voice", default="en-IN-NeerjaNeural")
-    ap.add_argument("--rate", default="-5%", help="speaking speed, e.g. -10%% or +0%% (the app also has a Speed slider)")
+    ap.add_argument("--rate", default="-10%", help="speaking speed, e.g. -10%% or +0%% (the app also has a Speed slider)")
+    ap.add_argument("--pitch", default="+15Hz", help="voice pitch, e.g. +10Hz (a little higher and slower is clearer for young children)")
     ap.add_argument("--out", default=os.path.join(ROOT, "audio", "incoming"))
     ap.add_argument("--jobs", type=int, default=4, help="clips made at the same time")
     ap.add_argument("--only", nargs="*", help="make just these keys (to try the voice first), e.g. --only \"that says\" come")
@@ -74,7 +75,7 @@ async def main():
 
     todo = [(k, b) for k, b in read_list(os.path.join(ROOT, "tools", "clip-list.txt"))
             if (not args.only or k in args.only) and not os.path.exists(os.path.join(args.out, b + ".mp3"))]
-    print(f"Voice: {args.voice}, rate {args.rate}. {len(todo)} clips to make in {args.out}")
+    print(f"Voice: {args.voice}, rate {args.rate}, pitch {args.pitch}. {len(todo)} clips to make in {args.out}")
     sem = asyncio.Semaphore(max(1, args.jobs))
     failed, done = [], 0
 
@@ -98,7 +99,11 @@ async def main():
     print(f"Made {done} clips.")
     if failed:
         print(f"{len(failed)} failed (run again to retry): " + ", ".join(failed[:10]))
-    print("Next: node tools/import-clips.js " + os.path.relpath(args.out, ROOT).replace(os.sep, "/"))
+    try:
+        out = os.path.relpath(args.out, ROOT)
+    except ValueError:  # another drive on Windows
+        out = args.out
+    print("Next: node tools/import-clips.js " + out.replace(os.sep, "/"))
     return 1 if failed else 0
 
 

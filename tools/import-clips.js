@@ -5,6 +5,7 @@
    Each clip is named as in the second column of tools/clip-list.txt. MP3 is copied as it is; WAV is converted to
    MP3 (96 kbps mono, at the WAV's own sample rate, so the voice stays clear) with ffmpeg (which must then be installed). An optional <name>.json next to a clip holds the start of each
    word in ms ([0, 420, 900]), as tools/make-clips.ps1 writes; without it the app spreads the words evenly.
+   With ffmpeg on the PATH, long silence at the end of a clip is cut to 0.2 s (stream copy, no re-encoding).
    Missing clips are fine: the app says those with the tablet's voice and shows the caption. */
 'use strict';
 const fs = require('fs');
@@ -41,6 +42,25 @@ function mp3Ms(buf){
   return rate ? Math.round(samples * 1000 / rate) : 0;
 }
 
+/* Cuts long silence off the end of a clip (edge-tts adds over a second), keeping TAIL ms, so the app doesn't wait
+   on silence and joined clips flow. Stream copy, so no quality is lost. Skipped quietly without ffmpeg. */
+const TAIL = 200;
+let ffmpeg = true, trimmed = 0;
+function trimEnd(file, ms){
+  if (!ffmpeg) return;
+  const r = spawnSync('ffmpeg', ['-hide_banner', '-i', file, '-af', 'silencedetect=noise=-50dB:d=0.15', '-f', 'null', '-'], { encoding: 'utf8' });
+  if (r.error) { ffmpeg = false; console.warn('ffmpeg not found: silence at the end of clips is kept.'); return; }
+  const starts = [...r.stderr.matchAll(/silence_start: ([\d.]+)/g)].map(m => +m[1] * 1000);
+  const ends = [...r.stderr.matchAll(/silence_end: ([\d.]+)/g)].map(m => +m[1] * 1000);
+  const last = starts[starts.length - 1];
+  // Trailing silence: the last silence has no end, or ends at the end of the file.
+  if (last == null || last <= 0 || (ends.length === starts.length && ends[ends.length - 1] < ms - 30)) return;
+  if (ms - last <= TAIL + 100) return;
+  const tmp = file + '.tmp.mp3';
+  const c = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', file, '-t', ((last + TAIL) / 1000).toFixed(3), '-c', 'copy', tmp]);
+  if (c.status === 0) { fs.renameSync(tmp, file); trimmed++; } else if (fs.existsSync(tmp)) fs.unlinkSync(tmp);
+}
+
 if (!fs.existsSync(IN)) { console.error('No folder ' + IN + ': put the clips there (see audio/README.md).'); process.exit(1); }
 const have = new Set(fs.readdirSync(IN));
 fs.mkdirSync(CLIPS, { recursive: true });
@@ -55,6 +75,7 @@ for (const c of list) {
     if (r.status !== 0) { console.error('ffmpeg could not convert ' + c.base + '.wav: ' + r.stderr); process.exit(1); }
     converted++;
   } else { missing.push(c.file); continue; }
+  trimEnd(dest, mp3Ms(fs.readFileSync(dest)));
   const d = mp3Ms(fs.readFileSync(dest));
   if (!d) { bad.push(c.file); fs.unlinkSync(dest); continue; }
   const entry = { f: c.file, d };
@@ -79,7 +100,7 @@ fs.writeFileSync(path.join(OUT, 'manifest.js'), '/* Voice clips: written by tool
   + 'window.LR = window.LR || {};\nLR.clips = ' + JSON.stringify(manifest, null, 0).replace(/},"/g, '},\n"') + ';\n');
 
 const n = Object.keys(manifest).length;
-console.log(`Imported ${n} of ${list.length} clips` + (converted ? ` (${converted} converted from WAV)` : '') + (removed ? `, removed ${removed} old` : '') + '.');
+console.log(`Imported ${n} of ${list.length} clips` + (converted ? ` (${converted} converted from WAV)` : '') + (trimmed ? `, ${trimmed} with long end silence cut` : '') + (removed ? `, removed ${removed} old` : '') + '.');
 if (missing.length) console.log(`${missing.length} missing (the tablet's voice says these): ${missing.slice(0, 10).join(', ')}${missing.length > 10 ? ', …' : ''}`);
 if (bad.length) console.log(`${bad.length} not readable as MP3, skipped: ${bad.slice(0, 10).join(', ')}`);
 if (extra.length) console.log(`${extra.length} files not in the list, ignored: ${extra.slice(0, 10).join(', ')}`);
