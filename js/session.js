@@ -259,7 +259,7 @@ LR.routes.home = function(){
   var sp = P.growing();
   app.innerHTML = '<div class="s-home"><div class="g-wide">' + LR.garden.svg(n, fresh, false, sp) + '</div><div class="g-tall">' + LR.garden.svg(n, fresh, true, sp) + '</div>'
     + '<div class="s-corner">' + K.hold('grownups', 'lock', 'Grown-ups', 2000, 0, 'small') + '</div>'
-    + '<h1 class="s-title">Little Reader</h1>'
+    + '<h1 class="s-title">' + LR.icons.get('sprout') + 'Little Reader</h1>'
     + (doneToday ? '<p class="s-note">See you tomorrow!</p>' : '')
     + K.target('start', doneToday ? 'Play more' : 'Start', 'play').replace('class="s-target"', 'class="s-target big"')
     + LR.guide.svg(doneToday ? 'happy' : 'waiting') + '</div>';

@@ -245,8 +245,8 @@ input[type=range]{padding:0;border:0}
   background:var(--target);color:var(--ink);border:5px solid var(--target-line);border-bottom-width:10px;border-radius:36px;
   font-size:36px;font-weight:700;cursor:pointer}
 .s-target .ic{width:48px;height:48px;margin-right:14px}
-.s-target.big{min-width:300px;min-height:170px;font-size:48px;border-radius:48px}
-.s-target.big .ic{width:64px;height:64px}
+.s-target.big{min-width:240px;min-height:130px;font-size:40px;border-radius:40px}
+.s-target.big .ic{width:50px;height:50px}
 .s-target.check{min-width:170px;min-height:150px;padding:0}
 .s-target.check .ic{width:80px;height:80px;margin:0}
 /* Quiet controls: never louder than her answers. */
@@ -282,11 +282,13 @@ input[type=range]{padding:0;border:0}
 .s-home .g-wide,.s-home .g-tall{position:absolute;left:0;right:0;bottom:0;height:62%}
 .s-home .g-tall{display:none}
 .s-home .garden{display:block;width:100%;height:100%}
-.s-home .s-title{margin:18px 0 6px;font-size:40px;font-weight:700;color:var(--leaf-deep);position:relative}
+/* The logo and Start are a matched pair: the title as large as Start's height allows, Start no larger than it needs. */
+.s-home .s-title{display:flex;align-items:center;margin:22px 0 6px;font-size:64px;line-height:1.1;font-weight:700;color:var(--leaf-deep);position:relative}
+.s-home .s-title .ic{width:64px;height:64px;margin-right:12px;color:var(--leaf)}
 .s-home .s-target{position:relative;margin-top:12px}
 .s-home .s-corner{position:absolute;right:18px;top:14px}
 .s-home .s-note{position:relative;margin:4px 0 0;font-size:26px;color:var(--muted)}
-.s-home .guide{position:absolute;top:84px;left:calc(50% - 420px);width:220px;height:182px}
+.s-home .guide{position:absolute;top:110px;left:calc(50% - 440px);width:200px;height:165px}
 
 /* Celebration: the garden with today's new flowers. */
 .s-celebrate{width:100%;max-width:900px}
@@ -306,7 +308,7 @@ input[type=range]{padding:0;border:0}
   .s-main .s-cards:not(.s-nums){max-width:600px}
   .s-home .g-wide{display:none}
   .s-home .g-tall{display:block;height:58%}
-  .s-home .guide{top:96px;left:24px;width:190px;height:158px}
+  .s-home .guide{top:120px;left:24px;width:170px;height:140px}
 }
 /* Short landscape (the Fire HD 10 leaves 614 px under Silk's toolbar). */
 @media (max-height:700px) and (min-width:701px){
