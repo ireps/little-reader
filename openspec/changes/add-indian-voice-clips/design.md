@@ -50,6 +50,13 @@
   - removes clips from `audio/clips/` that are no longer in the folder or the list;
   - writes `audio/clips/` and `audio/manifest.js`.
 
+### D2c. Neerja helper (`tools/make-clips-neerja.py`, dev-only, recommended)
+- Heera clips sounded muffled to the owner, even after the format fixes. `make-clips-neerja.py` uses Microsoft's
+  neural **en-IN-NeerjaNeural** voice through the `edge-tts` Python package (online, on the owner's PC only).
+- It writes `audio/incoming/<slug>.mp3` (24 kHz mono MP3, as the service gives it) and `<slug>.json` from the
+  WordBoundary events (offsets in 100 ns units, converted to ms), skips existing clips, retries with backoff, and
+  can make a few clips first (`--only`) for a listening check.
+
 ### D2b. Optional Heera helper (`tools/make-clips.ps1`, dev-only)
 - Runs on the owner's Windows PC with System.Speech and the **Microsoft Heera (en-IN)** voice.
 - For each line of `clip-list.txt` it:

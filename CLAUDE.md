@@ -79,7 +79,8 @@ audio/                   manifest.js (LR.clips, written by tools/import-clips.js
 tools/device-check.html  device test page
 tools/list-clips.js      writes tools/clip-list.txt (npm test fails if it is stale)
 tools/import-clips.js    supplied clips -> audio/clips/ + audio/manifest.js
-tools/make-clips.ps1     Windows helper: Heera en-IN clips with word timings
+tools/make-clips-neerja.py  Neerja (en-IN neural, via edge-tts, online, dev only) clips with word timings: the recommended voice
+tools/make-clips.ps1     Windows helper: Heera en-IN clips with word timings (sounded muffled)
 tools/prototype.html     Phase 4 prototype: every session screen and state from fixtures (dev only)
 tests/run.js             Playwright browser checks (with a speech-engine stand-in)
 tests/screens.js         screenshots of every screen and state (npm run screens)
@@ -163,7 +164,7 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 - Phase 6: check that the ₹ sign shows on the coins, and whether her class teaches = yet (the Equals sign switch).
 - Phase 5: check that every picture shows on the tablet (emoji are Unicode 6, which Android 5.1 should draw), and note which new activities needed explaining over a week of sessions.
 - Phases 3 and 4: run one full session with her on the tablet. Note stray taps, "what do I do?" moments, help taps and how long it takes (target: at most 2 moments, 10 ± 2 minutes). Does it feel instant? Do the highlights keep up with the voice?
-- Phase 7: supply the voice clips for `tools/clip-list.txt` (an Indian English computer voice; `tools/make-clips.ps1` can make them with Heera on Windows), then `node tools/import-clips.js` (see `audio/README.md`).
+- Phase 7: make the voice clips with `python tools/make-clips-neerja.py` (Heera was tried and sounded muffled), then `node tools/import-clips.js`, bump `?v=`, run `npm test` and commit `audio/clips/` and `audio/manifest.js` (see `audio/README.md`).
 - Pace: try Calm (the default) on the tablet; Grown-ups > Pace has Normal and Quick.
 
 - Turn on GitHub Pages from `main` (root), with Enforce HTTPS on.
