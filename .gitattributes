@@ -1,0 +1,3 @@
+# Generated lists stay LF on every system, so the clip tools read the same file names on Windows
+tools/clip-list.txt text eol=lf
+audio/manifest.js text eol=lf

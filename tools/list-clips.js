@@ -96,7 +96,7 @@ const text = '# Voice clips for Little Reader: key <TAB> file name. Made by tool
   + lines.join('\n') + '\n';
 
 if (process.argv.includes('--check')) {
-  const now = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
+  const now = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8').replace(/\r\n/g, '\n') : '';
   if (now !== text) { console.error('tools/clip-list.txt is out of date: run node tools/list-clips.js'); process.exit(1); }
   console.log('tools/clip-list.txt is up to date (' + lines.length + ' clips)');
 } else {
