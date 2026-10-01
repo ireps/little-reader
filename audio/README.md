@@ -13,7 +13,20 @@ phrases and words in turn. For example, "That says cone." plays as `that-says.mp
 
 ## Making and importing clips
 
-1. **Make them.** On Windows with the English (India) voice "Heera" installed (Settings > Time & language >
+1. **Make them with Neerja (recommended).** Neerja is Microsoft's neural Indian English female voice and sounds much
+   clearer than Heera. You need Python 3.8+ and an internet connection while the clips are being made:
+
+   ```
+   pip install edge-tts
+   python tools/make-clips-neerja.py --only "that says" come     # try two clips first and listen to them
+   python tools/make-clips-neerja.py                             # then all of them (a few minutes)
+   ```
+
+   This writes `audio/incoming/<name>.mp3` and `<name>.json`. `--rate -10%` slows the voice down. First empty
+   `audio/incoming/` of any older clips. It uses Edge's online read-aloud voices through the `edge-tts` package; the
+   app itself never goes online.
+
+   **Or with Heera.** On Windows with the English (India) voice "Heera" installed (Settings > Time & language >
    Speech > Add voices), run from the repo folder:
 
    ```

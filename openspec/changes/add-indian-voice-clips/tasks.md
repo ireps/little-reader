@@ -10,6 +10,7 @@
 
 - [x] 2.1 `tools/import-clips.js`: check supplied files against `clip-list.txt`, convert WAV, read durations and timings, write `audio/clips/` and `audio/manifest.js`
 - [x] 2.2 Optional `tools/make-clips.ps1` helper for Heera en-IN with SpeakProgress timings
+- [x] 2.2b `tools/make-clips-neerja.py`: Neerja (en-IN neural) via edge-tts with WordBoundary timings (Heera sounded muffled)
 - [x] 2.3 `audio/README.md`: how to supply clips, file naming, and how to add a string
 - [ ] 2.4 Owner supplies the clips; import and commit them
 - [x] 2.5 Load `audio/manifest.js` in `index.html` before `js/speech.js`

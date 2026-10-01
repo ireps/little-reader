@@ -56,7 +56,7 @@ Never commit:
 - backup files (`*.littlereader.json` is in `.gitignore`)
 - progress data from the tablet
 
-Voice clips are generated from a computer voice (see `audio/README.md`). No one's voice is recorded. Clips load only from the site's own `audio/clips/` folder.
+Voice clips are generated from a computer voice (see `audio/README.md`); the clip tool sends only the app's built-in phrases to Microsoft's read-aloud service, on a developer's computer, and the app itself never goes online. No one's voice is recorded. Clips load only from the site's own `audio/clips/` folder.
 
 ## Account
 

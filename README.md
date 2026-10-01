@@ -117,6 +117,7 @@ data/phrases.js          everything the app says besides the course (for the cli
 audio/                   manifest.js and clips/ (voice clips, once supplied); README.md says how
 tools/list-clips.js      makes tools/clip-list.txt, the clips the app can need
 tools/import-clips.js    checks supplied clips and writes audio/clips/ and audio/manifest.js
+tools/make-clips-neerja.py  makes the clips with Microsoft's neural en-IN voice Neerja (recommended)
 tools/make-clips.ps1     makes the clips with a Windows computer voice (Heera, en-IN)
 tools/device-check.html  Phase 0 test page
 tools/prototype.html     Phase 4 prototype, every session screen (npm run prototype)
