@@ -24,19 +24,54 @@ function crocItems(n){
   }
   return out;
 }
+/* Sounds and words: each word gets the activity that fits how well she knows it. Box 0-1: Build it or Picture match
+   (matching sounds to letters); box 2 or more: Flash or Find it (reading at a glance). Tricky words use Find it or Flash. */
+function wordItem(w, i){
+  var r = LR.state.items[P.wid(w)], b = r ? r.b : 0;
+  if (b <= 1 && !LR.words.isTricky(w)) return { t:LR.pictures[w] && i % 2 ? 'pic' : 'build', w:w };
+  return { t:i % 2 ? 'flash' : 'find', w:w };
+}
+/* No activity more than 3 times in a row (unless there is nothing else to swap in). */
+function noRuns(items){
+  for (var i = 3; i < items.length; i++) {
+    var t = items[i].t;
+    if (items[i - 1].t !== t || items[i - 2].t !== t || items[i - 3].t !== t) continue;
+    for (var j = i + 1; j < items.length; j++) if (items[j].t !== t) { var x = items[i]; items[i] = items[j]; items[j] = x; break; }
+  }
+  return items;
+}
+/* One language task a day, in turn: rhyme, a or an, one or many, where is it, capital letters. */
+function langItem(){
+  var L = LR.lang, kind = ['rhyme', 'an', 'plural', 'pos', 'caps'][LR.state.days.length % 5];
+  if (kind === 'rhyme') return { t:'rhyme', k:U.rand(L.rhymes.length) };
+  if (kind === 'an') { var list = U.rand(2) ? L.an : L.a; return { t:'an', w:list[U.rand(list.length)] }; }
+  if (kind === 'plural') return { t:'plural', w:L.plural[U.rand(L.plural.length)], many:!!U.rand(2) };
+  if (kind === 'pos') return { t:'pos', p:['in', 'on', 'under'][U.rand(3)] };
+  var caps = [];
+  P.unit().stories.forEach(function(st){ st.s.forEach(function(s, i){ if (LR.steps.caps.ok(s)) caps.push({ t:'caps', story:st.id, i:i }); }); });
+  return caps.length ? caps[U.rand(caps.length)] : { t:'pos', p:'in' };
+}
+function sillyItems(n){
+  var u = P.unit(), ks = (u.silly || []).map(function(x, k){ return k; });
+  return U.shuffle(ks).slice(0, n).map(function(k){ return { t:'silly', u:u.id, k:k }; });
+}
 function plan(mode, only){
   var t = P.today(), steps = [];
   function add(id, items){ if (items.length || id === 'garden') steps.push({ id:id, items:items }); }
   var words = mode === 'extra' ? P.planExtra(8) : P.planWords(10);
-  if (!only || only === 'words') add('words', words.map(function(w){ return { t:'find', w:w }; }));
+  var wordItems = words.map(function(w, i){ return mode === 'extra' ? { t:i % 2 ? 'flash' : 'find', w:w } : wordItem(w, i); });
+  if (mode !== 'extra' && wordItems.length) wordItems.push(langItem());
+  if (!only || only === 'words') add('words', noRuns(wordItems));
   if (mode === 'day' || only === 'tricky') {
     var tricky = P.newTricky();
     if (only === 'tricky' && !tricky.length) tricky = P.unit().tricky.slice(0, 1);
     if (!only || only === 'tricky') add('tricky', tricky.map(function(w){ return { t:'tricky', w:w }; }));
   }
+  if (mode === 'day' || only === 'silly') { if (!only || only === 'silly') add('silly', sillyItems(3)); }
   if (mode === 'day' || only === 'read') {
     var story = P.nextStory();
-    if (!only || only === 'read') add('read', story.s.map(function(s, i){ return { t:'read', story:story.id, i:i }; }));
+    if (!only || only === 'read') add('read', story.s.map(function(s, i){ return { t:'read', story:story.id, i:i }; })
+      .concat((story.q || []).slice(0, 2).map(function(q, k){ return { t:'q', story:story.id, k:k }; })));
   }
   if (mode === 'day' || only === 'maths') { if (!only || only === 'maths') add('maths', crocItems(4)); }
   if (mode !== 'practice') add('garden', []);
@@ -241,7 +276,7 @@ function start(mode, only){
   run();
 }
 LR.routes.session = function(){ document.title = 'Little Reader'; start('day'); };
-['words', 'tricky', 'read', 'maths'].forEach(function(id){
+['words', 'tricky', 'silly', 'read', 'maths'].forEach(function(id){
   LR.routes['practice-' + id] = function(){ document.title = 'Practise – Little Reader'; start('practice', id); };
 });
 

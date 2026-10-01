@@ -347,3 +347,47 @@ input[type=range]{padding:0;border:0}
 .s-nums .s-num{min-height:0;padding:6px 18px 12px}
 .s-nums .s-num .n{font-size:84px}
 .s-nums{flex-wrap:nowrap}
+
+/* ---------- Phase 5: sound buttons, pictures, Build it, thumbs, scenes ---------- */
+/* Sound buttons (Oxford style): a dot under a one-letter sound, a dash under a longer one. */
+.s-sw{display:inline-flex;align-items:flex-start;padding-bottom:34px}
+.s-sw .g{position:relative;display:inline-flex;margin:0 .04em}
+.sb{position:absolute;left:50%;bottom:-.32em;transform:translateX(-50%);display:block;background:var(--ink)}
+.sb.dot{width:.13em;height:.13em;border-radius:50%}
+.sb.dash{width:70%;height:.08em;border-radius:.04em}
+.s-sw.fb-right{background:var(--right);border-bottom-color:var(--leaf)}
+/* Pictures (emoji up to Unicode 6). */
+.s-picimg{font-size:84px;line-height:1.15;letter-spacing:.06em}
+.s-picword{font-size:44px}
+.s-pic{min-width:200px;min-height:150px;display:inline-flex;align-items:center;justify-content:center}
+.s-main > .s-row > .s-picimg{font-size:96px}
+.s-answer{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;min-width:200px;min-height:150px;font-size:44px}
+.s-answer .s-picimg{font-size:64px}
+.s-word-card{min-width:180px;font-size:72px}
+.s-blank{text-align:center;font-size:60px;padding:10px 36px}
+.s-gap{display:inline-block;min-width:1.4em;border-bottom:6px solid var(--line);text-align:center;color:var(--leaf-deep)}
+/* Build it: slots for the sounds, tiles to tap. */
+.s-slots{display:flex;justify-content:center;margin:6px 0 14px}
+.s-slot{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:120px;height:130px;margin:0 6px;padding:0 10px 16px;
+  background:var(--paper);border:4px dashed var(--line);border-radius:24px;font-size:76px;line-height:1}
+.s-slot.full{border-style:solid;border-color:var(--leaf);background:var(--right)}
+.s-slot.next{border-color:var(--ink)}
+.s-slot .sb{bottom:14px;font-size:76px}
+.s-tile{position:relative;min-width:120px;min-height:120px;margin:6px;padding:0 16px;background:var(--paper);border:4px solid var(--line);border-bottom-width:10px;
+  border-radius:24px;font-size:64px;line-height:1;cursor:pointer}
+.s-tray{flex-wrap:wrap}
+/* Silly sentences: thumbs up and down. */
+.s-thumb{min-width:170px;min-height:150px;display:inline-flex;align-items:center;justify-content:center;color:var(--leaf-deep)}
+.s-thumb .ic{width:80px;height:80px}
+.s-thumb.down .ic{transform:rotate(180deg)}
+/* In, on, under. */
+.s-scene{width:170px;height:136px;display:block}
+.s-flash .s-word{font-size:130px}
+@media (max-height:700px) and (min-width:701px){
+  .s-picimg{font-size:70px}
+  .s-pic,.s-answer{min-height:130px}
+  .s-slot{height:116px;font-size:66px}
+  .s-tile{font-size:56px}
+  .s-scene{width:150px;height:120px}
+  .s-sw{padding-bottom:28px}
+}

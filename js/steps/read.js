@@ -1,5 +1,5 @@
 /* Read with me: she reads a sentence aloud to her grown-up. Nothing is read to her first.
-   A tap on a word says it and marks it (she stumbled). The tick plays the sentence, words lit, then moves on.
+   A tap on a word gets the help ladder (a hint, then the word) and marks it (she stumbled). The tick plays the sentence, words lit, then moves on.
    "Not today" (a 2 s hold, for the grown-up) ends the step; the story is offered first next time. */
 (function(){
 'use strict';
@@ -21,7 +21,7 @@ LR.steps.read = {
     var story = storyOf(item.story);
     if (!story || !story.s[item.i]) { ctx.done(true, false); return; }
     var s = story.s[item.i];
-    cur = { s:s, story:story, playing:false, helped:{} };
+    cur = { s:s, story:story, playing:false, help:{}, last:item.i === story.s.length - 1 };
     ctx.screen({ pose:'listening', main:K.sentence(s, { mastered:mastered(s) })
       + '<div class="s-row">' + K.target('check', '', 'check', ' aria-label="I read it" disabled').replace('class="s-target"', 'class="s-target check off"')
       + '<div class="s-skip">' + K.hold('skip', 'skip', 'Not today', 2000, 0, 'small') + '<span>Not today</span></div></div>' });
@@ -34,14 +34,8 @@ LR.steps.read = {
     });
   },
   tap:function(el, act, ctx){
-    if (act === 'w') {
-      if (cur.playing) return;
-      var w = el.getAttribute('data-w'), k = U.clean(w);
-      el.classList.add('helped');
-      if (!cur.helped[k]) { cur.helped[k] = 1; P.miss(P.wid(k)); LR.store.save(); }
-      U.sayWord(el, w);
-      return;
-    }
+    /* The grown-up taps a word she stumbles on: first a hint, then the word (the help ladder). */
+    if (act === 'w') { if (!cur.playing) LR.help(el, cur.help); return; }
     if (act !== 'check' || cur.playing) return;
     cur.playing = true;
     U.stopAll();
@@ -54,7 +48,7 @@ LR.steps.read = {
     S.say(cur.s, { parts:words, onWord:function(i){ if (ctx.live()) light(i); } }).then(function(){
       if (!ctx.live()) return;
       light(-1);
-      if (ctx.last) { LR.state.stories[cur.story.id] = P.today(); LR.store.save(); }
+      if (cur.last) { LR.state.stories[cur.story.id] = P.today(); LR.store.save(); }
       ctx.done(true, false);
     });
   }

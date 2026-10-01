@@ -49,7 +49,7 @@ function miss(id){
 function growing(){ var it = items(); return Object.keys(it).filter(function(id){ return it[id].b >= 1 && it[id].b <= 2; }).length; }
 function isMastered(w){ var r = items()[wid(w)]; return !!r && r.b >= 3; }
 
-function unitById(id){ for (var i = 0; i < LR.units.length; i++) if (LR.units[i].id === id) return LR.units[i]; return LR.units[0]; }
+function unitById(id){ for (var i = 0; i < LR.units.length; i++) if (LR.units[i].id === id) return LR.units[i]; return unitById.start || (unitById.start = LR.units.filter(function(u){ return u.id === LR.startUnit; })[0] || LR.units[0]); }
 function unit(){ return unitById(LR.state.unit); }
 
 /* Sounds and words: due words, about 1 weak (box 0-1) for every 3 known (box 2+), plus up to 3 new unit words.
@@ -110,9 +110,17 @@ function nextStory(){
 }
 
 /* The next unit opens when every word and tricky word of this one is mastered. */
+/* The next unit opens when every word and tricky word of this one is mastered, and (if it has silly sentences)
+   she has answered at least 5 of them with 80% right first time. */
 function unitDone(){
-  var it = items(), u = unit();
-  return u.words.concat(u.tricky).every(function(w){ var r = it[wid(w)]; return r && r.b >= 3; });
+  var it = items(), u = unit(), sil = (LR.state.silly || {})[u.id];
+  var words = u.words.concat(u.tricky).every(function(w){ var r = it[wid(w)]; return r && r.b >= 3; });
+  var silly = !(u.silly && u.silly.length) || (!!sil && sil[0] >= 5 && sil[1] / sil[0] >= 0.8);
+  return words && silly;
+}
+function sillyResult(unitId, first){
+  var s = LR.state.silly || (LR.state.silly = {}), v = s[unitId] || [0, 0];
+  s[unitId] = [Math.min(9999, v[0] + 1), Math.min(9999, v[1] + (first ? 1 : 0))];
 }
 function advance(){
   if (!unitDone()) return false;
@@ -132,6 +140,6 @@ function recordDay(n, r, mins){
 LR.progress = {
   INTERVALS:INTERVALS, localDate:localDate, today:today, addDays:addDays, ensure:ensure, right:right, miss:miss, isMastered:isMastered,
   unit:unit, unitById:unitById, planWords:planWords, planExtra:planExtra, newTricky:newTricky, newTrickyCount:newTrickyCount,
-  lastAccuracy:lastAccuracy, growing:growing, nextStory:nextStory, unitDone:unitDone, advance:advance, recordDay:recordDay, wid:wid
+  lastAccuracy:lastAccuracy, growing:growing, sillyResult:sillyResult, nextStory:nextStory, unitDone:unitDone, advance:advance, recordDay:recordDay, wid:wid
 };
 })();

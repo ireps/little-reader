@@ -18,7 +18,7 @@ function isInt(n, lo, hi){ return typeof n === 'number' && n % 1 === 0 && n >= l
 function keys(o, max){ return Object.keys(o).slice(0, max); }
 
 function blank(){
-  return { schema:SCHEMA, unit:LR.units[0].id, items:{}, flowers:[], confusions:{}, stories:{}, resume:null, days:[], rate:0.9, last:'' };
+  return { schema:SCHEMA, unit:LR.startUnit || LR.units[0].id, items:{}, flowers:[], confusions:{}, stories:{}, silly:{}, resume:null, days:[], rate:0.9, last:'' };
 }
 
 /* confusions: { target: { word she picked instead: count } } */
@@ -38,10 +38,17 @@ function cleanConfusions(c){
 }
 
 /* One item of today's plan. Anything unexpected is dropped. */
+var WORD_TYPES = ['find', 'flash', 'pic', 'build', 'tricky', 'an'];
+function isId(x){ return typeof x === 'string' && /^[a-z0-9-]{1,20}$/.test(x); }
 function cleanItem(it){
   if (!isObj(it)) return null;
-  if ((it.t === 'find' || it.t === 'tricky') && typeof it.w === 'string' && cleanWord(it.w)) return { t:it.t, w:cleanWord(it.w) };
-  if (it.t === 'read' && typeof it.story === 'string' && /^[a-z0-9-]{1,20}$/.test(it.story) && isInt(it.i, 0, 20)) return { t:'read', story:it.story, i:it.i };
+  if (WORD_TYPES.indexOf(it.t) > -1 && typeof it.w === 'string' && cleanWord(it.w)) return { t:it.t, w:cleanWord(it.w) };
+  if (it.t === 'plural' && typeof it.w === 'string' && cleanWord(it.w)) return { t:'plural', w:cleanWord(it.w), many:it.many === true };
+  if ((it.t === 'read' || it.t === 'caps') && isId(it.story) && isInt(it.i, 0, 20)) return { t:it.t, story:it.story, i:it.i };
+  if (it.t === 'q' && isId(it.story) && isInt(it.k, 0, 5)) return { t:'q', story:it.story, k:it.k };
+  if (it.t === 'silly' && isId(it.u) && isInt(it.k, 0, 20)) return { t:'silly', u:it.u, k:it.k };
+  if (it.t === 'rhyme' && isInt(it.k, 0, 50)) return { t:'rhyme', k:it.k };
+  if (it.t === 'pos' && (it.p === 'in' || it.p === 'on' || it.p === 'under')) return { t:'pos', p:it.p };
   if (it.t === 'croc' && isInt(it.a, 0, 20) && isInt(it.b, 0, 20) && it.a !== it.b && (it.m === 'more' || it.m === 'mouth')) return { t:'croc', a:it.a, b:it.b, m:it.m };
   return null;
 }
@@ -79,6 +86,11 @@ function validate(s){
   out.confusions = cleanConfusions(s.confusions);
   if (isObj(s.stories)) keys(s.stories, MAX_STORIES).forEach(function(id){
     if (/^[a-z0-9-]{1,20}$/.test(id) && isDate(s.stories[id])) out.stories[id] = s.stories[id];
+  });
+  /* Silly-sentence accuracy per unit: [answered, right first time]. */
+  if (isObj(s.silly)) keys(s.silly, 100).forEach(function(u){
+    var v = s.silly[u];
+    if (isId(u) && Array.isArray(v) && isInt(v[0], 0, 9999) && isInt(v[1], 0, 9999) && v[1] <= v[0]) out.silly[u] = [v[0], v[1]];
   });
   out.resume = cleanResume(s.resume);
   if (Array.isArray(s.days)) out.days = s.days.filter(function(d){

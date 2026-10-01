@@ -55,6 +55,32 @@ kit.card = function(word, state, act){
     + (state ? ' disabled' : '') + '>' + LR.ui.lettersHTML(word, true) + mark + '</button>';
 };
 
+/* A word with Oxford-style sound buttons: a dot under each one-letter sound, a dash under each longer one
+   (a split digraph like a_e gets a dash under both of its letters). Heart letters keep their hearts. */
+kit.soundWord = function(word, cls){
+  var parts = LR.words.segment(word) || word.split(''), hearts = LR.words.heartsFor(word), out = '', pos = 0, tail = '';
+  parts.forEach(function(g){
+    var split = /_e$/.test(g), text = split ? g.charAt(0) : g, mark = text.length > 1 || split ? 'dash' : 'dot';
+    var letters = '';
+    for (var i = 0; i < text.length; i++, pos++) letters += '<span class="l' + (hearts.indexOf(pos) > -1 ? ' h' : '') + '">' + esc(text.charAt(i)) + '</span>';
+    out += '<span class="g">' + letters + '<i class="sb ' + mark + '"></i></span>';
+    if (split) tail = '<span class="g"><span class="l' + (hearts.indexOf(word.length - 1) > -1 ? ' h' : '') + '">e</span><i class="sb dash"></i></span>';
+  });
+  return '<div class="s-word s-sw' + (cls ? ' ' + cls : '') + '">' + out + tail + '</div>';
+};
+/* A picture for a word (emoji up to Unicode 6), or the word itself if there is none. */
+kit.pic = function(word, n){
+  var e = LR.pictures[word];
+  if (!e) return '<span class="s-picword">' + esc(word) + '</span>';
+  var s = '';
+  for (var i = 0; i < (n || 1); i++) s += e;
+  return '<span class="s-picimg" role="img" aria-label="' + esc(word) + '">' + s + '</span>';
+};
+/* A picture answer card. */
+kit.picCard = function(word, act, n, label){
+  return '<button class="s-card s-pic" data-act="' + esc(act || 'pick') + '" data-w="' + esc(label || word) + '" aria-label="' + esc(label || word) + '">' + kit.pic(word, n) + '</button>';
+};
+
 /* A big word with its heart letters. lit: index of a letter to light, or -1. */
 kit.word = function(word, lit){
   var html = LR.ui.lettersHTML(word);

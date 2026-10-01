@@ -51,6 +51,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
     Object.defineProperty(window, 'speechSynthesis', { value: synth, configurable: true });
     window.SpeechSynthesisUtterance = Utterance;
   });
+  await p.addInitScript(() => { window.addEventListener('DOMContentLoaded', () => { if (window.LR && LR.steps && LR.steps.flash) LR.steps.flash.SHOW_MS = 150; }); });
   const said = () => p.evaluate(() => __tts.calls.map(c => c.text).filter(t => t.trim()));
   const clearSaid = () => p.evaluate(() => { __tts.calls.length = 0; });
   const touch = () => p.mouse.click(640, 5);
@@ -79,8 +80,32 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
       if (it.m === 'more') await p.click(`[data-act=num][data-side="${it.a > it.b ? 'a' : 'b'}"]`);
       else await p.click(`[data-act=sym][data-s="${it.a > it.b ? '>' : '<'}"]`);
     }
+    else if (it.t === 'flash') { await p.waitForSelector('.s-card'); await p.click(`.s-card[data-w="${it.w}"]`); }
+    else if (it.t === 'pic') await p.click(`.s-pic[data-w="${it.w}"]`);
+    else if (it.t === 'build') {
+      for (const g of await p.evaluate(w => LR.words.segment(w) || w.split(''), it.w)) {
+        const label = /_e$/.test(g) ? g.charAt(0) + '–e' : g;
+        await p.evaluate(l => [...document.querySelectorAll('.s-tile')].find(t => t.textContent === l).click(), label);
+      }
+    }
+    else if (it.t === 'silly') { const ok = await p.evaluate(i => LR.units.find(u => u.id === i.u).silly[i.k].ok, it); await p.click(`.s-thumb[data-ok="${ok}"]`); }
+    else if (it.t === 'rhyme') await p.click(`.s-pic[data-w="${await p.evaluate(k => LR.lang.rhymes[k][1], it.k)}"]`);
+    else if (it.t === 'an') await p.click(`.s-word-card[data-w="${/^[aeiou]/.test(it.w) ? 'an' : 'a'}"]`);
+    else if (it.t === 'plural') await p.click(`.s-pic[data-n="${it.many ? 3 : 1}"]`);
+    else if (it.t === 'pos') await p.click(`.s-pic[data-p="${it.p}"]`);
+    else if (it.t === 'caps') await p.click('.s-sentence .w');
+    else if (it.t === 'q') { const a = await p.evaluate(i => { let f; LR.units.forEach(u => u.stories.forEach(s => { if (s.id === i.story) f = s.q[i.k].a; })); return f; }, it); await p.click(`.s-answer[data-w="${a}"]`); }
     await waitAt(c.at);
     return c;
+  };
+  /* Puts one item in today's plan and opens it, to test an activity on its own. */
+  const only = async (it, step) => {
+    await p.goto(U + '#home');
+    await p.evaluate(([it, step]) => {
+      LR.state.resume = { date: LR.progress.today(), steps: [{ id: step || 'words', items: [it, { t: 'find', w: 'come' }] }], at: [0, 0], done: false, started: Date.now(), fresh: 0, right: 0, answered: 0, mode: 'day' };
+      LR.store.save();
+    }, [it, step]);
+    await p.reload(); await touch(); await p.click('[data-act=start]'); await p.waitForTimeout(60);
   };
   const d = (s, n) => p.evaluate(([s, n]) => LR.progress.addDays(s, n), [s, n]);
 
@@ -104,8 +129,8 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
     kinds.push(c.step);
   }
   const order = kinds.filter((k, i) => k !== kinds[i - 1]);
-  ok(order.join(',') === 'words,tricky,read,maths,garden', 'a session runs its steps in order: ' + order.join(','));
-  ok(path1.length === 5 && /now/.test(path1[0]), 'the path shows the steps, the first one now: ' + path1.join(' / '));
+  ok(order.join(',') === 'words,tricky,silly,read,maths,garden', 'a session runs its steps in order: ' + order.join(','));
+  ok(path1.length === 6 && /now/.test(path1[0]), 'the path shows the steps, the first one now: ' + path1.join(' / '));
   ok(await p.evaluate(() => location.hash) === '#home', 'the session ends back at Home, using answer taps only');
   const day = await p.evaluate(() => LR.state.days.slice(-1)[0]);
   ok(day && day.n >= 6 && day.r === day.n, 'the day is recorded with first-try accuracy: ' + JSON.stringify(day));
@@ -154,7 +179,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   // ---------- New tricky word ----------
   /* All of unit 1's words are known and not due, so nothing is reviewed today. */
   const later = await d(t0, 5), unitWords = {};
-  for (const w of await p.evaluate(() => LR.units[0].words)) unitWords['w:' + w] = { b: 2, d: later };
+  for (const w of await p.evaluate(() => LR.progress.unitById('p4-01').words)) unitWords['w:' + w] = { b: 2, d: later };
   await seed(s2(Object.assign({ 'w:come': { b: 2, d: later } }, unitWords))); await startSession();
   c = await item();
   ok(c.step === 'tricky' && c.it.w === 'said', 'with nothing due, the session starts with the new tricky word: ' + JSON.stringify(c));
@@ -171,6 +196,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   // ---------- Read with me ----------
   await seed(s2(Object.assign({ 'w:come': { b: 2, d: later }, 'w:said': { b: 2, d: later }, 'w:like': { b: 2, d: later }, 'w:the': { b: 3, d: later } }, unitWords)));
   await startSession();
+  while ((await item()).step !== 'read') await answer();
   c = await item();
   ok(c.step === 'read', 'Read with me: ' + JSON.stringify(c));
   await clearSaid();
@@ -265,7 +291,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
     LR.state.items = {};
     ['aa', 'bb'].forEach(w => LR.state.items['w:' + w] = { b: 0, d: t, u: '', m: 0 });
     ['cc', 'dd', 'ee', 'ff', 'gg', 'hh'].forEach(w => LR.state.items['w:' + w] = { b: 2, d: t, u: '', m: 0 });
-    LR.state.unit = 'p4-04'; LR.units[3].words.forEach(w => LR.state.items['w:' + w] = { b: 3, d: P.addDays(t, 3), u: '', m: 0 });
+    LR.state.unit = 'p4-04'; P.unitById('p4-04').words.forEach(w => LR.state.items['w:' + w] = { b: 3, d: P.addDays(t, 3), u: '', m: 0 });
     const plan = P.planWords(10).map(w => LR.state.items['w:' + w].b);
     out.plan = plan.join('');
     out.ratio = plan.slice(0, 4).filter(x => x <= 1).length === 1 && plan.filter(x => x <= 1).length <= Math.ceil(plan.length / 4) + 1;
@@ -284,15 +310,19 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   });
   ok(pace === '2,1,0', 'new tricky words per day follow yesterday\'s accuracy (75%, 45%, 35%): ' + pace);
   const adv = await p.evaluate(() => {
-    const P = LR.progress, t = P.today(), u = LR.units[0];
+    const P = LR.progress, t = P.today(), u = P.unitById('p4-01');
     LR.state.unit = u.id;
     u.words.concat(u.tricky).forEach(w => LR.state.items['w:' + w] = { b: 3, d: t, u: '', m: 0 });
     LR.state.items['w:jump'].b = 2;
+    LR.state.silly = { 'p4-01': [5, 5] };
     const before = P.advance();
     LR.state.items['w:jump'].b = 3;
-    return [before, P.advance(), LR.state.unit].join();
+    LR.state.silly = { 'p4-01': [5, 3] };
+    const lowSilly = P.advance();
+    LR.state.silly = { 'p4-01': [5, 4] };
+    return [before, lowSilly, P.advance(), LR.state.unit].join();
   });
-  ok(adv === 'false,true,p4-02', 'the next unit opens only when every word of the unit is mastered: ' + adv);
+  ok(adv === 'false,false,true,p4-02', 'the next unit opens only when every word is mastered and silly sentences are 80% right: ' + adv);
 
   // ---------- Storage and migration ----------
   await p.goto(U + '#home');
@@ -336,7 +366,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   ok((await p.textContent('#msg')).length > 0 && !(await p.$('.gp')), 'a wrong answer keeps Grown-ups shut');
   await openGrownups();
   ok(!!(await p.$('.gp')), 'the right answer opens Grown-ups');
-  ok((await p.textContent('.gp')).includes('Unit 1 of 4'), 'Grown-ups shows her unit');
+  ok((await p.textContent('.gp')).includes('Unit 4 of 21'), 'Grown-ups shows her unit (p4-01 is unit 4 of 21)');
   ok(await p.$$eval('.gp textarea, .gp input[type=text]', x => x.length) === 0, 'Grown-ups has no typing boxes');
   // Where is she?
   await p.evaluate(() => { LR.state.resume = { date: LR.progress.today(), steps: [{ id: 'words', items: [{ t: 'find', w: 'come' }] }], at: [0, 0], done: false, started: Date.now(), fresh: 0, right: 0, answered: 0, mode: 'day' }; });
@@ -413,6 +443,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   // No fixed waits, double taps count once, no stalls
   await p.waitForFunction(() => LR.state.resume.at[1] === 1, null, { timeout: 5000 });
   const w2 = await p.evaluate(() => LR.session.ctx.item.w);
+  await p.waitForSelector(`.s-card[data-w="${w2}"]`);
   const tNext = await p.evaluate(async w => {
     const t0 = performance.now(), el = document.querySelector(`.s-card[data-w="${w}"]`); el.click(); el.click();
     while (LR.state.resume.at[1] !== 2) await new Promise(r => setTimeout(r, 5));
@@ -422,6 +453,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   ok((await said()).filter(x => x === 'Yes! ' + w2).length === 1, 'a double tap on the right answer counts once');
   await p.evaluate(() => { __tts.never = true; });
   const w3 = await p.evaluate(() => LR.session.ctx.item.w);
+  await p.waitForSelector(`.s-card[data-w="${w3}"]`);
   await p.click(`.s-card[data-w="${w3}"]`);
   const moved = await p.waitForFunction(() => LR.state.resume.at[1] === 3 || LR.state.resume.at[0] > 0, null, { timeout: 6000 }).then(() => true, () => false);
   ok(moved, 'when speech never ends, the session still moves on');
@@ -447,7 +479,8 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
         }).filter(Boolean);
         const root = document.querySelector('.s-screen, .s-home');
         return { small, scroll: document.documentElement.scrollHeight, targets: document.querySelectorAll('#app .s-target:not(.off)').length,
-          emoji: [...document.querySelectorAll('#app button, #app a, #app .s-path')].map(e => e.textContent).filter(t => /\p{Extended_Pictographic}/u.test(t)),
+          /* Interface text only: content pictures (.s-picimg) are allowed emoji. */
+          emoji: [...document.querySelectorAll('#app button, #app a, #app .s-path')].map(e => { const c = e.cloneNode(true); c.querySelectorAll('.s-picimg').forEach(x => x.remove()); return c.textContent; }).filter(t => /\p{Extended_Pictographic}/u.test(t)),
           used: root ? root.getBoundingClientRect().height / innerHeight : 0 };
       });
       if (m.small.length) bad.push(name + ': ' + m.small.join(' '));
@@ -477,7 +510,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
 
   // Andika is loaded and used for reading text
   await seed(); await startSession();
-  const font = await p.evaluate(async () => { await document.fonts.ready; return { loaded: [...document.fonts].some(f => /Andika/.test(f.family) && f.status === 'loaded'), family: getComputedStyle(document.querySelector('.s-card')).fontFamily }; });
+  const font = await p.evaluate(async () => { await document.fonts.ready; return { loaded: [...document.fonts].some(f => /Andika/.test(f.family) && f.status === 'loaded'), family: getComputedStyle(document.querySelector('.s-main .s-card, .s-main .s-tile, .s-main .s-word')).fontFamily }; });
   ok(font.loaded && /^"?Andika/.test(font.family), 'Andika is loaded and used: ' + font.family);
 
   ok([...hosts].every(h => h.startsWith('localhost')), 'no requests leave the site: ' + [...hosts].join(', '));
