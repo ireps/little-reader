@@ -4,7 +4,10 @@
 1	1.mp3
 10	10.mp3
 100	100.mp3
+102	102.mp3
+105	105.mp3
 11	11.mp3
+110	110.mp3
 12	12.mp3
 13	13.mp3
 14	14.mp3
@@ -102,7 +105,12 @@
 98	98.mp3
 99	99.mp3
 a	a.mp3
+a ball is a sphere	a-ball-is-a-sphere.mp3
+a ball is like which shape	a-ball-is-like-which-shape.mp3
+a battery is a cylinder	a-battery-is-a-cylinder.mp3
+a battery is like which shape	a-battery-is-like-which-shape.mp3
 a bed is eating lunch	a-bed-is-eating-lunch.mp3
+a bee can buzz	a-bee-can-buzz.mp3
 a bell	a-bell.mp3
 a bench	a-bench.mp3
 a bench can munch lunch	a-bench-can-munch-lunch.mp3
@@ -118,6 +126,8 @@ a bone	a-bone.mp3
 a book	a-book.mp3
 a box	a-box.mp3
 a box drops	a-box-drops.mp3
+a box is a cube	a-box-is-a-cube.mp3
+a box is like which shape	a-box-is-like-which-shape.mp3
 a boy had a toy bird	a-boy-had-a-toy-bird.mp3
 a boy is a bird	a-boy-is-a-bird.mp3
 a brick is softer than a cat	a-brick-is-softer-than-a-cat.mp3
@@ -126,11 +136,13 @@ a brown owl is in the tree	a-brown-owl-is-in-the-tree.mp3
 a brush can sing a song	a-brush-can-sing-a-song.mp3
 a bun is a snack	a-bun-is-a-snack.mp3
 a bus	a-bus.mp3
+a bus can go fast	a-bus-can-go-fast.mp3
 a cake	a-cake.mp3
 a car can sing	a-car-can-sing.mp3
 a cat	a-cat.mp3
 a cat can be sleeping	a-cat-can-be-sleeping.mp3
 a cat can sing a song	a-cat-can-sing-a-song.mp3
+a cat can sit on a mat	a-cat-can-sit-on-a-mat.mp3
 a cat has a paw	a-cat-has-a-paw.mp3
 a cat is on the bench	a-cat-is-on-the-bench.mp3
 a cat was stuck up a tree	a-cat-was-stuck-up-a-tree.mp3
@@ -144,6 +156,7 @@ a coat can run	a-coat-can-run.mp3
 a coin can bark	a-coin-can-bark.mp3
 a coin can enjoy a song	a-coin-can-enjoy-a-song.mp3
 a coin is round	a-coin-is-round.mp3
+a cone	a-cone.mp3
 a cow	a-cow.mp3
 a cow can grow in a pot	a-cow-can-grow-in-a-pot.mp3
 a cow can moo	a-cow-can-moo.mp3
@@ -155,11 +168,14 @@ a crane	a-crane.mp3
 a cream cone	a-cream-cone.mp3
 a crown	a-crown.mp3
 a crown can sing	a-crown-can-sing.mp3
+a cube	a-cube.mp3
 a cube can play a flute	a-cube-can-play-a-flute.mp3
 a cube has six sides	a-cube-has-six-sides.mp3
+a cylinder	a-cylinder.mp3
 a dark cloud comes	a-dark-cloud-comes.mp3
 a dog	a-dog.mp3
 a dog and a cat run a race	a-dog-and-a-cat-run-a-race.mp3
+a dog can dig	a-dog-can-dig.mp3
 a dog can dig for a bone	a-dog-can-dig-for-a-bone.mp3
 a dog had a bone	a-dog-had-a-bone.mp3
 a dog has a tail	a-dog-has-a-tail.mp3
@@ -176,6 +192,7 @@ a fire truck comes	a-fire-truck-comes.mp3
 a fish	a-fish.mp3
 a fish can be swimming	a-fish-can-be-swimming.mp3
 a fish can run up the hill	a-fish-can-run-up-the-hill.mp3
+a fish can swim	a-fish-can-swim.mp3
 a fish is in the pond	a-fish-is-in-the-pond.mp3
 a fish is jumping	a-fish-is-jumping.mp3
 a fish is wet	a-fish-is-wet.mp3
@@ -204,6 +221,7 @@ a green shoot	a-green-shoot.mp3
 a green shoot is up	a-green-shoot-is-up.mp3
 a grown up can hold this	a-grown-up-can-hold-this.mp3
 a hat	a-hat.mp3
+a hen can peck	a-hen-can-peck.mp3
 a hen sits on a pot	a-hen-sits-on-a-pot.mp3
 a hen sits on a pot of corn	a-hen-sits-on-a-pot-of-corn.mp3
 a home can run to the shop	a-home-can-run-to-the-shop.mp3
@@ -241,6 +259,7 @@ a or an	a-or-an.mp3
 a paw can draw a blue sun	a-paw-can-draw-a-blue-sun.mp3
 a pie	a-pie.mp3
 a pie can swim in the sea	a-pie-can-swim-in-the-sea.mp3
+a pig is pink	a-pig-is-pink.mp3
 a pink circle	a-pink-circle.mp3
 a plane	a-plane.mp3
 a plane can fly	a-plane-can-fly.mp3
@@ -263,6 +282,7 @@ a seed can be in the soil	a-seed-can-be-in-the-soil.mp3
 a sentence starts with a big letter	a-sentence-starts-with-a-big-letter.mp3
 a shelf can run	a-shelf-can-run.mp3
 a ship	a-ship.mp3
+a ship can sail	a-ship-can-sail.mp3
 a ship is on the sun	a-ship-is-on-the-sun.mp3
 a shirt can fly	a-shirt-can-fly.mp3
 a shrimp can run up a tree	a-shrimp-can-run-up-a-tree.mp3
@@ -275,6 +295,7 @@ a snail is the fastest of all	a-snail-is-the-fastest-of-all.mp3
 a snake can play a game of chess	a-snake-can-play-a-game-of-chess.mp3
 a snake has no legs	a-snake-has-no-legs.mp3
 a snake was on a rock	a-snake-was-on-a-rock.mp3
+a sphere	a-sphere.mp3
 a spine can sing	a-spine-can-sing.mp3
 a spot can sing	a-spot-can-sing.mp3
 a square	a-square.mp3
@@ -320,8 +341,11 @@ am	am.mp3
 an	an.mp3
 an ant	an-ant.mp3
 an apple	an-apple.mp3
+an apple is red	an-apple-is-red.mp3
 an egg	an-egg.mp3
 an elephant	an-elephant.mp3
+an ice cream cone is a cone	an-ice-cream-cone-is-a-cone.mp3
+an ice cream cone is like which shape	an-ice-cream-cone-is-like-which-shape.mp3
 an octopus	an-octopus.mp3
 an owl can fly at night	an-owl-can-fly-at-night.mp3
 an owl can paint a cow	an-owl-can-paint-a-cow.mp3
@@ -333,6 +357,7 @@ apple	apple.mp3
 april	april.mp3
 ar	ar.mp3
 are	are.mp3
+are there more pink or blue	are-there-more-pink-or-blue.mp3
 art	art.mp3
 as	as.mp3
 ask	ask.mp3
@@ -354,12 +379,15 @@ ate	ate.mp3
 august	august.mp3
 aw	aw.mp3
 ay	ay.mp3
+ay is a vowel	ay-is-a-vowel.mp3
 baby	baby.mp3
 back	back.mp3
 bad	bad.mp3
 bag	bag.mp3
 bake	bake.mp3
 ball	ball.mp3
+ball at the bottom	ball-at-the-bottom.mp3
+ball at the top	ball-at-the-top.mp3
 balls	balls.mp3
 banana	banana.mp3
 band	band.mp3
@@ -374,6 +402,7 @@ bean	bean.mp3
 beans	beans.mp3
 because	because.mp3
 bed	bed.mp3
+bed is a naming word	bed-is-a-naming-word.mp3
 beds	beds.mp3
 bee	bee.mp3
 bees	bees.mp3
@@ -385,6 +414,34 @@ benches	benches.mp3
 bent	bent.mp3
 bid	bid.mp3
 big	big.mp3
+big aitch	big-aitch.mp3
+big ar	big-ar.mp3
+big ay	big-ay.mp3
+big bee	big-bee.mp3
+big dee	big-dee.mp3
+big double you	big-double-you.mp3
+big ee	big-ee.mp3
+big ef	big-ef.mp3
+big el	big-el.mp3
+big em	big-em.mp3
+big en	big-en.mp3
+big ess	big-ess.mp3
+big ex	big-ex.mp3
+big eye	big-eye.mp3
+big is a describing word	big-is-a-describing-word.mp3
+big jay	big-jay.mp3
+big jee	big-jee.mp3
+big jug	big-jug.mp3
+big kay	big-kay.mp3
+big oh	big-oh.mp3
+big pee	big-pee.mp3
+big queue	big-queue.mp3
+big see	big-see.mp3
+big tee	big-tee.mp3
+big vee	big-vee.mp3
+big why	big-why.mp3
+big you	big-you.mp3
+big zed	big-zed.mp3
 bike	bike.mp3
 bin	bin.mp3
 bins	bins.mp3
@@ -398,7 +455,9 @@ blink	blink.mp3
 bloom	bloom.mp3
 blow	blow.mp3
 blue	blue.mp3
+blue circle	blue-circle.mp3
 blue square	blue-square.mp3
+blue triangle	blue-triangle.mp3
 boat	boat.mp3
 bond	bond.mp3
 bone	bone.mp3
@@ -408,6 +467,7 @@ books	books.mp3
 boot	boot.mp3
 boots	boots.mp3
 both	both.mp3
+bottom	bottom.mp3
 box	box.mp3
 boxes	boxes.mp3
 boxes can sing	boxes-can-sing.mp3
@@ -434,6 +494,7 @@ bun	bun.mp3
 buns	buns.mp3
 burn	burn.mp3
 bus	bus.mp3
+bus is a naming word	bus-is-a-naming-word.mp3
 bush	bush.mp3
 but	but.mp3
 but the cat is the softest of all	but-the-cat-is-the-softest-of-all.mp3
@@ -456,6 +517,7 @@ cars	cars.mp3
 cars are passing	cars-are-passing.mp3
 cart	cart.mp3
 cat	cat.mp3
+cat is a naming word	cat-is-a-naming-word.mp3
 catch	catch.mp3
 cats	cats.mp3
 cats can sit on benches	cats-can-sit-on-benches.mp3
@@ -476,6 +538,7 @@ chomp	chomp.mp3
 chop	chop.mp3
 circle	circle.mp3
 clap	clap.mp3
+clap is a doing word	clap-is-a-doing-word.mp3
 claps	claps.mp3
 class	class.mp3
 clay	clay.mp3
@@ -506,6 +569,9 @@ corn can run	corn-can-run.mp3
 cot	cot.mp3
 could	could.mp3
 count back	count-back.mp3
+count in 10s	count-in-10s.mp3
+count in 2s	count-in-2s.mp3
+count in 5s	count-in-5s.mp3
 count the dots	count-the-dots.mp3
 cow	cow.mp3
 cows	cows.mp3
@@ -528,8 +594,10 @@ cub	cub.mp3
 cube	cube.mp3
 cubes	cubes.mp3
 cup	cup.mp3
+cup is a naming word	cup-is-a-naming-word.mp3
 cups	cups.mp3
 cut	cut.mp3
+cylinder	cylinder.mp3
 dad	dad.mp3
 dad and meena go to skate	dad-and-meena-go-to-skate.mp3
 dad and raj camp in a tent	dad-and-raj-camp-in-a-tent.mp3
@@ -572,6 +640,7 @@ deep	deep.mp3
 desk	desk.mp3
 did	did.mp3
 dig	dig.mp3
+dig is a doing word	dig-is-a-doing-word.mp3
 ding	ding.mp3
 ding dong who is it	ding-dong-who-is-it.mp3
 dip	dip.mp3
@@ -585,6 +654,7 @@ do not snatch raj	do-not-snatch-raj.mp3
 do not spill the jam raj	do-not-spill-the-jam-raj.mp3
 does	does.mp3
 dog	dog.mp3
+dog is a naming word	dog-is-a-naming-word.mp3
 dogs	dogs.mp3
 dogs can dig	dogs-can-dig.mp3
 doll	doll.mp3
@@ -623,6 +693,7 @@ ear	ear.mp3
 eat	eat.mp3
 eating	eating.mp3
 ee	ee.mp3
+ee is a vowel	ee-is-a-vowel.mp3
 ef	ef.mp3
 egg	egg.mp3
 eggs	eggs.mp3
@@ -646,11 +717,13 @@ er	er.mp3
 ess	ess.mp3
 ex	ex.mp3
 eye	eye.mp3
+eye is a vowel	eye-is-a-vowel.mp3
 fair	fair.mp3
 falls	falls.mp3
 fan	fan.mp3
 farm	farm.mp3
 fast	fast.mp3
+fast is a describing word	fast-is-a-describing-word.mp3
 faster	faster.mp3
 fastest	fastest.mp3
 february	february.mp3
@@ -660,16 +733,27 @@ festival	festival.mp3
 few	few.mp3
 fff	fff.mp3
 fifteen	fifteen.mp3
+fifty	fifty.mp3
 filled	filled.mp3
 fin	fin.mp3
 find	find.mp3
 find its picture	find-its-picture.mp3
+find the big letter	find-the-big-letter.mp3
 find the circle	find-the-circle.mp3
+find the cone	find-the-cone.mp3
+find the cube	find-the-cube.mp3
+find the cylinder	find-the-cylinder.mp3
+find the describing word	find-the-describing-word.mp3
+find the doing word	find-the-doing-word.mp3
 find the heart letters	find-the-heart-letters.mp3
+find the naming word	find-the-naming-word.mp3
 find the picture	find-the-picture.mp3
 find the rectangle	find-the-rectangle.mp3
+find the small letter	find-the-small-letter.mp3
+find the sphere	find-the-sphere.mp3
 find the square	find-the-square.mp3
 find the triangle	find-the-triangle.mp3
+find the vowel	find-the-vowel.mp3
 find the word	find-the-word.mp3
 find the word you hear	find-the-word-you-hear.mp3
 fine	fine.mp3
@@ -677,6 +761,7 @@ fire	fire.mp3
 first	first.mp3
 fish	fish.mp3
 fishing	fishing.mp3
+fits the picture	fits-the-picture.mp3
 five	five.mp3
 five is a number	five-is-a-number.mp3
 five white mice can drive a bus	five-white-mice-can-drive-a-bus.mp3
@@ -699,6 +784,16 @@ for	for.mp3
 fork	fork.mp3
 form	form.mp3
 fort	fort.mp3
+forty	forty.mp3
+forty eight	forty-eight.mp3
+forty five	forty-five.mp3
+forty four	forty-four.mp3
+forty nine	forty-nine.mp3
+forty one	forty-one.mp3
+forty seven	forty-seven.mp3
+forty six	forty-six.mp3
+forty three	forty-three.mp3
+forty two	forty-two.mp3
 found	found.mp3
 four	four.mp3
 fourteen	fourteen.mp3
@@ -758,6 +853,7 @@ guh	guh.mp3
 gum	gum.mp3
 had	had.mp3
 hair	hair.mp3
+half past	half-past.mp3
 halves	halves.mp3
 hand	hand.mp3
 hands	hands.mp3
@@ -766,11 +862,18 @@ hard	hard.mp3
 harm	harm.mp3
 has	has.mp3
 hat	hat.mp3
+hat is a naming word	hat-is-a-naming-word.mp3
 hats	hats.mp3
 haul	haul.mp3
 have	have.mp3
 he	he.mp3
 he can brush the shelf	he-can-brush-the-shelf.mp3
+he can dig	he-can-dig.mp3
+he can hop	he-can-hop.mp3
+he can jump	he-can-jump.mp3
+he can run	he-can-run.mp3
+he can sing	he-can-sing.mp3
+he can swim	he-can-swim.mp3
 he cooks at home	he-cooks-at-home.mp3
 he gets a shrimp in it	he-gets-a-shrimp-in-it.mp3
 he has a cake	he-has-a-cake.mp3
@@ -789,6 +892,7 @@ helmet	helmet.mp3
 helped	helped.mp3
 helping	helping.mp3
 hen	hen.mp3
+hen is a naming word	hen-is-a-naming-word.mp3
 hens	hens.mp3
 hens lay eggs	hens-lay-eggs.mp3
 her	her.mp3
@@ -809,17 +913,21 @@ hold	hold.mp3
 hold it	hold-it.mp3
 hold to go home	hold-to-go-home.mp3
 holds	holds.mp3
+holds the least	holds-the-least.mp3
+holds the most	holds-the-most.mp3
 hole	hole.mp3
 holi	holi.mp3
 home	home.mp3
 hoop	hoop.mp3
 hop	hop.mp3
+hop is a doing word	hop-is-a-doing-word.mp3
 hope	hope.mp3
 hops	hops.mp3
 horn	horn.mp3
 horns	horns.mp3
 hose	hose.mp3
 hot	hot.mp3
+hot is a describing word	hot-is-a-describing-word.mp3
 hot tea	hot-tea.mp3
 house	house.mp3
 how	how.mp3
@@ -867,7 +975,11 @@ in winter	in-winter.mp3
 in winter we need thick coats	in-winter-we-need-thick-coats.mp3
 into	into.mp3
 is	is.mp3
+is a different colour	is-a-different-colour.mp3
+is a different shape	is-a-different-shape.mp3
 is afternoon	is-afternoon.mp3
+is at the bottom	is-at-the-bottom.mp3
+is at the top	is-at-the-top.mp3
 is cold	is-cold.mp3
 is empty	is-empty.mp3
 is equal to	is-equal-to.mp3
@@ -886,9 +998,19 @@ is light	is-light.mp3
 is long	is-long.mp3
 is morning	is-morning.mp3
 is night	is-night.mp3
+is not like the others	is-not-like-the-others.mp3
+is or are	is-or-are.mp3
 is short	is-short.mp3
+is shorter	is-shorter.mp3
+is taller	is-taller.mp3
+is the biggest	is-the-biggest.mp3
+is the longest	is-the-longest.mp3
+is the shortest	is-the-shortest.mp3
+is the smallest	is-the-smallest.mp3
 is there any more	is-there-any-more.mp3
 is there any rain left yes	is-there-any-rain-left-yes.mp3
+is thicker	is-thicker.mp3
+is thinner	is-thinner.mp3
 it	it.mp3
 it can chew a string	it-can-chew-a-string.mp3
 it can jump and it can swim	it-can-jump-and-it-can-swim.mp3
@@ -929,6 +1051,7 @@ it is bath night	it-is-bath-night.mp3
 it is dad's sock	it-is-dads-sock.mp3
 it is diwali	it-is-diwali.mp3
 it is eid	it-is-eid.mp3
+it is half past	it-is-half-past.mp3
 it is holi	it-is-holi.mp3
 it is hot	it-is-hot.mp3
 it is hot in the summer	it-is-hot-in-the-summer.mp3
@@ -992,6 +1115,7 @@ joy	joy.mp3
 juh	juh.mp3
 july	july.mp3
 jump	jump.mp3
+jump is a doing word	jump-is-a-doing-word.mp3
 jumped	jumped.mp3
 jumping	jumping.mp3
 jumps	jumps.mp3
@@ -1004,6 +1128,7 @@ kay	kay.mp3
 keep	keep.mp3
 key	key.mp3
 kick	kick.mp3
+kick is a doing word	kick-is-a-doing-word.mp3
 kicked	kicked.mp3
 kid	kid.mp3
 king	king.mp3
@@ -1050,6 +1175,7 @@ lock	lock.mp3
 log	log.mp3
 lolly	lolly.mp3
 long	long.mp3
+long is a describing word	long-is-a-describing-word.mp3
 long pencil	long-pencil.mp3
 longer	longer.mp3
 longest	longest.mp3
@@ -1071,6 +1197,7 @@ lunch can crash a car	lunch-can-crash-a-car.mp3
 lunches	lunches.mp3
 made	made.mp3
 make	make.mp3
+make the sentence	make-the-sentence.mp3
 makes	makes.mp3
 man	man.mp3
 many	many.mp3
@@ -1158,6 +1285,8 @@ melted	melted.mp3
 men	men.mp3
 mess	mess.mp3
 mice	mice.mp3
+middle jug	middle-jug.mp3
+middle pencil	middle-pencil.mp3
 milk	milk.mp3
 milk is in a cup	milk-is-in-a-cup.mp3
 mill	mill.mp3
@@ -1191,6 +1320,8 @@ mood	mood.mp3
 moon	moon.mp3
 mop	mop.mp3
 more	more.mp3
+more blue	more-blue.mp3
+more pink	more-pink.mp3
 morning	morning.mp3
 moss	moss.mp3
 most	most.mp3
@@ -1263,6 +1394,7 @@ nani said put it back	nani-said-put-it-back.mp3
 nani said this is a real treat	nani-said-this-is-a-real-treat.mp3
 nani was at the end of the trip	nani-was-at-the-end-of-the-trip.mp3
 nap	nap.mp3
+nap is a doing word	nap-is-a-doing-word.mp3
 need	need.mp3
 nest	nest.mp3
 net	net.mp3
@@ -1294,11 +1426,13 @@ number	number.mp3
 nut	nut.mp3
 nuts	nuts.mp3
 o	o.mp3
+o'clock	oclock.mp3
 october	october.mp3
 octopus	octopus.mp3
 of	of.mp3
 off	off.mp3
 oh	oh.mp3
+oh is a vowel	oh-is-a-vowel.mp3
 oh it is a chest of dolls	oh-it-is-a-chest-of-dolls.mp3
 oh no a cat is on the bench	oh-no-a-cat-is-on-the-bench.mp3
 on	on.mp3
@@ -1345,6 +1479,7 @@ paws	paws.mp3
 pear	pear.mp3
 pee	pee.mp3
 pen	pen.mp3
+pen is a naming word	pen-is-a-naming-word.mp3
 people	people.mp3
 people clap for her	people-clap-for-her.mp3
 people clap for her clay mouse	people-clap-for-her-clay-mouse.mp3
@@ -1357,9 +1492,13 @@ pete plays a tune	pete-plays-a-tune.mp3
 pets	pets.mp3
 pie	pie.mp3
 pig	pig.mp3
+pig is a naming word	pig-is-a-naming-word.mp3
 pin	pin.mp3
 pink	pink.mp3
 pink circle	pink-circle.mp3
+pink is a describing word	pink-is-a-describing-word.mp3
+pink square	pink-square.mp3
+pink triangle	pink-triangle.mp3
 pins	pins.mp3
 pit	pit.mp3
 plan	plan.mp3
@@ -1522,6 +1661,7 @@ real	real.mp3
 rectangle	rectangle.mp3
 red	red.mp3
 red and green	red-and-green.mp3
+red is a describing word	red-is-a-describing-word.mp3
 rex	rex.mp3
 rex has a sore nose	rex-has-a-sore-nose.mp3
 rex is home	rex-is-home.mp3
@@ -1546,11 +1686,13 @@ rrr	rrr.mp3
 rude	rude.mp3
 rug	rug.mp3
 run	run.mp3
+run is a doing word	run-is-a-doing-word.mp3
 runs	runs.mp3
 rupee	rupee.mp3
 rupees	rupees.mp3
 s	s.mp3
 sad	sad.mp3
+sad is a describing word	sad-is-a-describing-word.mp3
 safe	safe.mp3
 said	said.mp3
 sail	sail.mp3
@@ -1592,10 +1734,16 @@ seventeen	seventeen.mp3
 shape	shape.mp3
 sharma	sharma.mp3
 she	she.mp3
+she can dig	she-can-dig.mp3
+she can hop	she-can-hop.mp3
+she can jump	she-can-jump.mp3
 she can jump in the mud	she-can-jump-in-the-mud.mp3
 she can jump in the wet mud	she-can-jump-in-the-wet-mud.mp3
 she can not speak	she-can-not-speak.mp3
+she can run	she-can-run.mp3
+she can sing	she-can-sing.mp3
 she can skate	she-can-skate.mp3
+she can swim	she-can-swim.mp3
 she can then she tips	she-can-then-she-tips.mp3
 she cleans her teeth	she-cleans-her-teeth.mp3
 she drew a blue cat	she-drew-a-blue-cat.mp3
@@ -1613,6 +1761,7 @@ she made new toast and we ate it with jam	she-made-new-toast-and-we-ate-it-with-
 she makes a huge tower	she-makes-a-huge-tower.mp3
 she makes a tower	she-makes-a-tower.mp3
 she makes it again	she-makes-it-again.mp3
+she or they	she-or-they.mp3
 she paints a brown cow	she-paints-a-brown-cow.mp3
 she reads to us	she-reads-to-us.mp3
 she rides her bike	she-rides-her-bike.mp3
@@ -1635,7 +1784,9 @@ shoo	shoo.mp3
 shoo moth shoo	shoo-moth-shoo.mp3
 shoot	shoot.mp3
 shop	shop.mp3
+short	short.mp3
 short pencil	short-pencil.mp3
+short tree	short-tree.mp3
 shot	shot.mp3
 should	should.mp3
 shout	shout.mp3
@@ -1648,10 +1799,12 @@ sides	sides.mp3
 sides the same	sides-the-same.mp3
 silk	silk.mp3
 sing	sing.mp3
+sing is a doing word	sing-is-a-doing-word.mp3
 singing	singing.mp3
 sings	sings.mp3
 sink	sink.mp3
 sit	sit.mp3
+sit is a doing word	sit-is-a-doing-word.mp3
 sits	sits.mp3
 six	six.mp3
 sixteen	sixteen.mp3
@@ -1670,6 +1823,34 @@ slip	slip.mp3
 slow	slow.mp3
 slug	slug.mp3
 smack	smack.mp3
+small	small.mp3
+small aitch	small-aitch.mp3
+small ar	small-ar.mp3
+small ay	small-ay.mp3
+small bee	small-bee.mp3
+small dee	small-dee.mp3
+small double you	small-double-you.mp3
+small ee	small-ee.mp3
+small ef	small-ef.mp3
+small el	small-el.mp3
+small em	small-em.mp3
+small en	small-en.mp3
+small ess	small-ess.mp3
+small ex	small-ex.mp3
+small eye	small-eye.mp3
+small jay	small-jay.mp3
+small jee	small-jee.mp3
+small jug	small-jug.mp3
+small kay	small-kay.mp3
+small oh	small-oh.mp3
+small pee	small-pee.mp3
+small queue	small-queue.mp3
+small see	small-see.mp3
+small tee	small-tee.mp3
+small vee	small-vee.mp3
+small why	small-why.mp3
+small you	small-you.mp3
+small zed	small-zed.mp3
 smell	smell.mp3
 smile	smile.mp3
 smoke	smoke.mp3
@@ -1698,6 +1879,7 @@ sob	sob.mp3
 sock	sock.mp3
 socks	socks.mp3
 soft	soft.mp3
+soft is a describing word	soft-is-a-describing-word.mp3
 softer	softer.mp3
 softest	softest.mp3
 soil	soil.mp3
@@ -1713,6 +1895,7 @@ soup	soup.mp3
 space	space.mp3
 speak	speak.mp3
 spend	spend.mp3
+sphere	sphere.mp3
 spill	spill.mp3
 spin	spin.mp3
 spine	spine.mp3
@@ -1775,6 +1958,7 @@ strong	strong.mp3
 stuck	stuck.mp3
 summer	summer.mp3
 sun	sun.mp3
+sun is a naming word	sun-is-a-naming-word.mp3
 sunday	sunday.mp3
 sunny	sunny.mp3
 sweet	sweet.mp3
@@ -1782,12 +1966,14 @@ sweet rice	sweet-rice.mp3
 sweets	sweets.mp3
 sweets are sweet	sweets-are-sweet.mp3
 swim	swim.mp3
+swim is a doing word	swim-is-a-doing-word.mp3
 swimming	swimming.mp3
 swims	swims.mp3
 tail	tail.mp3
 tails	tails.mp3
 take	take.mp3
 take away	take-away.mp3
+tall tree	tall-tree.mp3
 tap the tick when done	tap-the-tick-when-done.mp3
 tap to go on	tap-to-go-on.mp3
 tea	tea.mp3
@@ -1814,34 +2000,90 @@ that one is tricky	that-one-is-tricky.mp3
 that one sounds the way it looks	that-one-sounds-the-way-it-looks.mp3
 that says	that-says.mp3
 the	the.mp3
+the ball is big	the-ball-is-big.mp3
+the ball is fast	the-ball-is-fast.mp3
 the ball is in the box	the-ball-is-in-the-box.mp3
 the ball is on the box	the-ball-is-on-the-box.mp3
+the ball is sad	the-ball-is-sad.mp3
 the ball is under the box	the-ball-is-under-the-box.mp3
+the ball is wet	the-ball-is-wet.mp3
+the balls are big	the-balls-are-big.mp3
+the balls are fast	the-balls-are-fast.mp3
+the balls are sad	the-balls-are-sad.mp3
+the balls are wet	the-balls-are-wet.mp3
 the beach	the-beach.mp3
 the beach can dream	the-beach-can-dream.mp3
 the bed jumped on a frog	the-bed-jumped-on-a-frog.mp3
+the bee is big	the-bee-is-big.mp3
+the bee is fast	the-bee-is-fast.mp3
+the bee is sad	the-bee-is-sad.mp3
+the bee is wet	the-bee-is-wet.mp3
+the bees are big	the-bees-are-big.mp3
+the bees are fast	the-bees-are-fast.mp3
+the bees are sad	the-bees-are-sad.mp3
+the bees are wet	the-bees-are-wet.mp3
 the bell is a lot of fun	the-bell-is-a-lot-of-fun.mp3
 the big one	the-big-one.mp3
 the big one is for the dog	the-big-one-is-for-the-dog.mp3
 the bins	the-bins.mp3
+the bird is big	the-bird-is-big.mp3
+the bird is fast	the-bird-is-fast.mp3
 the bird is in her cup of tea	the-bird-is-in-her-cup-of-tea.mp3
+the bird is sad	the-bird-is-sad.mp3
+the bird is wet	the-bird-is-wet.mp3
 the bird was red with a long tail	the-bird-was-red-with-a-long-tail.mp3
+the birds are big	the-birds-are-big.mp3
+the birds are fast	the-birds-are-fast.mp3
+the birds are sad	the-birds-are-sad.mp3
+the birds are wet	the-birds-are-wet.mp3
 the blue string is longer	the-blue-string-is-longer.mp3
 the boat can sail	the-boat-can-sail.mp3
 the boat is in the rain	the-boat-is-in-the-rain.mp3
 the book is about a green sea monster	the-book-is-about-a-green-sea-monster.mp3
+the book is big	the-book-is-big.mp3
+the book is fast	the-book-is-fast.mp3
+the book is sad	the-book-is-sad.mp3
+the book is wet	the-book-is-wet.mp3
+the books are big	the-books-are-big.mp3
+the books are fast	the-books-are-fast.mp3
+the books are sad	the-books-are-sad.mp3
+the books are wet	the-books-are-wet.mp3
 the box	the-box.mp3
 the boy said yes	the-boy-said-yes.mp3
 the bun is in bits	the-bun-is-in-bits.mp3
 the cake	the-cake.mp3
+the cake is big	the-cake-is-big.mp3
+the cake is fast	the-cake-is-fast.mp3
+the cake is sad	the-cake-is-sad.mp3
+the cake is wet	the-cake-is-wet.mp3
 the cake played a game	the-cake-played-a-game.mp3
+the cakes are big	the-cakes-are-big.mp3
+the cakes are fast	the-cakes-are-fast.mp3
+the cakes are sad	the-cakes-are-sad.mp3
+the cakes are wet	the-cakes-are-wet.mp3
+the car is big	the-car-is-big.mp3
+the car is fast	the-car-is-fast.mp3
+the car is sad	the-car-is-sad.mp3
+the car is wet	the-car-is-wet.mp3
+the cars are big	the-cars-are-big.mp3
+the cars are fast	the-cars-are-fast.mp3
+the cars are sad	the-cars-are-sad.mp3
+the cars are wet	the-cars-are-wet.mp3
 the cat	the-cat.mp3
 the cat cried	the-cat-cried.mp3
 the cat gets the lunch	the-cat-gets-the-lunch.mp3
 the cat gets their lunch	the-cat-gets-their-lunch.mp3
 the cat had a big paw	the-cat-had-a-big-paw.mp3
+the cat is big	the-cat-is-big.mp3
+the cat is fast	the-cat-is-fast.mp3
 the cat is faster	the-cat-is-faster.mp3
+the cat is sad	the-cat-is-sad.mp3
+the cat is wet	the-cat-is-wet.mp3
 the cat purrs	the-cat-purrs.mp3
+the cats are big	the-cats-are-big.mp3
+the cats are fast	the-cats-are-fast.mp3
+the cats are sad	the-cats-are-sad.mp3
+the cats are wet	the-cats-are-wet.mp3
 the cow gets corn	the-cow-gets-corn.mp3
 the cow gets corn as well	the-cow-gets-corn-as-well.mp3
 the cow has bells	the-cow-has-bells.mp3
@@ -1850,8 +2092,15 @@ the cup fell into the sink	the-cup-fell-into-the-sink.mp3
 the dishes	the-dishes.mp3
 the dog	the-dog.mp3
 the dog hid the bone	the-dog-hid-the-bone.mp3
+the dog is big	the-dog-is-big.mp3
 the dog is fast	the-dog-is-fast.mp3
 the dog is in the cup	the-dog-is-in-the-cup.mp3
+the dog is sad	the-dog-is-sad.mp3
+the dog is wet	the-dog-is-wet.mp3
+the dogs are big	the-dogs-are-big.mp3
+the dogs are fast	the-dogs-are-fast.mp3
+the dogs are sad	the-dogs-are-sad.mp3
+the dogs are wet	the-dogs-are-wet.mp3
 the ducks cried quack	the-ducks-cried-quack.mp3
 the fair has lots of lights	the-fair-has-lots-of-lights.mp3
 the fire crew	the-fire-crew.mp3
@@ -1870,6 +2119,14 @@ the girls and boys run	the-girls-and-boys-run.mp3
 the girls and boys run fast	the-girls-and-boys-run-fast.mp3
 the green string is longest	the-green-string-is-longest.mp3
 the green string is the longest	the-green-string-is-the-longest.mp3
+the hat is big	the-hat-is-big.mp3
+the hat is fast	the-hat-is-fast.mp3
+the hat is sad	the-hat-is-sad.mp3
+the hat is wet	the-hat-is-wet.mp3
+the hats are big	the-hats-are-big.mp3
+the hats are fast	the-hats-are-fast.mp3
+the hats are sad	the-hats-are-sad.mp3
+the hats are wet	the-hats-are-wet.mp3
 the hens	the-hens.mp3
 the hens are in boxes safe and still	the-hens-are-in-boxes-safe-and-still.mp3
 the kite goes up	the-kite-goes-up.mp3
@@ -1883,6 +2140,7 @@ the lolly	the-lolly.mp3
 the lolly melted	the-lolly-melted.mp3
 the moon is in the sink	the-moon-is-in-the-sink.mp3
 the moon is up	the-moon-is-up.mp3
+the moon is up at night	the-moon-is-up-at-night.mp3
 the moon kicked a bus	the-moon-kicked-a-bus.mp3
 the moth sits on the chip	the-moth-sits-on-the-chip.mp3
 the mouse is in a hole	the-mouse-is-in-a-hole.mp3
@@ -1916,9 +2174,18 @@ the sky is in a box	the-sky-is-in-a-box.mp3
 the slide is in the sky	the-slide-is-in-the-sky.mp3
 the snow	the-snow.mp3
 the snowman is slow to melt	the-snowman-is-slow-to-melt.mp3
+the star is big	the-star-is-big.mp3
+the star is fast	the-star-is-fast.mp3
+the star is sad	the-star-is-sad.mp3
+the star is wet	the-star-is-wet.mp3
+the stars are big	the-stars-are-big.mp3
+the stars are fast	the-stars-are-fast.mp3
+the stars are sad	the-stars-are-sad.mp3
+the stars are wet	the-stars-are-wet.mp3
 the sun can shine	the-sun-can-shine.mp3
 the sun comes out	the-sun-comes-out.mp3
 the sun is fishing	the-sun-is-fishing.mp3
+the sun is hot	the-sun-is-hot.mp3
 the sun is up at night	the-sun-is-up-at-night.mp3
 the sun shines	the-sun-shines.mp3
 the sun shines on her	the-sun-shines-on-her.mp3
@@ -1967,6 +2234,16 @@ there is lots of fun	there-is-lots-of-fun.mp3
 there was a big show	there-was-a-big-show.mp3
 there were plums and nuts	there-were-plums-and-nuts.mp3
 these	these.mp3
+these are balls	these-are-balls.mp3
+these are bees	these-are-bees.mp3
+these are birds	these-are-birds.mp3
+these are books	these-are-books.mp3
+these are cakes	these-are-cakes.mp3
+these are cars	these-are-cars.mp3
+these are cats	these-are-cats.mp3
+these are dogs	these-are-dogs.mp3
+these are hats	these-are-hats.mp3
+these are stars	these-are-stars.mp3
 these are the heart letters	these-are-the-heart-letters.mp3
 these cubes can sing	these-cubes-can-sing.mp3
 they	they.mp3
@@ -1974,6 +2251,12 @@ they all eat and chat	they-all-eat-and-chat.mp3
 they all had cake	they-all-had-cake.mp3
 they both enjoy a funny day	they-both-enjoy-a-funny-day.mp3
 they both had fun	they-both-had-fun.mp3
+they can dig	they-can-dig.mp3
+they can hop	they-can-hop.mp3
+they can jump	they-can-jump.mp3
+they can run	they-can-run.mp3
+they can sing	they-can-sing.mp3
+they can swim	they-can-swim.mp3
 they don't rhyme	they-dont-rhyme.mp3
 they eat and chat	they-eat-and-chat.mp3
 they get bits of food	they-get-bits-of-food.mp3
@@ -2000,14 +2283,37 @@ they take rex to the vet	they-take-rex-to-the-vet.mp3
 they wait by the gate	they-wait-by-the-gate.mp3
 they were so glad	they-were-so-glad.mp3
 thick	thick.mp3
+thick rope	thick-rope.mp3
 thicker	thicker.mp3
 thickest	thickest.mp3
 thin	thin.mp3
+thin is a describing word	thin-is-a-describing-word.mp3
+thin rope	thin-rope.mp3
 things	things.mp3
 think about the story	think-about-the-story.mp3
 third	third.mp3
 thirteen	thirteen.mp3
+thirty	thirty.mp3
+thirty eight	thirty-eight.mp3
+thirty five	thirty-five.mp3
+thirty four	thirty-four.mp3
+thirty nine	thirty-nine.mp3
+thirty one	thirty-one.mp3
+thirty seven	thirty-seven.mp3
+thirty six	thirty-six.mp3
+thirty three	thirty-three.mp3
+thirty two	thirty-two.mp3
 this	this.mp3
+this is a ball	this-is-a-ball.mp3
+this is a bee	this-is-a-bee.mp3
+this is a bird	this-is-a-bird.mp3
+this is a book	this-is-a-book.mp3
+this is a cake	this-is-a-cake.mp3
+this is a car	this-is-a-car.mp3
+this is a cat	this-is-a-cat.mp3
+this is a dog	this-is-a-dog.mp3
+this is a hat	this-is-a-hat.mp3
+this is a star	this-is-a-star.mp3
 this is the	this-is-the.mp3
 this one says	this-one-says.mp3
 thorn	thorn.mp3
@@ -2069,6 +2375,15 @@ tuh	tuh.mp3
 tune	tune.mp3
 twelve	twelve.mp3
 twenty	twenty.mp3
+twenty eight	twenty-eight.mp3
+twenty five	twenty-five.mp3
+twenty four	twenty-four.mp3
+twenty nine	twenty-nine.mp3
+twenty one	twenty-one.mp3
+twenty seven	twenty-seven.mp3
+twenty six	twenty-six.mp3
+twenty three	twenty-three.mp3
+twenty two	twenty-two.mp3
 twist	twist.mp3
 two	two.mp3
 uh	uh.mp3
@@ -2165,6 +2480,7 @@ well done	well-done.mp3
 went	went.mp3
 were	were.mp3
 wet	wet.mp3
+wet is a describing word	wet-is-a-describing-word.mp3
 whale	whale.mp3
 what	what.mp3
 what a fine time	what-a-fine-time.mp3
@@ -2180,7 +2496,57 @@ what colour is the stripe	what-colour-is-the-stripe.mp3
 what colours does raj have	what-colours-does-raj-have.mp3
 what comes	what-comes.mp3
 what comes after	what-comes-after.mp3
+what comes after aitch	what-comes-after-aitch.mp3
+what comes after ar	what-comes-after-ar.mp3
+what comes after ay	what-comes-after-ay.mp3
+what comes after bee	what-comes-after-bee.mp3
+what comes after dee	what-comes-after-dee.mp3
+what comes after double you	what-comes-after-double-you.mp3
+what comes after ee	what-comes-after-ee.mp3
+what comes after ef	what-comes-after-ef.mp3
+what comes after el	what-comes-after-el.mp3
+what comes after em	what-comes-after-em.mp3
+what comes after en	what-comes-after-en.mp3
+what comes after ess	what-comes-after-ess.mp3
+what comes after ex	what-comes-after-ex.mp3
+what comes after eye	what-comes-after-eye.mp3
+what comes after jay	what-comes-after-jay.mp3
+what comes after jee	what-comes-after-jee.mp3
+what comes after kay	what-comes-after-kay.mp3
+what comes after oh	what-comes-after-oh.mp3
+what comes after pee	what-comes-after-pee.mp3
+what comes after queue	what-comes-after-queue.mp3
+what comes after see	what-comes-after-see.mp3
+what comes after tee	what-comes-after-tee.mp3
+what comes after vee	what-comes-after-vee.mp3
+what comes after why	what-comes-after-why.mp3
+what comes after you	what-comes-after-you.mp3
 what comes before	what-comes-before.mp3
+what comes before aitch	what-comes-before-aitch.mp3
+what comes before ar	what-comes-before-ar.mp3
+what comes before bee	what-comes-before-bee.mp3
+what comes before dee	what-comes-before-dee.mp3
+what comes before double you	what-comes-before-double-you.mp3
+what comes before ee	what-comes-before-ee.mp3
+what comes before ef	what-comes-before-ef.mp3
+what comes before el	what-comes-before-el.mp3
+what comes before em	what-comes-before-em.mp3
+what comes before en	what-comes-before-en.mp3
+what comes before ess	what-comes-before-ess.mp3
+what comes before ex	what-comes-before-ex.mp3
+what comes before eye	what-comes-before-eye.mp3
+what comes before jay	what-comes-before-jay.mp3
+what comes before jee	what-comes-before-jee.mp3
+what comes before kay	what-comes-before-kay.mp3
+what comes before oh	what-comes-before-oh.mp3
+what comes before pee	what-comes-before-pee.mp3
+what comes before queue	what-comes-before-queue.mp3
+what comes before see	what-comes-before-see.mp3
+what comes before tee	what-comes-before-tee.mp3
+what comes before vee	what-comes-before-vee.mp3
+what comes before why	what-comes-before-why.mp3
+what comes before you	what-comes-before-you.mp3
+what comes before zed	what-comes-before-zed.mp3
 what comes between	what-comes-between.mp3
 what comes next	what-comes-next.mp3
 what comes to help	what-comes-to-help.mp3
@@ -2261,6 +2627,26 @@ what is on the string	what-is-on-the-string.mp3
 what is red	what-is-red.mp3
 what is the book about	what-is-the-book-about.mp3
 what is the cat doing	what-is-the-cat-doing.mp3
+what is the opposite of big	what-is-the-opposite-of-big.mp3
+what is the opposite of bottom	what-is-the-opposite-of-bottom.mp3
+what is the opposite of cold	what-is-the-opposite-of-cold.mp3
+what is the opposite of down	what-is-the-opposite-of-down.mp3
+what is the opposite of fast	what-is-the-opposite-of-fast.mp3
+what is the opposite of hard	what-is-the-opposite-of-hard.mp3
+what is the opposite of hot	what-is-the-opposite-of-hot.mp3
+what is the opposite of long	what-is-the-opposite-of-long.mp3
+what is the opposite of off	what-is-the-opposite-of-off.mp3
+what is the opposite of on	what-is-the-opposite-of-on.mp3
+what is the opposite of open	what-is-the-opposite-of-open.mp3
+what is the opposite of short	what-is-the-opposite-of-short.mp3
+what is the opposite of shut	what-is-the-opposite-of-shut.mp3
+what is the opposite of slow	what-is-the-opposite-of-slow.mp3
+what is the opposite of small	what-is-the-opposite-of-small.mp3
+what is the opposite of soft	what-is-the-opposite-of-soft.mp3
+what is the opposite of thick	what-is-the-opposite-of-thick.mp3
+what is the opposite of thin	what-is-the-opposite-of-thin.mp3
+what is the opposite of top	what-is-the-opposite-of-top.mp3
+what is the opposite of up	what-is-the-opposite-of-up.mp3
 what is the prize	what-is-the-prize.mp3
 what is the softest	what-is-the-softest.mp3
 what is up at night	what-is-up-at-night.mp3
@@ -2284,6 +2670,7 @@ what month comes after october	what-month-comes-after-october.mp3
 what month comes after september	what-month-comes-after-september.mp3
 what rhymes with	what-rhymes-with.mp3
 what runs past	what-runs-past.mp3
+what time is it	what-time-is-it.mp3
 what toy has the boy got	what-toy-has-the-boy-got.mp3
 what was on a rock	what-was-on-a-rock.mp3
 what went past	what-went-past.mp3
@@ -2321,9 +2708,13 @@ where is the seed	where-is-the-seed.mp3
 where was the bone	where-was-the-bone.mp3
 where was the cat	where-was-the-cat.mp3
 which	which.mp3
+which ball is at the bottom	which-ball-is-at-the-bottom.mp3
+which ball is at the top	which-ball-is-at-the-top.mp3
 which brush is for the dog	which-brush-is-for-the-dog.mp3
 which brush is for the dog the big one	which-brush-is-for-the-dog-the-big-one.mp3
 which has more	which-has-more.mp3
+which holds the least	which-holds-the-least.mp3
+which holds the most	which-holds-the-most.mp3
 which is cold	which-is-cold.mp3
 which is cut in half	which-is-cut-in-half.mp3
 which is empty	which-is-empty.mp3
@@ -2334,6 +2725,13 @@ which is lighter	which-is-lighter.mp3
 which is longer	which-is-longer.mp3
 which is more	which-is-more.mp3
 which is shorter	which-is-shorter.mp3
+which is taller	which-is-taller.mp3
+which is the biggest	which-is-the-biggest.mp3
+which is the longest	which-is-the-longest.mp3
+which is the shortest	which-is-the-shortest.mp3
+which is the smallest	which-is-the-smallest.mp3
+which is thicker	which-is-thicker.mp3
+which is thinner	which-is-thinner.mp3
 which makes	which-makes.mp3
 which mouth fits	which-mouth-fits.mp3
 which one is hers	which-one-is-hers.mp3
@@ -2451,6 +2849,8 @@ wuh	wuh.mp3
 yak	yak.mp3
 yawn	yawn.mp3
 yell	yell.mp3
+yellow circle	yellow-circle.mp3
+yellow square	yellow-square.mp3
 yellow triangle	yellow-triangle.mp3
 yes	yes.mp3
 you	you.mp3
@@ -2488,6 +2888,7 @@ you grew	you-grew.mp3
 you grew 1 flower	you-grew-1-flower.mp3
 you have a nose	you-have-a-nose.mp3
 you have a toe	you-have-a-toe.mp3
+you is a vowel	you-is-a-vowel.mp3
 your	your.mp3
 your seeds are growing	your-seeds-are-growing.mp3
 yuh	yuh.mp3

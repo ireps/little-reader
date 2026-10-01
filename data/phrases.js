@@ -8,7 +8,7 @@ LR.phrases = [
   'Find the word you hear', 'Build the word you hear', 'Find its picture', 'Find the heart letters', 'Find the picture',
   'Look!', 'Which one was it?', 'Is it silly?', 'A or an?', 'Which picture?', 'Which word needs a big letter?',
   'Read to your grown-up', 'Tap the tick when done', 'Tap to go on', 'Hold to go home', 'A grown-up can hold this', 'Hold it',
-  'Which is more?', 'Which mouth fits?', 'Look again. Which mouth fits?', 'Count the dots. Which has more?', 'Come and read with me.',
+  'Which is more?', 'Make the sentence', 'Which mouth fits?', 'Look again. Which mouth fits?', 'Count the dots. Which has more?', 'Come and read with me.',
   /* Praise and feedback */
   'Yes! {w}', 'Yes! That one is tricky.', 'You found them all! {w}.', 'These are the heart letters.', 'That one sounds the way it looks.',
   'That says {w}.', 'That says {w}. This one says {w}.', 'That says {w}. Try again.', 'It was {w}.', 'It is {w}.', 'Not that one.',

@@ -89,7 +89,10 @@ function sky(t){
 
 /* ---------- Number words ---------- */
 var NAMES = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen',
-  'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
+  'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+/* Twenty to fifty: twenty, twenty-one, ... fifty. */
+['twenty', 'thirty', 'forty'].forEach(function(t){ NAMES.push(t); for (var i = 1; i <= 9; i++) NAMES.push(t + '-' + NAMES[i]); });
+NAMES.push('fifty');
 var DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 var THINGS = ['🍎', '🐦', '⭐', '🌸', '🐟', '🍬', '🚗', '🐝'];
@@ -104,11 +107,16 @@ function near(r, ans, lo, hi, extra){
 function numOpts(list){ return list.map(function(v){ return { v:v, html:'<span class="m-num">' + v + '</span>', label:String(v) }; }); }
 
 /* ---------- The skills, in order ---------- */
+/* In the order schools teach them (NCF-FS and UKG syllabi): comparing first (her < > practice), pre-number ideas
+   (size words, sorting) before numbers, ordering with sequencing, 3D shapes after 2D, time last. */
 var SKILLS = [
   { id:'compare', name:'Comparing (< and >)', code:'IL 3.13' },
   { id:'count', name:'Counting objects', code:'IL 3.9' },
+  { id:'size', name:'Taller, thicker, on top', code:'IL 3.5' },
+  { id:'odd', name:'Odd one out', code:'IL 3.5' },
   { id:'numeral', name:'Numbers and amounts', code:'IL 3.11' },
   { id:'counton', name:'Counting on and back', code:'IL 3.10' },
+  { id:'order', name:'Smallest and biggest', code:'IL 3.6' },
   { id:'neighbour', name:'Before, after, between', code:'ILM 4.11' },
   { id:'zero', name:'Zero', code:'IL 3.12' },
   { id:'add', name:'Adding', code:'IL 3.14' },
@@ -116,10 +124,15 @@ var SKILLS = [
   { id:'names', name:'Number names', code:'IL 3.11' },
   { id:'money', name:'Money', code:'IL 3.20' },
   { id:'measure', name:'Measuring', code:'IL 3.21' },
+  { id:'longest', name:'Longest, and holds the most', code:'IL 3.21' },
   { id:'shapes', name:'Shapes', code:'IL 3.25' },
+  { id:'solids', name:'Solid shapes', code:'IL 3.25' },
   { id:'halves', name:'Halves', code:'IL 3.26' },
   { id:'pattern', name:'Patterns', code:'IL 3.27' },
-  { id:'time', name:'Days, months and time of day', code:'IL 3.29' }
+  { id:'data', name:'More of which?', code:'IL 3.28' },
+  { id:'skip', name:'Counting in 2s, 5s and 10s', code:'ILM 4.27' },
+  { id:'time', name:'Days, months and time of day', code:'IL 3.29' },
+  { id:'clock', name:'O\'clock', code:'IL 3.29' }
 ];
 
 var GEN = {
@@ -171,7 +184,7 @@ var GEN = {
       opts:numOpts(near(r, n - k, 0, 9)), answer:n - k, right:n + ' take away ' + k + ' is ' + (n - k) + '.', count:n - k, countSel:'.m-things .obj:not(.gone)', key:n + '-' + k };
   },
   names:function(r, lv){
-    var n = lv === 1 ? r.int(1, 10) : r.int(11, 20), list = near(r, n, lv === 1 ? 1 : 11, lv === 1 ? 10 : 20);
+    var n = lv === 1 ? r.int(1, 10) : r.int(11, 50), list = near(r, n, lv === 1 ? 1 : 11, lv === 1 ? 10 : 50, lv === 1 ? [] : [n + 10, n - 10]);
     return { prompt:'Find the word', show:'<span class="m-big">' + n + '</span>', answer:n, right:n + ', ' + NAMES[n] + '.', key:n,
       opts:list.map(function(v){ return { v:v, html:'<span class="m-word">' + NAMES[v] + '</span>', label:NAMES[v] }; }) };
   },
@@ -234,6 +247,101 @@ var GEN = {
       opts:r.shuffle(['morning', 'afternoon', 'night']).map(function(x){ return { v:x, html:sky(x), label:x }; }) };
   }
 };
+/* ---------- Phase 8b skills ---------- */
+GEN.skip = function(r, lv){
+  var step = r.pick([2, 5, 10]), max = lv === 2 ? 100 : (step === 2 ? 20 : 50);
+  var start = step * r.int(step === 2 ? 0 : 1, Math.floor(max / step) - 3);
+  var seq = [start, start + step, start + 2 * step], ans = start + 3 * step;
+  return { prompt:'Count in ' + step + 's. What comes next?', show:'<span class="m-seq">' + seq.join(', ') + ', <b>?</b></span>', key:seq.join(),
+    opts:numOpts(r.shuffle([ans, ans + step, ans - 1])), answer:ans, right:seq.join(', ') + ', ' + ans + '!' };
+};
+GEN.order = function(r, lv){
+  var hi = lv === 2 ? 50 : 10, set = [];
+  while (set.length < 3) { var x = r.int(0, hi); if (set.indexOf(x) === -1) set.push(x); }
+  var big = r() < 0.5, ans = big ? Math.max.apply(null, set) : Math.min.apply(null, set), w = big ? 'biggest' : 'smallest';
+  return { prompt:'Which is the ' + w + '?', show:'', opts:numOpts(set), answer:ans, right:'Yes! ' + ans + ' is the ' + w + '.', key:w + set.join() };
+};
+/* Two drawn things that differ in one way: height (trees), thickness (ropes), or where a ball sits (top or bottom). */
+function tree(h){ return '<svg class="m-size" viewBox="0 0 100 160" aria-hidden="true"><rect x="44" y="' + (150 - h * 0.35) + '" width="12" height="' + (h * 0.35) + '" fill="#7A5236"/><circle cx="50" cy="' + (150 - h) + '" r="' + (14 + h * 0.15) + '" fill="#5DB36A" stroke="#2F6B3A" stroke-width="3"/><rect y="150" width="100" height="10" fill="#9CD08A"/></svg>'; }
+function rope(w){ return '<svg class="m-size" viewBox="0 0 100 160" aria-hidden="true"><rect x="' + (50 - w / 2) + '" y="10" width="' + w + '" height="140" rx="' + (w / 2) + '" fill="#E3BC8C" stroke="#7A5236" stroke-width="3"/></svg>'; }
+function shelf(top){ return '<svg class="m-size" viewBox="0 0 100 160" aria-hidden="true"><rect x="10" y="70" width="80" height="8" fill="#7A5236"/><rect x="10" y="146" width="80" height="8" fill="#7A5236"/><circle cx="50" cy="' + (top ? 52 : 128) + '" r="17" fill="#F28AA5" stroke="#1E2B38" stroke-width="3"/></svg>'; }
+GEN.size = function(r){
+  var k = r.pick(['taller', 'shorter', 'thicker', 'thinner', 'top', 'bottom']), a, b, prompt, said;
+  if (k === 'taller' || k === 'shorter') { a = { v:'taller', html:tree(120), label:'tall tree' }; b = { v:'shorter', html:tree(55), label:'short tree' }; prompt = 'Which is ' + k + '?'; said = k; }
+  else if (k === 'thicker' || k === 'thinner') { a = { v:'thicker', html:rope(44), label:'thick rope' }; b = { v:'thinner', html:rope(12), label:'thin rope' }; prompt = 'Which is ' + k + '?'; said = k; }
+  else { a = { v:'top', html:shelf(true), label:'ball at the top' }; b = { v:'bottom', html:shelf(false), label:'ball at the bottom' }; prompt = 'Which ball is at the ' + k + '?'; said = 'at the ' + k; }
+  return { prompt:prompt, show:'', opts:r.shuffle([a, b]), answer:k, right:'Yes! That one is ' + said + '.', key:k, two:true };
+};
+/* Jugs of 3 sizes. */
+function jug(s){ var w = 30 + s * 18, h = 40 + s * 22, x = 50 - w / 2, y = 120 - h; return '<svg class="m-size" viewBox="0 0 100 130" aria-hidden="true"><path d="M' + x + ' ' + y + 'h' + w + 'l-4 ' + h + 'h-' + (w - 8) + 'z" fill="#BDE3FF" stroke="#1E2B38" stroke-width="4"/><rect y="120" width="100" height="10" fill="#9CD08A"/></svg>'; }
+GEN.longest = function(r, lv){
+  var sizes = r.shuffle([0, 1, 2]), most = r() < 0.5;
+  if (lv === 1) {
+    var lens = [70, 130, 190], w = most ? 'longest' : 'shortest';
+    return { prompt:'Which is the ' + w + '?', show:'', answer:most ? 2 : 0, right:'Yes! That one is the ' + w + '.', key:w + sizes.join(),
+      opts:sizes.map(function(s){ return { v:s, html:pencil(lens[s]), label:['short', 'middle', 'long'][s] + ' pencil' }; }) };
+  }
+  var w2 = most ? 'the most' : 'the least';
+  return { prompt:'Which holds ' + w2 + '?', show:'', answer:most ? 2 : 0, right:'Yes! That one holds ' + w2 + '.', key:w2 + sizes.join(),
+    opts:sizes.map(function(s){ return { v:s, html:jug(s), label:['small', 'middle', 'big'][s] + ' jug' }; }) };
+};
+/* Solids, drawn with simple shading. */
+var SOLIDS = {
+  sphere:'<circle cx="50" cy="52" r="36" fill="#7CC6F2" stroke="#1E2B38" stroke-width="4"/><ellipse cx="38" cy="38" rx="10" ry="7" fill="#DDF1FC"/>',
+  cube:'<polygon points="22,36 56,36 56,84 22,84" fill="#FFCB45" stroke="#1E2B38" stroke-width="4"/><polygon points="22,36 40,20 74,20 56,36" fill="#FFE08A" stroke="#1E2B38" stroke-width="4"/><polygon points="56,36 74,20 74,68 56,84" fill="#E3A82A" stroke="#1E2B38" stroke-width="4"/>',
+  cylinder:'<path d="M24 26v52a26 9 0 0 0 52 0V26" fill="#8FC7A0" stroke="#1E2B38" stroke-width="4"/><ellipse cx="50" cy="26" rx="26" ry="9" fill="#BFE6CD" stroke="#1E2B38" stroke-width="4"/>',
+  cone:'<path d="M50 14L22 80a28 9 0 0 0 56 0z" fill="#F6B9A0" stroke="#1E2B38" stroke-width="4"/><path d="M22 80a28 9 0 0 0 56 0" fill="none" stroke="#1E2B38" stroke-width="4"/>'
+};
+function solid(n){ return '<svg class="m-shape" viewBox="0 0 100 100" aria-hidden="true">' + SOLIDS[n] + '</svg>'; }
+var LIKE = [['ball', '⚽', 'sphere'], ['box', '📦', 'cube'], ['battery', '🔋', 'cylinder'], ['ice cream cone', '🍦', 'cone']];
+GEN.solids = function(r, lv){
+  var names = ['sphere', 'cube', 'cylinder', 'cone'], s, prompt, right, show = '';
+  if (lv === 1) { s = r.pick(names); prompt = 'Find the ' + s; right = 'Yes! A ' + s + '.'; }
+  else { var it = r.pick(LIKE); s = it[2]; prompt = (it[0] === 'ice cream cone' ? 'An ' : 'A ') + it[0] + ' is like which shape?'; right = 'Yes! ' + (it[0] === 'ice cream cone' ? 'An ' : 'A ') + it[0] + ' is a ' + s + '.'; show = '<span class="s-picimg" aria-hidden="true">' + it[1] + '</span>'; }
+  var list = r.shuffle([s].concat(r.shuffle(names.filter(function(x){ return x !== s; })).slice(0, 2)));
+  return { prompt:prompt, show:show, answer:s, right:right, key:prompt, opts:list.map(function(x){ return { v:x, html:solid(x), label:x }; }) };
+};
+/* Odd one out: two alike and one different, by colour (level 1) or by shape (level 2). */
+var COLOURS = [['#F28AA5', 'pink'], ['#7CC6F2', 'blue'], ['#FFCB45', 'yellow']];
+GEN.odd = function(r, lv){
+  var odd = r.int(0, 2), cs = r.shuffle(COLOURS), ss = r.shuffle(['circle', 'square', 'triangle']), opts = [];
+  for (var i = 0; i < 3; i++) {
+    var c = lv === 1 ? cs[i === odd ? 1 : 0] : cs[0], sh = lv === 1 ? ss[0] : ss[i === odd ? 1 : 0];
+    opts.push({ v:i, html:shape(sh, c[0]), label:c[1] + ' ' + sh });
+  }
+  var why = lv === 1 ? 'colour' : 'shape';
+  return { prompt:'Which one is not like the others?', show:'', opts:opts, answer:odd, right:'Yes! That one is a different ' + why + '.', key:why + odd + cs[0][1] + ss[0] };
+};
+/* More of which? A row of pink circles and blue squares (colour and shape both differ). */
+GEN.data = function(r){
+  var p = r.int(1, 6), b = r.int(1, 6);
+  while (b === p) b = r.int(1, 6);
+  var row = [], i;
+  for (i = 0; i < p; i++) row.push('R');
+  for (i = 0; i < b; i++) row.push('B');
+  var ans = p > b ? 'pink' : 'blue';
+  return { prompt:'Are there more pink or blue?', show:'<span class="m-pattern">' + r.shuffle(row).map(bead).join('') + '</span>', answer:ans, right:'Yes! More ' + ans + '.', key:p + '-' + b, two:true,
+    opts:[{ v:'pink', html:bead('R'), label:'pink' }, { v:'blue', html:bead('B'), label:'blue' }] };
+};
+/* A clock face: a short hour hand and a long minute hand. */
+function clock(h, half){
+  var s = '<svg class="m-clock" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="#fff" stroke="#1E2B38" stroke-width="5"/>';
+  for (var i = 1; i <= 12; i++) { var a = i * Math.PI / 6; s += '<text x="' + (50 + 34 * Math.sin(a)).toFixed(1) + '" y="' + (54.5 - 34 * Math.cos(a)).toFixed(1) + '" text-anchor="middle" font-size="11" font-weight="700" fill="#1E2B38">' + i + '</text>'; }
+  var ha = ((h % 12) + (half ? 0.5 : 0)) * Math.PI / 6, ma = half ? Math.PI : 0;
+  s += '<line x1="50" y1="50" x2="' + (50 + 20 * Math.sin(ha)).toFixed(1) + '" y2="' + (50 - 20 * Math.cos(ha)).toFixed(1) + '" stroke="#1E2B38" stroke-width="7" stroke-linecap="round"/>';
+  s += '<line x1="50" y1="50" x2="' + (50 + 32 * Math.sin(ma)).toFixed(1) + '" y2="' + (50 - 32 * Math.cos(ma)).toFixed(1) + '" stroke="#F28AA5" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="50" r="4" fill="#1E2B38"/>';
+  return s + '</svg>';
+}
+function timeName(h, half){ return half ? 'half past ' + h : h + " o'clock"; }
+GEN.clock = function(r, lv){
+  var h = r.int(1, 12), half = lv === 2 && r() < 0.5, ans = timeName(h, half), list = [ans];
+  var cands = r.shuffle([timeName(h % 12 + 1, half), timeName((h + 5) % 12 + 1, half), timeName(h, !half)].filter(function(x){ return lv === 2 || x.indexOf('half') === -1; }));
+  for (var i = 0; list.length < 3 && i < cands.length; i++) if (list.indexOf(cands[i]) === -1) list.push(cands[i]);
+  while (list.length < 3) { var x = timeName(r.int(1, 12), false); if (list.indexOf(x) === -1) list.push(x); }
+  return { prompt:'What time is it?', show:clock(h, half), answer:ans, right:'Yes! It is ' + ans + '.', key:ans,
+    opts:r.shuffle(list).map(function(t){ return { v:t, html:'<span class="m-word">' + esc(t) + '</span>', label:t }; }) };
+};
+
 /* Tens and ones: rods of ten and single cubes. */
 function blocks(v){
   var t = Math.floor(v / 10), o = v % 10, s = '<span class="m-blocks" aria-hidden="true">';

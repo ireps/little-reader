@@ -43,6 +43,13 @@ function mp3Ms(buf){
   return rate ? Math.round(samples * 1000 / rate) : 0;
 }
 
+/* Replaces a file with another. Windows can briefly lock a file (antivirus, indexing): retry, then copy. */
+function replace(from, to){
+  for (let i = 0; i < 5; i++) {
+    try { fs.renameSync(from, to); return true; } catch (e) { const t = Date.now() + 100 * (i + 1); while (Date.now() < t) { /* wait */ } }
+  }
+  try { fs.copyFileSync(from, to); fs.unlinkSync(from); return true; } catch (e) { console.warn('Could not replace ' + to + ': ' + e.message); return false; }
+}
 /* With ffmpeg: cuts long silence off the end of a clip (edge-tts adds over a second), keeping TAIL ms, so the app
    doesn't wait on silence and joined clips flow (stream copy, so no quality is lost). Returns when the voice starts
    (ms), because edge-tts reports each word about 170 ms before it is heard. Skipped quietly without ffmpeg. */
@@ -61,7 +68,8 @@ function trimEnd(file, ms){
   if (ms - last <= TAIL + 100) return onset;
   const tmp = file + '.tmp.mp3';
   const c = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', file, '-t', ((last + TAIL) / 1000).toFixed(3), '-c', 'copy', tmp]);
-  if (c.status === 0) { fs.renameSync(tmp, file); trimmed++; } else if (fs.existsSync(tmp)) fs.unlinkSync(tmp);
+  if (c.status === 0 && replace(tmp, file)) trimmed++;
+  else if (fs.existsSync(tmp)) fs.unlinkSync(tmp);
   return onset;
 }
 
