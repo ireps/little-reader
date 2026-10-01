@@ -85,7 +85,7 @@ tools/prototype.html     Phase 4 prototype: every session screen and state from 
 tests/run.js             Playwright browser checks (with a speech-engine stand-in)
 tests/screens.js         screenshots of every screen and state (npm run screens)
 tests/prototype.js       prototype screenshots, checks and contact sheets (npm run prototype)
-openspec/                specs: config.yaml, specs/ (shipped), changes/ (Phases 3 to 7)
+openspec/                specs: config.yaml, specs/ (shipped), changes/ (in progress; archive/ holds Phases 3 to 7)
 .claude/                 OpenSpec skills and /opsx commands for Claude Code
 ```
 
@@ -127,7 +127,7 @@ The rebuild is specified in OpenSpec under `openspec/` (see "How to work"). Each
 folder in `openspec/changes/`, one commit or pull request, and the owner tries it on the tablet before
 the next phase starts.
 
-Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phases 3 to 7 are built and merged to `main`, including Phase 7's clips; the owner archives them together after trying them (`openspec archive` for `rebuild-speech-for-speed`, `add-guided-daily-session`, `add-kg2-english`, `add-kg2-maths`, `add-indian-voice-clips`, in that order).
+Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phases 3 to 7 are built, merged to `main` and archived (`openspec/changes/archive/`, 2026-10-01); their requirements are now in `openspec/specs/`. Phase 4 retired the old `lessons` capability.
 
 | Phase | Change | What it delivers |
 | --- | --- | --- |
