@@ -25,13 +25,18 @@
 ### D1. The clip list (`tools/list-clips.js`)
 - Loads the app's data scripts in a Node `vm` context (classic scripts on `LR`, so no build step is
   needed).
+- `LR.phrases` lives in `data/phrases.js`: every instruction and praise string, with `{w}` for a
+  word or number. It is a dev-only list (not loaded by the app); the step code keeps its strings, and a test
+  records everything said during `npm test` and fails if any of it can't be played from the list.
 - Collects:
   - every unit's words, tricky words, story sentences, silly sentences, questions and answers;
   - each maths generator's full output space (number names 0 to 100, comparison phrases, money,
     shapes, days and months);
   - letter names, grapheme sounds, praise, and prompts from a `LR.phrases` table.
-- Joined strings such as "Yes! come" are split at runtime into the clips "Yes!" and "come".
-- Writes `tools/clip-list.txt`: one normalised string per line, sorted and de-duplicated.
+- Joined strings such as "Yes! come" are split at runtime into the clips "yes" and "come". Maths
+  prompts are broken into their fixed pieces and numbers ("is greater than", "7").
+- Writes `tools/clip-list.txt`: one normalised key and its file name per line, sorted and de-duplicated.
+  `node tools/list-clips.js --check` (run by `npm test`) fails if the list is out of date.
 
 ### D2. Supplied clips and the importer (`tools/import-clips.js`, dev-only)
 - `clip-list.txt` gives each string a file name (its slug), for example `come.mp3` and
@@ -41,7 +46,8 @@
   - reports missing and extra files;
   - reads each clip's duration;
   - takes word timings from a `<slug>.json` next to the clip if the voice tool gave them, or else
-    estimates them by splitting the duration by character count, the same way as Phase 3;
+    leaves them out, and the app spreads the words evenly over the clip;
+  - removes clips from `audio/clips/` that are no longer in the folder or the list;
   - writes `audio/clips/` and `audio/manifest.js`.
 
 ### D2b. Optional Heera helper (`tools/make-clips.ps1`, dev-only)
@@ -49,24 +55,26 @@
 - For each line of `clip-list.txt` it:
   - synthesises a WAV;
   - records `SpeakProgress` word offsets in ms;
-  - encodes it with ffmpeg to MP3, 32 kbps, mono, 22.05 kHz.
-- It writes `audio/clips/<slug>.mp3` and `audio/manifest.js`:
-  `LR.clips = { "come": { f: "come.mp3", t: [0] }, "the frog can jump": { f: "...", t: [0, 140, 520, 760] } }`,
-  where `t` holds the start time in ms of each word.
+  - (the importer encodes it with ffmpeg to MP3, 48 kbps, mono, 22.05 kHz).
+- It writes `audio/incoming/<slug>.wav` and `<slug>.json`; the importer then converts and measures them
+  and writes `audio/manifest.js`:
+  `LR.clips = { "come": { f: "come.mp3", d: 480 }, "the frog can jump": { f: "...", d: 1300, t: [0, 140, 520, 760] } }`,
+  where `d` is the length and `t` the start time in ms of each word.
 - It skips strings whose clip already exists, so re-runs after small content changes are quick.
 
 ### D3. Playback in `speech.js`
-- **`preload(texts)`** creates `Audio` objects with `preload = 'auto'` for the next screen's clips,
+- **`preload(text)`** creates `Audio` objects with `preload = 'auto'` for the next item's word,
   and keeps up to 40 in an LRU cache.
 - **Lookup:** `say(text)` looks up the whole normalised text first. Failing that, it splits the text
-  at sentence punctuation and `!` and plays the parts as a sequence if every part has a clip.
-  Otherwise it falls back to the tablet voice for the whole text.
+  at sentence punctuation and covers each clause with the longest phrases that have clips (up to 8 words).
+  If any part is missing, the tablet voice says the whole text.
 - **Sequences** start each clip on the previous clip's `ended` event, so gaps stay under 150 ms.
-- **`onWord(i)`** fires from a `timeupdate` / `requestAnimationFrame` loop that compares
-  `currentTime` against `t[i]`.
-- **Watchdog:** `duration + 1000 ms`. A `play()` rejection falls back to the tablet voice.
-- **Rate:** the speed setting maps to `audio.playbackRate`.
-- **Unlock:** the first touch also plays a silent clip.
+- **`onWord(i)`** fires from timers started when the clip is `playing`, at `t[i]` divided by the
+  playback rate; with `opts.parts`, words map onto the parts they start.
+- **Watchdog:** each clip's `d / playbackRate + 1000 ms`. A `play()` rejection or an `error` falls back
+  to the tablet voice for the whole text.
+- **Rate:** the speed setting maps to `audio.playbackRate` (speed / 0.9, kept within 0.75 to 1.2).
+- **Unlock:** nothing plays before the first touch, which also allows `play()`.
 - **Clips switch:** with `clips: false`, speech skips the manifest and uses the tablet voice.
 - **Captions:** hidden while a clip plays, unless Grown-ups "Show captions" is on. They always show
   when the tablet voice is used.
@@ -85,5 +93,5 @@
   cover it.
 - **Heera timings** come from System.Speech offsets and may drift by 20 to 40 ms. That's fine for
   highlighting.
-- **Only the owner can supply clips.** The coverage test names every missing string,
-  and the tablet voice still covers them at runtime.
+- **Only the owner can supply clips.** Missing clips are allowed: the tablet voice and caption cover
+  them, and the importer names them.

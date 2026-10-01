@@ -42,7 +42,7 @@ Other facts:
 - Anything a parent typed reaches the page only through `LR.ui.esc()` or `textContent`. Every new render function must follow this.
 - Everything read from storage goes through `LR.store.validate()`. Add every new state field there, with type and size limits.
 - All sound goes through `LR.speech.say(text, opts)`, which returns a Promise that always settles (a watchdog of start-up + estimated length + 1 s). It plays a clip from `LR.clips` if one exists, shows the text as a caption in the top bar (a placeholder until Phase 7's clips), and speaks nothing before the first touch. `opts.onStart(ms)` and `opts.onWord(i)` (with `opts.parts`) drive highlights *during* speech. Join phrases into one utterance (`'Yes! ' + w`); a sentence is one utterance.
-- No fixed waits: advance when `say()` settles, never on a `setTimeout` pause.
+- No fixed waits: advance when `say()` settles. The one exception is the pace beat: the runner holds a finished item on screen for `LR.ui.pace().beat` ms (Grown-ups > Pace; Calm by default, because the owner found the app too fast). Sweeps, Flash and animations scale by `LR.ui.pace().f`.
 - Before starting new speech or animation, call `LR.ui.stopAll()`. Guard async chains with `var g = LR.ui.gen; … if (g !== LR.ui.gen) return;`.
 - Child tap targets are at least 120 x 120 px (words in a sentence: 60 px tall; letters of a word: 120 px tall, 60 px wide). Grown-ups controls: 64 px.
 - Call `LR.ui.feedback(el, 'right'|'wrong')` synchronously in the tap handler: a colour state, a mark and a WebAudio tone within 100 ms. Wrong answers are never punished: no buzzer, no red, no cross.
@@ -58,12 +58,13 @@ index.html               shell, CSP, script order
 css/app.css              all styles, including the 614 px landscape query
 data/units.js            the course, part 1: LR.units (Phase 3 review, Phase 4), LR.startUnit, LR.knownTricky
 data/units-p5.js         the course, part 2 (Phase 5). Every word must pass LR.words.checkUnits() (npm test)
+data/phrases.js          LR.phrases: everything said besides the course, {w} for a word (dev-only, for tools/list-clips.js)
 data/pictures.js         LR.pictures (emoji, Unicode 6 only) and LR.lang (rhymes, a/an, plurals, positions)
 js/words.js              graphemes (Letters and Sounds), segment(), decodable(), checkUnits(), hearts, families, look-alikes
 js/maths.js              LR.maths: the 15 KG-2 skills in unlock order, seeded question generators, ten-frames
 js/progress.js           LR.progress: boxes, due dates, flowers, review plan, pacing, unit advance, dates
 js/store.js              LR.state schema 2, load/save/validate, migration from schema 1 and readingGarden.v1, reset
-js/speech.js             LR.speech: voice choice, clip hook, say() with timings and captions, cancel()
+js/speech.js             LR.speech: voice choice, clips (whole text or longest phrases, else the tablet voice), say() with timings and captions, cancel(), preload()
 js/icons.js              LR.icons: interface icons as inline SVG
 js/ui.js                 LR.ui helpers, letters and hearts, finger sweep, feedback, router
 js/guide.js, garden.js   Tilly the tortoise (4 still poses) and her garden (flowers and sprouts)
@@ -74,8 +75,11 @@ js/steps/*.js            find, flash, pic, build, tricky, silly, read, q, lang (
 js/lessons/grownups.js   Grown-ups (route grownups)
 js/main.js               load state, start router
 fonts/                   Andika Regular and Bold (Latin subset, SIL OFL)
-audio/                   empty; clips only if ever needed
+audio/                   manifest.js (LR.clips, written by tools/import-clips.js), clips/, README.md (how to supply clips)
 tools/device-check.html  device test page
+tools/list-clips.js      writes tools/clip-list.txt (npm test fails if it is stale)
+tools/import-clips.js    supplied clips -> audio/clips/ + audio/manifest.js
+tools/make-clips.ps1     Windows helper: Heera en-IN clips with word timings
 tools/prototype.html     Phase 4 prototype: every session screen and state from fixtures (dev only)
 tests/run.js             Playwright browser checks (with a speech-engine stand-in)
 tests/screens.js         screenshots of every screen and state (npm run screens)
@@ -90,7 +94,7 @@ openspec/                specs: config.yaml, specs/ (shipped), changes/ (Phases 
 { schema: 2, unit: "p4-01", items: { "w:come": { b: 0-5, d: due date, u: last up-move date, m: misses } },
   flowers: [item ids ever mastered], confusions: { target: { pickedInstead: count } },
   stories: { storyId: last read date }, silly: { unitId: [answered, right] }, resume: today's plan { date, steps: [{ id, items }], at: [step, item],
-  done, started, fresh, right, answered, mode }, days: [{ d, n, r, mins }] (last 30), rate: 0.9, last: date, equals: false }
+  done, started, fresh, right, answered, mode }, days: [{ d, n, r, mins }] (last 30), rate: 0.9, last: date, equals: false, clips: true, captions: false, pace: 'calm'|'normal'|'quick' }
 ```
 
 Maths skills are items too (`m:compare`, `m:count`, …): their box drives unlocking (box 2 opens the next) and level (box 3 means level 2).
@@ -122,7 +126,7 @@ The rebuild is specified in OpenSpec under `openspec/` (see "How to work"). Each
 folder in `openspec/changes/`, one commit or pull request, and the owner tries it on the tablet before
 the next phase starts.
 
-Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phases 3 to 6 are built and merged to `main`; the owner archives them together after trying them (`openspec archive` for `rebuild-speech-for-speed`, `add-guided-daily-session`, `add-kg2-english`, `add-kg2-maths`, in that order).
+Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phases 3 to 7 are built and merged to `main` (Phase 7's tooling and playback; the clips themselves come from the owner); the owner archives them together after trying them (`openspec archive` for `rebuild-speech-for-speed`, `add-guided-daily-session`, `add-kg2-english`, `add-kg2-maths`, `add-indian-voice-clips`, in that order).
 
 | Phase | Change | What it delivers |
 | --- | --- | --- |
@@ -130,7 +134,7 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 | 4 | `add-guided-daily-session` | Garden home with one Start, a self-advancing 10-minute session, spaced review, Read with me, first built-in units, tap-only Grown-ups with backup, restore and reset, schema 2. **It starts with prototype screenshots that the owner approves.** |
 | 5 | `add-kg2-english` | Letters and Sounds Phase 3 to 5 units (including the old "sound patterns" plan), Flash, Picture match, Build it, Silly sentences, the help ladder, language tasks, story questions. |
 | 6 | `add-kg2-maths` | The NCF-FS KG-2 numeracy skills, with the crocodile's = behind a Grown-ups switch (off by default). |
-| 7 | `add-indian-voice-clips` | Indian English clips supplied by the owner (matched to a generated list) for every string, with word timings, preloading and a coverage test. Last, because the full list of strings is only known once Phases 4 to 6 exist. |
+| 7 | `add-indian-voice-clips` (built; waiting for the clips) | Indian English clips supplied by the owner (matched to a generated list) for every string, with word timings, preloading and a coverage test. Last, because the full list of strings is only known once Phases 4 to 6 exist. |
 
 **Superseded:** the old Phase 3 (typed weekly content). Its backup, restore and reset items moved to Phase 4.
 
@@ -159,7 +163,8 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 - Phase 6: check that the ₹ sign shows on the coins, and whether her class teaches = yet (the Equals sign switch).
 - Phase 5: check that every picture shows on the tablet (emoji are Unicode 6, which Android 5.1 should draw), and note which new activities needed explaining over a week of sessions.
 - Phases 3 and 4: run one full session with her on the tablet. Note stray taps, "what do I do?" moments, help taps and how long it takes (target: at most 2 moments, 10 ± 2 minutes). Does it feel instant? Do the highlights keep up with the voice?
-- Phase 7: supply the voice clips for `tools/clip-list.txt` (an Indian English computer voice; `tools/make-clips.ps1` can make them with Heera on Windows).
+- Phase 7: supply the voice clips for `tools/clip-list.txt` (an Indian English computer voice; `tools/make-clips.ps1` can make them with Heera on Windows), then `node tools/import-clips.js` (see `audio/README.md`).
+- Pace: try Calm (the default) on the tablet; Grown-ups > Pace has Normal and Quick.
 
 - Turn on GitHub Pages from `main` (root), with Enforce HTTPS on.
 - Check whether the tablet's voice sounds female. If not, look in the tablet's text-to-speech settings.

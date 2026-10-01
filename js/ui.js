@@ -52,7 +52,12 @@ ui.lightLetters = function(el, stepMs, cb){
   next();
 };
 /* Spread a sweep over the time the word takes to say, within sensible limits. */
-function stepFor(ms, n){ return Math.max(80, Math.min(220, Math.round(ms / Math.max(1, n)))); }
+function stepFor(ms, n){ return Math.max(80, Math.min(Math.round(220 * ui.pace().f), Math.round(ms / Math.max(1, n)))); }
+/* Pace (Grown-ups): how long an answer stays on screen before the next item (beat, ms), and how much slower
+   sweeps, the Flash look and animations run (f). Calm is the default. */
+ui.PACE = { calm:{ beat:1400, f:1.5 }, normal:{ beat:700, f:1 }, quick:{ beat:250, f:0.75 } };
+ui.pace = function(){ return ui.PACE[LR.state && LR.state.pace] || ui.PACE.calm; };
+ui.applyPace = function(){ document.documentElement.style.setProperty('--pace', String(ui.pace().f)); };
 
 /* Speech first; the letters light while the word is spoken, never before. */
 ui.sayWord = function(el, word){

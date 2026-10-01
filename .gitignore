@@ -7,3 +7,6 @@ Thumbs.db
 node_modules/
 package-lock.json
 test-results/
+
+# Voice clips waiting to be imported (tools/import-clips.js copies them to audio/clips/)
+audio/incoming/
