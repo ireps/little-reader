@@ -15,7 +15,7 @@ Compare SHALL ask which is more and which mouth fits, for 0 to 10 with dots at l
 
 #### Scenario: Wrong
 - **WHEN** she picks the other mouth
-- **THEN** it dims and the crocodile mouth turns toward the bigger number while both amounts are counted along
+- **THEN** it dims and the right mouth is shown with the sentence "3 is less than 7"
 
 ### Requirement: Counting objects
 Counting SHALL ask how many objects are shown, to 10 at level 1 and to 20 at level 2.
@@ -37,7 +37,7 @@ Numeral and quantity SHALL match a numeral to a set, to 9 at level 1 and to 99 a
 
 #### Scenario: Wrong
 - **WHEN** she picks 4 tens and 3 ones
-- **THEN** it dims and the tens and ones are counted along
+- **THEN** it dims and the right blocks are shown and "3 tens and 4 ones" is said
 
 ### Requirement: Counting forward and back
 Counting on and back SHALL ask for the next or previous number from any start, to 9 at level 1 and to 20 plus counting in 2s and 10s at level 2.
@@ -48,7 +48,7 @@ Counting on and back SHALL ask for the next or previous number from any start, t
 
 #### Scenario: Wrong
 - **WHEN** she picks 9
-- **THEN** it dims and the number line hops 6, 7, 8
+- **THEN** it dims and the right answer is shown with the sequence said
 
 ### Requirement: Before, after and between
 Before, after and between SHALL ask for the neighbouring number, to 20 at level 1 and to 100 at level 2.
@@ -70,18 +70,18 @@ Zero SHALL show a set being taken away until none is left and ask how many are l
 
 #### Scenario: Wrong
 - **WHEN** she picks 1
-- **THEN** it dims and the empty plate is counted: "none left, zero"
+- **THEN** it dims and 0 is shown and "Zero. None left." is said
 
 ### Requirement: Adding
 Adding SHALL combine two pictured groups, to 9 at level 1 and facts to 18 at level 2.
 
 #### Scenario: Right
-- **WHEN** she picks 5 for 2 mangoes and 3 mangoes
+- **WHEN** she picks 5 for 2 things and 3 more
 - **THEN** it turns green
 
 #### Scenario: Wrong
 - **WHEN** she picks 4
-- **THEN** it dims and all the mangoes are counted along to 5
+- **THEN** it dims and all the things light one by one while 1 to 5 is said
 
 ### Requirement: Taking away
 Taking away SHALL show a group with some removed and ask how many are left, within 9.
@@ -92,7 +92,7 @@ Taking away SHALL show a group with some removed and ask how many are left, with
 
 #### Scenario: Wrong
 - **WHEN** she picks 8
-- **THEN** it dims and the remaining birds are counted along to 4
+- **THEN** it dims and the birds left light one by one while 1 to 4 is said
 
 ### Requirement: Number names
 Number names SHALL match a numeral to its written name, one to ten at level 1 and eleven to twenty at level 2.
@@ -125,10 +125,10 @@ Measure SHALL compare long and short, heavy and light at level 1, and full and e
 
 #### Scenario: Wrong
 - **WHEN** she picks the shorter one
-- **THEN** it dims and "this one is longer" is spoken
+- **THEN** it dims and the longer pencil is shown
 
 ### Requirement: Shapes
-Shapes SHALL ask her to find a circle, square, triangle or rectangle at level 1 and the flat face of a 3-D shape at level 2.
+Shapes SHALL ask her to find a circle, square, triangle or rectangle at level 1, and the shape with a given property (no corners, 3 sides, 4 equal sides) at level 2.
 
 #### Scenario: Right
 - **WHEN** she picks the triangle
@@ -136,7 +136,7 @@ Shapes SHALL ask her to find a circle, square, triangle or rectangle at level 1 
 
 #### Scenario: Wrong
 - **WHEN** she picks the square
-- **THEN** it dims and the triangle's 3 sides are counted along
+- **THEN** it dims and the triangle is shown and named
 
 ### Requirement: Halves
 Halves SHALL ask which shape is cut into two equal halves.
@@ -153,12 +153,12 @@ Halves SHALL ask which shape is cut into two equal halves.
 Patterns SHALL ask what comes next in an AB pattern at level 1 and ABB or ABC at level 2.
 
 #### Scenario: Right
-- **WHEN** she picks the red bead after red, blue, red, blue
+- **WHEN** she picks the pink circle after pink circle, blue square, pink circle, blue square
 - **THEN** it turns green
 
 #### Scenario: Wrong
 - **WHEN** she picks blue
-- **THEN** it dims and the pattern is spoken "red, blue, red, blue, red"
+- **THEN** it dims and the pink circle is shown and named
 
 ### Requirement: Days, months and time of day
 Time SHALL ask which day comes next at level 1 and which month comes next or whether a scene is morning, afternoon or night at level 2.

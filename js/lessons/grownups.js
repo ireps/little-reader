@@ -51,9 +51,22 @@ function progressHTML(){
       + '<svg viewBox="0 0 310 90" class="gp-bars" role="img" aria-label="Minutes per day">' + bars + '</svg>' : '<p class="help">No sessions yet.</p>')
     + '</section>';
 }
+/* Maths: each skill she has unlocked, its level, and whether it is mastered; and the = switch. */
+function mathsHTML(){
+  var it = LR.state.items, open = P.mathsUnlocked();
+  var rows = LR.maths.SKILLS.filter(function(s){ return open.indexOf(s.id) > -1; }).map(function(s){
+    var r = it['m:' + s.id], b = r ? r.b : 0;
+    return '<li>' + U.esc(s.name) + ': level ' + P.mathsLevel(s.id) + ', ' + (b >= 3 ? 'mastered' : 'box ' + b + ' of 5') + ' <span class="help">(' + U.esc(s.code) + ')</span></li>';
+  }).join('');
+  var next = LR.maths.SKILLS[open.length];
+  return '<section><h2>Maths</h2><ul class="gp-list">' + rows + '</ul>'
+    + (next ? '<p class="help">Next to unlock: ' + U.esc(next.name) + ' (when ' + U.esc(LR.maths.SKILLS[open.length - 1].name.toLowerCase()) + ' reaches box 2).</p>' : '')
+    + '<p class="help">Equals sign: add = to the crocodile rounds, once her class has taught it.</p>'
+    + '<button class="btn soft small" data-act="equals" aria-pressed="' + LR.state.equals + '">Equals sign: ' + (LR.state.equals ? 'on' : 'off') + '</button></section>';
+}
 function settings(){
   var app = U.app(), st = LR.state;
-  app.innerHTML = '<div class="gp">' + progressHTML()
+  app.innerHTML = '<div class="gp">' + progressHTML() + mathsHTML()
     + '<section><h2>Where is she?</h2><p class="help">Tap a unit to start there next time. The app moves on by itself when a unit is mastered.</p>'
     + LR.units.map(function(u, i){ return '<button class="btn soft small unit' + (u.id === st.unit ? ' on' : '') + '" data-act="unit" data-u="' + U.esc(u.id) + '" aria-pressed="' + (u.id === st.unit) + '">'
       + (i + 1) + '. ' + U.esc(u.title) + '</button>'; }).join('') + '</section>'
@@ -83,6 +96,7 @@ function settings(){
       LR.store.save(); settings();
     }
     else if (a === 'test') { U.stopAll(); S.say('Come and read with me.'); }
+    else if (a === 'equals') { LR.state.equals = !LR.state.equals; LR.store.save(); settings(); }
     else if (a === 'backup') backup();
     else if (a === 'reset') confirmReset();
   };

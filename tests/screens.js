@@ -108,8 +108,10 @@ const server = http.createServer((req, res) => {
       ['build', { t: 'build', w: 'shrimp' }], ['build-split', { t: 'build', w: 'snake' }], ['silly', { t: 'silly', u: 'p4-03', k: 1 }, null, 'silly'],
       ['rhyme', { t: 'rhyme', k: 5 }], ['a-an', { t: 'an', w: 'egg' }], ['plural', { t: 'plural', w: 'bird', many: true }],
       ['position', { t: 'pos', p: 'on' }], ['capitals', { t: 'caps', story: 'p5-06a', i: 0 }], ['question', { t: 'q', story: 'p4-03a', k: 0 }, null, 'read'],
-      ['read-hint', { t: 'read', story: 'p5-03a', i: 2 }, '[data-act=check]:not([disabled])', 'read']
-    ];
+      ['read-hint', { t: 'read', story: 'p5-03a', i: 2 }, '[data-act=check]:not([disabled])', 'read'],
+      ['croc-eq', { t: 'croc', a: 6, b: 6, m: 'eq' }, null, 'maths'], ['croc-level2', { t: 'croc', a: 14, b: 17, m: 'more', lv: 2 }, null, 'maths']
+    ].concat(['count', 'numeral', 'counton', 'neighbour', 'zero', 'add', 'take', 'names', 'money', 'measure', 'shapes', 'halves', 'pattern', 'time']
+      .reduce((a, sk) => a.concat([1, 2].map(lv => ['m-' + sk + lv, { t: 'math', s: sk, lv, seed: 777 }, null, 'maths'])), []));
     for (const [name, it, wait, step] of activities) {
       await p.goto(U + '#home');
       await p.evaluate(([it, step]) => { LR.steps.flash.SHOW_MS = 400; LR.state.resume = { date: LR.progress.today(), steps: [{ id: step || 'words', items: [it] }], at: [0, 0], done: false, started: Date.now(), fresh: 0, right: 0, answered: 0, mode: 'day' }; LR.store.save(); }, [it, step]);

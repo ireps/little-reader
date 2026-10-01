@@ -18,7 +18,7 @@ function isInt(n, lo, hi){ return typeof n === 'number' && n % 1 === 0 && n >= l
 function keys(o, max){ return Object.keys(o).slice(0, max); }
 
 function blank(){
-  return { schema:SCHEMA, unit:LR.startUnit || LR.units[0].id, items:{}, flowers:[], confusions:{}, stories:{}, silly:{}, resume:null, days:[], rate:0.9, last:'' };
+  return { schema:SCHEMA, unit:LR.startUnit || LR.units[0].id, items:{}, flowers:[], confusions:{}, stories:{}, silly:{}, resume:null, days:[], rate:0.9, last:'', equals:false };
 }
 
 /* confusions: { target: { word she picked instead: count } } */
@@ -49,7 +49,10 @@ function cleanItem(it){
   if (it.t === 'silly' && isId(it.u) && isInt(it.k, 0, 20)) return { t:'silly', u:it.u, k:it.k };
   if (it.t === 'rhyme' && isInt(it.k, 0, 50)) return { t:'rhyme', k:it.k };
   if (it.t === 'pos' && (it.p === 'in' || it.p === 'on' || it.p === 'under')) return { t:'pos', p:it.p };
-  if (it.t === 'croc' && isInt(it.a, 0, 20) && isInt(it.b, 0, 20) && it.a !== it.b && (it.m === 'more' || it.m === 'mouth')) return { t:'croc', a:it.a, b:it.b, m:it.m };
+  /* Comparing: "more" and "mouth" never use equal numbers; "eq" (the = switch is on) may. */
+  if (it.t === 'croc' && isInt(it.a, 0, 20) && isInt(it.b, 0, 20) && ((it.a !== it.b && (it.m === 'more' || it.m === 'mouth')) || it.m === 'eq'))
+    return { t:'croc', a:it.a, b:it.b, m:it.m, lv:it.lv === 2 ? 2 : 1 };
+  if (it.t === 'math' && LR.maths && LR.maths.ids.indexOf(it.s) > -1 && isInt(it.seed, 1, 999999999)) return { t:'math', s:it.s, lv:it.lv === 2 ? 2 : 1, seed:it.seed };
   return null;
 }
 function cleanResume(r){
@@ -98,6 +101,7 @@ function validate(s){
   }).map(function(d){ return { d:d.d, n:d.n, r:d.r, mins:d.mins }; }).slice(-MAX_DAYS);
   if (typeof s.rate === 'number' && s.rate >= 0.75 && s.rate <= 1.1) out.rate = s.rate;
   if (isDate(s.last)) out.last = s.last;
+  out.equals = s.equals === true;
   return out;
 }
 
