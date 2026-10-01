@@ -56,6 +56,8 @@
 - It writes `audio/incoming/<slug>.mp3` (24 kHz mono MP3, as the service gives it) and `<slug>.json` from the
   WordBoundary events (offsets in 100 ns units, converted to ms), skips existing clips, retries with backoff, and
   can make a few clips first (`--only`) for a listening check.
+- The owner found the default voice too "professional" for a child to follow. After comparing variants, they chose
+  `--rate -10% --pitch +15Hz` (a little slower and higher, like child-directed speech), now the script's default.
 
 ### D2b. Optional Heera helper (`tools/make-clips.ps1`, dev-only)
 - Runs on the owner's Windows PC with System.Speech and the **Microsoft Heera (en-IN)** voice.

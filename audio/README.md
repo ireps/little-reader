@@ -14,15 +14,19 @@ phrases and words in turn. For example, "That says cone." plays as `that-says.mp
 ## Making and importing clips
 
 1. **Make them with Neerja (recommended).** Neerja is Microsoft's neural Indian English female voice and sounds much
-   clearer than Heera. You need Python 3.8+ and an internet connection while the clips are being made:
+   clearer than Heera. You need Python 3.8+ (or [uv](https://docs.astral.sh/uv/)) and an internet connection while
+   the clips are being made:
 
    ```
-   pip install edge-tts
-   python tools/make-clips-neerja.py --only "that says" come     # try two clips first and listen to them
-   python tools/make-clips-neerja.py                             # then all of them (a few minutes)
+   uv venv .venv
+   uv pip install --python .venv edge-tts
+   .venv\Scripts\python tools/make-clips-neerja.py --only "that says" come     # try two clips first and listen
+   .venv\Scripts\python tools/make-clips-neerja.py                             # then all of them (a few minutes)
    ```
 
-   This writes `audio/incoming/<name>.mp3` and `<name>.json`. `--rate -10%` slows the voice down. First empty
+   This writes `audio/incoming/<name>.mp3` and `<name>.json`. By default the voice is a little slower and higher
+   than normal (`--rate -10% --pitch +15Hz`), because a newsreader style is hard for young children to follow;
+   change either option to taste. First empty
    `audio/incoming/` of any older clips. It uses Edge's online read-aloud voices through the `edge-tts` package; the
    app itself never goes online.
 

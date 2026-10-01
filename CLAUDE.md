@@ -127,7 +127,7 @@ The rebuild is specified in OpenSpec under `openspec/` (see "How to work"). Each
 folder in `openspec/changes/`, one commit or pull request, and the owner tries it on the tablet before
 the next phase starts.
 
-Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phases 3 to 7 are built and merged to `main` (Phase 7's tooling and playback; the clips themselves come from the owner); the owner archives them together after trying them (`openspec archive` for `rebuild-speech-for-speed`, `add-guided-daily-session`, `add-kg2-english`, `add-kg2-maths`, `add-indian-voice-clips`, in that order).
+Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phases 3 to 7 are built and merged to `main`, including Phase 7's clips; the owner archives them together after trying them (`openspec archive` for `rebuild-speech-for-speed`, `add-guided-daily-session`, `add-kg2-english`, `add-kg2-maths`, `add-indian-voice-clips`, in that order).
 
 | Phase | Change | What it delivers |
 | --- | --- | --- |
@@ -135,7 +135,7 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 | 4 | `add-guided-daily-session` | Garden home with one Start, a self-advancing 10-minute session, spaced review, Read with me, first built-in units, tap-only Grown-ups with backup, restore and reset, schema 2. **It starts with prototype screenshots that the owner approves.** |
 | 5 | `add-kg2-english` | Letters and Sounds Phase 3 to 5 units (including the old "sound patterns" plan), Flash, Picture match, Build it, Silly sentences, the help ladder, language tasks, story questions. |
 | 6 | `add-kg2-maths` | The NCF-FS KG-2 numeracy skills, with the crocodile's = behind a Grown-ups switch (off by default). |
-| 7 | `add-indian-voice-clips` (built; waiting for the clips) | Indian English clips supplied by the owner (matched to a generated list) for every string, with word timings, preloading and a coverage test. Last, because the full list of strings is only known once Phases 4 to 6 exist. |
+| 7 | `add-indian-voice-clips` (built, clips in) | Indian English clips supplied by the owner (matched to a generated list) for every string, with word timings, preloading and a coverage test. Last, because the full list of strings is only known once Phases 4 to 6 exist. |
 
 **Superseded:** the old Phase 3 (typed weekly content). Its backup, restore and reset items moved to Phase 4.
 
@@ -164,7 +164,7 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 - Phase 6: check that the ₹ sign shows on the coins, and whether her class teaches = yet (the Equals sign switch).
 - Phase 5: check that every picture shows on the tablet (emoji are Unicode 6, which Android 5.1 should draw), and note which new activities needed explaining over a week of sessions.
 - Phases 3 and 4: run one full session with her on the tablet. Note stray taps, "what do I do?" moments, help taps and how long it takes (target: at most 2 moments, 10 ± 2 minutes). Does it feel instant? Do the highlights keep up with the voice?
-- Phase 7: make the voice clips with `python tools/make-clips-neerja.py` (Heera was tried and sounded muffled), then `node tools/import-clips.js`, bump `?v=`, run `npm test` and commit `audio/clips/` and `audio/manifest.js` (see `audio/README.md`).
+- Phase 7: the clips are in: all 1398, in Neerja (en-IN neural) at `--rate -10% --pitch +15Hz`, chosen by the owner as clearer for a child than the default; every clip has word timings, and the importer cuts edge-tts's long end silence. Try them on the tablet: is every word clear, do the highlights keep up, and do joined sentences ("That says" + word) flow? To remake: `uv venv .venv`, `uv pip install --python .venv edge-tts`, `.venv\Scripts\python tools/make-clips-neerja.py`, then `node tools/import-clips.js`.
 - Pace: try Calm (the default) on the tablet; Grown-ups > Pace has Normal and Quick.
 
 - Turn on GitHub Pages from `main` (root), with Enforce HTTPS on.
