@@ -33,7 +33,7 @@ const server = http.createServer((req, res) => {
       window.SpeechSynthesisUtterance = Utterance;
     });
     // No pause between items (Grown-ups > Pace), so the walk-through is quick.
-    await p.addInitScript(() => { window.addEventListener('DOMContentLoaded', () => { if (window.LR && LR.ui && LR.ui.PACE) Object.keys(LR.ui.PACE).forEach(k => { LR.ui.PACE[k].beat = 0; }); }); });
+    await p.addInitScript(() => { window.addEventListener('DOMContentLoaded', () => { if (window.LR && LR.ui && LR.ui.PACE) Object.keys(LR.ui.PACE).forEach(k => { LR.ui.PACE[k].beat = 0; }); if (window.LR) LR.clips = {}; }); });
     const shot = async (name) => { await p.evaluate(() => document.fonts.ready); await p.screenshot({ path: path.join(OUT, `${w}x${h}-${name}.png`) }); };
     const item = () => p.evaluate(() => { const r = LR.state.resume, st = r && r.steps[r.at[0]]; return { step: st && st.id, at: r && r.at, it: st && st.items[r.at[1]] }; });
     const next = (at) => p.waitForFunction(a => { const r = LR.state.resume; return location.hash === '#home' || (r && (r.at[0] !== a[0] || r.at[1] !== a[1])); }, at, { timeout: 8000 });

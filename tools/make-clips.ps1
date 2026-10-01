@@ -33,7 +33,6 @@ Write-Host ("Voice: " + $pick.VoiceInfo.Name)
 $script:times = New-Object System.Collections.Generic.List[int]
 Register-ObjectEvent -InputObject $synth -EventName SpeakProgress -SourceIdentifier LRProgress | Out-Null
 
-$fmt = New-Object System.Speech.AudioFormat.SpeechAudioFormatInfo(22050, [System.Speech.AudioFormat.AudioBitsPerSample]::Sixteen, [System.Speech.AudioFormat.AudioChannel]::Mono)
 $n = 0
 foreach ($line in Get-Content -Encoding UTF8 $list) {
   if ($line -eq "" -or $line.StartsWith("#")) { continue }
@@ -43,7 +42,8 @@ foreach ($line in Get-Content -Encoding UTF8 $list) {
   $wav = Join-Path $outDir ($base + ".wav")
   if (Test-Path $wav) { continue }   # already made; delete a file to make it again
 
-  $synth.SetOutputToWaveFile($wav, $fmt)
+  # The voice's own format: forcing another sample rate resamples it and dulls the sound.
+  $synth.SetOutputToWaveFile($wav)
   $synth.Speak($key)
   $synth.SetOutputToNull()
 
