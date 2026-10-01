@@ -93,6 +93,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
       else await p.click(`[data-act=sym][data-s="${it.a > it.b ? '>' : it.a < it.b ? '<' : '='}"]`);
     }
     else if (it.t === 'math') await p.click(`.m-opt[data-i="${await p.evaluate(i => { const q = LR.maths.gen(i); return q.opts.map(o => o.v).indexOf(q.answer); }, it)}"]`);
+    else if (it.t === 'world') await p.click(`.m-opt[data-i="${await p.evaluate(i => { const q = LR.world.gen(i); return q.opts.map(o => o.v).indexOf(q.answer); }, it)}"]`);
     else if (it.t === 'gram') await p.click(`.m-opt[data-i="${await p.evaluate(i => { const q = LR.grammar.gen(i); return q.opts.map(o => o.v).indexOf(q.answer); }, it)}"]`);
     else if (it.t === 'order') {
       const words = await p.evaluate(i => { const l = LR.grammar.orderSentences(LR.progress.unitById(i.u)); return l[i.k % l.length].split(' '); }, it);
@@ -161,8 +162,8 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
     kinds.push(c.step);
   }
   const order = kinds.filter((k, i) => k !== kinds[i - 1]);
-  ok(order.join(',') === 'words,tricky,silly,read,maths,garden', 'a session runs its steps in order: ' + order.join(','));
-  ok(path1.length === 6 && /now/.test(path1[0]), 'the path shows the steps, the first one now: ' + path1.join(' / '));
+  ok(order.join(',') === 'words,tricky,silly,read,maths,world,garden', 'a session runs its steps in order: ' + order.join(','));
+  ok(path1.length === 7 && /now/.test(path1[0]), 'the path shows the steps, the first one now: ' + path1.join(' / '));
   ok(await p.evaluate(() => location.hash) === '#home', 'the session ends back at Home, using answer taps only');
   const day = await p.evaluate(() => LR.state.days.slice(-1)[0]);
   ok(day && day.n >= 6 && day.r === day.n, 'the day is recorded with first-try accuracy: ' + JSON.stringify(day));
@@ -423,7 +424,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
     await p.waitForFunction(o => !LR.session.ctx || LR.session.ctx.item !== o || location.hash === '#grownups', cc, { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(30); }
   await p.waitForFunction(() => location.hash === '#grownups', null, { timeout: 5000 }).catch(() => {});
   ok(await p.evaluate(() => location.hash) === '#grownups', 'after the game it returns to Grown-ups');
-  ok(await p.$$eval('a[href^="#practice-"]', x => x.map(a => a.textContent).join()) === 'Sounds and words,Language,Tricky word,Silly sentences,Read with me,Maths', 'Practise one game lists Language and Maths');
+  ok(await p.$$eval('a[href^="#practice-"]', x => x.map(a => a.textContent).join()) === 'Sounds and words,Language,Tricky word,Silly sentences,Read with me,Maths,My world', 'Practise one game lists Language, Maths and My world');
   await p.click('a[href="#practice-lang"]'); await p.waitForTimeout(60);
   ok(await p.evaluate(() => { const it = LR.session.ctx && LR.session.ctx.item; return !!it && !!it.g && LR.state.resume === null; }), 'Practise Language opens language tasks without replacing the day\'s plan');
   await p.goto(U + '#grownups'); await p.waitForTimeout(60);
@@ -664,6 +665,34 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   ok(lsched.maths === 'compare,count,size,odd,numeral,counton,order,neighbour,zero,add,take,names,money,measure,longest,shapes,solids,halves,pattern,data,skip,time,clock',
     'maths skills follow the teaching order: size words and sorting before numbers, ordering with sequencing, solids after shapes, time last');
   ok(lsched.kept === 'compare,count,size,numeral', 'a practised skill stays open when a new skill is inserted before it: ' + lsched.kept);
+  // ---------- Phase 8c: My world ----------
+  const world = await p.evaluate(() => {
+    const E = LR.world, bad = [];
+    const R = [[0x1F300, 0x1F320], [0x1F330, 0x1F335], [0x1F337, 0x1F37C], [0x1F380, 0x1F393], [0x1F3A0, 0x1F3C4], [0x1F3C6, 0x1F3CA], [0x1F3E0, 0x1F3F0],
+      [0x1F400, 0x1F43E], [0x1F440, 0x1F440], [0x1F442, 0x1F4F7], [0x1F4F9, 0x1F4FC], [0x1F500, 0x1F53D], [0x1F550, 0x1F567], [0x1F5FB, 0x1F640],
+      [0x1F645, 0x1F64F], [0x1F680, 0x1F6C5]];
+    const BMP = [0x2B50, 0x2614, 0x26C4, 0x2615, 0x26BD, 0x26FA, 0x26F5, 0x231A, 0x23F0, 0x270B];
+    Object.entries(E.ITEMS).forEach(([k, [pic]]) => { if (pic.charAt(0) === '<') return; const c = pic.codePointAt(0);
+      if ([...pic].length !== 1 || !(BMP.includes(c) || R.some(([a, b]) => c >= a && c <= b))) bad.push('not Unicode 6: ' + k); });
+    E.TOPICS.forEach(t => t.qs.forEach(q => { q.a.forEach(a => { if (q.d.includes(a)) bad.push(t.id + ': ' + a + ' is right and wrong'); }); if (q.d.length < 2) bad.push(t.id + ': too few wrong'); }));
+    E.ids.forEach(e => { for (let i = 1; i <= 200; i++) { const q = E.gen({ e, seed: i * 31 }), vals = q.opts.map(o => o.v);
+      if (!vals.includes(q.answer) || new Set(vals).size !== 3) bad.push(e + ': choices ' + vals); } });
+    const it = LR.state.items; Object.keys(it).filter(k => k.startsWith('e:')).forEach(k => delete it[k]);
+    const fresh = LR.progress.worldUnlocked().join();
+    it['e:senses'] = { b: 2, d: LR.progress.today(), u: '', m: 0 };
+    return { bad: [...new Set(bad)], fresh, next: LR.progress.worldUnlocked().join(), order: E.ids.join() };
+  });
+  ok(world.bad.length === 0, 'My world: every question offers its answer among 3 unique pictures, no right answer is also a wrong one, and every emoji is Unicode 6' + (world.bad.length ? ': ' + world.bad.slice(0, 8).join(', ') : ''));
+  ok(world.order === 'body,senses,family,fruit,healthy,plants,animals,homes,sounds,young,insects,transport,helpers,weather,sky,safety' && world.fresh === 'body,senses' && world.next === 'body,senses,family',
+    'My world topics follow the UKG EVS order; body parts and senses open first, then family when senses reaches box 2: ' + JSON.stringify(world));
+  await only({ t: 'world', e: 'homes', seed: 9 }, 'world');
+  const wq = await p.evaluate(() => { const q = LR.world.gen({ t: 'world', e: 'homes', seed: 9 }); const v = q.opts.map(o => o.v); return { right: v.indexOf(q.answer), wrong: v.findIndex(x => x !== q.answer), yes: q.right, prompt: q.prompt }; });
+  await p.evaluate(() => { LR.state.resume.steps[0].items[0].e = 'homes'; });
+  await clearSaid();
+  await p.click(`.m-opt[data-i="${wq.wrong}"]`); await p.waitForTimeout(40);
+  ok(await p.$eval(`.m-opt[data-i="${wq.wrong}"]`, e => e.classList.contains('fb-wrong')) && !(await p.textContent('[data-caption]')).includes(wq.yes.replace('Yes! ', '')), 'My world: a wrong picture dims, and the caption never shows the answer');
+  await p.click(`.m-opt[data-i="${wq.right}"]`); await p.waitForTimeout(60);
+  ok((await said()).includes(wq.yes) && await p.evaluate(() => { const r = LR.state.items['e:homes']; return !!r; }), 'My world: the right picture is praised ("' + wq.yes + '") and the topic keeps a box');
   // Two language items a day, from 2 skills, recorded per skill; the rotation keeps moving after 30 days
   const rot = [];
   await seed(s2({ 'w:come': { b: 2, d: t0 } }, { days: Array.from({ length: 30 }, (x, i) => ({ d: '2026-01-' + String(i + 1).padStart(2, '0'), n: 1, r: 1, mins: 1 })) }));

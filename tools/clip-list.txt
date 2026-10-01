@@ -105,12 +105,28 @@
 98	98.mp3
 99	99.mp3
 a	a.mp3
+a baby	a-baby.mp3
+a baby cat is a kitten	a-baby-cat-is-a-kitten.mp3
+a baby cow is a calf	a-baby-cow-is-a-calf.mp3
+a baby dog is a puppy	a-baby-dog-is-a-puppy.mp3
+a baby hen is a chick	a-baby-hen-is-a-chick.mp3
+a ball	a-ball.mp3
 a ball is a sphere	a-ball-is-a-sphere.mp3
 a ball is like which shape	a-ball-is-like-which-shape.mp3
+a ball is safe to play with	a-ball-is-safe-to-play-with.mp3
+a banana	a-banana.mp3
+a banana is a fruit	a-banana-is-a-fruit.mp3
+a banana is good for you	a-banana-is-good-for-you.mp3
 a battery is a cylinder	a-battery-is-a-cylinder.mp3
 a battery is like which shape	a-battery-is-like-which-shape.mp3
+a bear	a-bear.mp3
+a bear is a wild animal	a-bear-is-a-wild-animal.mp3
 a bed is eating lunch	a-bed-is-eating-lunch.mp3
+a bee	a-bee.mp3
 a bee can buzz	a-bee-can-buzz.mp3
+a bee can fly	a-bee-can-fly.mp3
+a bee is an insect	a-bee-is-an-insect.mp3
+a bee lives in a hive	a-bee-lives-in-a-hive.mp3
 a bell	a-bell.mp3
 a bench	a-bench.mp3
 a bench can munch lunch	a-bench-can-munch-lunch.mp3
@@ -119,34 +135,56 @@ a big dark cloud comes	a-big-dark-cloud-comes.mp3
 a big red fish is in the tub	a-big-red-fish-is-in-the-tub.mp3
 a bike	a-bike.mp3
 a bike can smile	a-bike-can-smile.mp3
+a bike goes on the road	a-bike-goes-on-the-road.mp3
+a bird	a-bird.mp3
 a bird can fly	a-bird-can-fly.mp3
+a bird is a bird	a-bird-is-a-bird.mp3
+a bird lives in a tree	a-bird-lives-in-a-tree.mp3
 a blue square	a-blue-square.mp3
+a boat	a-boat.mp3
 a boat can sail	a-boat-can-sail.mp3
+a boat goes on water	a-boat-goes-on-water.mp3
 a bone	a-bone.mp3
 a book	a-book.mp3
 a box	a-box.mp3
 a box drops	a-box-drops.mp3
 a box is a cube	a-box-is-a-cube.mp3
 a box is like which shape	a-box-is-like-which-shape.mp3
+a boy	a-boy.mp3
 a boy had a toy bird	a-boy-had-a-toy-bird.mp3
 a boy is a bird	a-boy-is-a-bird.mp3
 a brick is softer than a cat	a-brick-is-softer-than-a-cat.mp3
+a brinjal	a-brinjal.mp3
+a brinjal is a vegetable	a-brinjal-is-a-vegetable.mp3
 a brown cow can fly	a-brown-cow-can-fly.mp3
 a brown owl is in the tree	a-brown-owl-is-in-the-tree.mp3
 a brush can sing a song	a-brush-can-sing-a-song.mp3
+a builder	a-builder.mp3
+a builder builds houses	a-builder-builds-houses.mp3
 a bun is a snack	a-bun-is-a-snack.mp3
 a bus	a-bus.mp3
 a bus can go fast	a-bus-can-go-fast.mp3
+a bus goes on the road	a-bus-goes-on-the-road.mp3
+a cactus	a-cactus.mp3
+a cactus is a plant	a-cactus-is-a-plant.mp3
 a cake	a-cake.mp3
+a calf	a-calf.mp3
+a car	a-car.mp3
 a car can sing	a-car-can-sing.mp3
+a car goes on the road	a-car-goes-on-the-road.mp3
 a cat	a-cat.mp3
+a cat can be a pet	a-cat-can-be-a-pet.mp3
 a cat can be sleeping	a-cat-can-be-sleeping.mp3
 a cat can sing a song	a-cat-can-sing-a-song.mp3
 a cat can sit on a mat	a-cat-can-sit-on-a-mat.mp3
 a cat has a paw	a-cat-has-a-paw.mp3
 a cat is on the bench	a-cat-is-on-the-bench.mp3
+a cat says meow	a-cat-says-meow.mp3
 a cat was stuck up a tree	a-cat-was-stuck-up-a-tree.mp3
+a caterpillar	a-caterpillar.mp3
+a caterpillar is an insect	a-caterpillar-is-an-insect.mp3
 a chest can hold things	a-chest-can-hold-things.mp3
+a chick	a-chick.mp3
 a circle	a-circle.mp3
 a cloud can shout	a-cloud-can-shout.mp3
 a cloud is up in the sky	a-cloud-is-up-in-the-sky.mp3
@@ -160,12 +198,16 @@ a cone	a-cone.mp3
 a cow	a-cow.mp3
 a cow can grow in a pot	a-cow-can-grow-in-a-pot.mp3
 a cow can moo	a-cow-can-moo.mp3
+a cow gives us milk	a-cow-gives-us-milk.mp3
 a cow looks at it	a-cow-looks-at-it.mp3
 a cow looks at it moo	a-cow-looks-at-it-moo.mp3
+a cow says moo	a-cow-says-moo.mp3
 a crab can fly a flag	a-crab-can-fly-a-flag.mp3
 a crab can grab	a-crab-can-grab.mp3
 a crane	a-crane.mp3
 a cream cone	a-cream-cone.mp3
+a crocodile	a-crocodile.mp3
+a crocodile is a wild animal	a-crocodile-is-a-wild-animal.mp3
 a crown	a-crown.mp3
 a crown can sing	a-crown-can-sing.mp3
 a cube	a-cube.mp3
@@ -175,18 +217,25 @@ a cylinder	a-cylinder.mp3
 a dark cloud comes	a-dark-cloud-comes.mp3
 a dog	a-dog.mp3
 a dog and a cat run a race	a-dog-and-a-cat-run-a-race.mp3
+a dog can be a pet	a-dog-can-be-a-pet.mp3
 a dog can dig	a-dog-can-dig.mp3
 a dog can dig for a bone	a-dog-can-dig-for-a-bone.mp3
 a dog had a bone	a-dog-had-a-bone.mp3
 a dog has a tail	a-dog-has-a-tail.mp3
 a dog has fur	a-dog-has-fur.mp3
+a dog says woof	a-dog-says-woof.mp3
+a dolphin	a-dolphin.mp3
 a dolphin can haul a cart up a hill	a-dolphin-can-haul-a-cart-up-a-hill.mp3
 a dolphin can swim	a-dolphin-can-swim.mp3
 a dolphin is in the water	a-dolphin-is-in-the-water.mp3
+a dolphin lives in water	a-dolphin-lives-in-water.mp3
+a doughnut	a-doughnut.mp3
 a drum can grin	a-drum-can-grin.mp3
 a duck	a-duck.mp3
 a duck spots the slug	a-duck-spots-the-slug.mp3
 a few cows can draw	a-few-cows-can-draw.mp3
+a fire engine	a-fire-engine.mp3
+a fire engine comes when there is a fire	a-fire-engine-comes-when-there-is-a-fire.mp3
 a fire truck	a-fire-truck.mp3
 a fire truck comes	a-fire-truck-comes.mp3
 a fish	a-fish.mp3
@@ -196,6 +245,7 @@ a fish can swim	a-fish-can-swim.mp3
 a fish is in the pond	a-fish-is-in-the-pond.mp3
 a fish is jumping	a-fish-is-jumping.mp3
 a fish is wet	a-fish-is-wet.mp3
+a fish lives in water	a-fish-lives-in-water.mp3
 a flag can flap	a-flag-can-flap.mp3
 a flash is bright	a-flash-is-bright.mp3
 a fly can fly	a-fly-can-fly.mp3
@@ -210,18 +260,28 @@ a full cup has milk in it	a-full-cup-has-milk-in-it.mp3
 a funny monkey is up a tree	a-funny-monkey-is-up-a-tree.mp3
 a game	a-game.mp3
 a gate can bake a cake	a-gate-can-bake-a-cake.mp3
+a girl	a-girl.mp3
 a girl asked can i play	a-girl-asked-can-i-play.mp3
 a girl asked to play	a-girl-asked-to-play.mp3
 a girl can play	a-girl-can-play.mp3
 a globe	a-globe.mp3
 a globe can skate	a-globe-can-skate.mp3
+a goat	a-goat.mp3
 a goat can look at a book	a-goat-can-look-at-a-book.mp3
+a goat gives us milk	a-goat-gives-us-milk.mp3
 a gold star	a-gold-star.mp3
+a grandfather	a-grandfather.mp3
+a grandmother	a-grandmother.mp3
 a green shoot	a-green-shoot.mp3
 a green shoot is up	a-green-shoot-is-up.mp3
 a grown up can hold this	a-grown-up-can-hold-this.mp3
+a hand	a-hand.mp3
 a hat	a-hat.mp3
+a helicopter	a-helicopter.mp3
+a helicopter goes up in the air	a-helicopter-goes-up-in-the-air.mp3
+a hen	a-hen.mp3
 a hen can peck	a-hen-can-peck.mp3
+a hen says cluck	a-hen-says-cluck.mp3
 a hen sits on a pot	a-hen-sits-on-a-pot.mp3
 a hen sits on a pot of corn	a-hen-sits-on-a-pot-of-corn.mp3
 a home can run to the shop	a-home-can-run-to-the-shop.mp3
@@ -231,15 +291,23 @@ a key can fly in the sky	a-key-can-fly-in-the-sky.mp3
 a key can open a lock	a-key-can-open-a-lock.mp3
 a kite can fly	a-kite-can-fly.mp3
 a kite can ride a bike	a-kite-can-ride-a-bike.mp3
+a kitten	a-kitten.mp3
+a knife	a-knife.mp3
+a ladybird	a-ladybird.mp3
+a ladybird is an insect	a-ladybird-is-an-insect.mp3
 a lake is in a cup	a-lake-is-in-a-cup.mp3
 a lamp can sing	a-lamp-can-sing.mp3
 a leaf	a-leaf.mp3
 a leaf can eat a bun	a-leaf-can-eat-a-bun.mp3
 a leaf fell in the stream	a-leaf-fell-in-the-stream.mp3
 a leaf is green	a-leaf-is-green.mp3
+a lollipop	a-lollipop.mp3
+a man	a-man.mp3
 a man can blow a horn	a-man-can-blow-a-horn.mp3
 a man can blow a huge horn	a-man-can-blow-a-huge-horn.mp3
+a monkey	a-monkey.mp3
 a monkey can drive a bus	a-monkey-can-drive-a-bus.mp3
+a monkey lives in a tree	a-monkey-lives-in-a-tree.mp3
 a moth can sit on a pin	a-moth-can-sit-on-a-pin.mp3
 a moth is on the shed	a-moth-is-on-the-shed.mp3
 a moth lands on raj	a-moth-lands-on-raj.mp3
@@ -247,6 +315,7 @@ a mouse	a-mouse.mp3
 a mouse can squeak	a-mouse-can-squeak.mp3
 a mouse is longer than a train	a-mouse-is-longer-than-a-train.mp3
 a mouse runs past	a-mouse-runs-past.mp3
+a mouth	a-mouth.mp3
 a mouth is on a foot	a-mouth-is-on-a-foot.mp3
 a mule	a-mule.mp3
 a mule can carry things	a-mule-can-carry-things.mp3
@@ -254,12 +323,19 @@ a mule can fly to the moon	a-mule-can-fly-to-the-moon.mp3
 a mule hears it	a-mule-hears-it.mp3
 a nest can sing a song	a-nest-can-sing-a-song.mp3
 a new hat can fly to the moon	a-new-hat-can-fly-to-the-moon.mp3
+a nose	a-nose.mp3
 a nose is on a toe	a-nose-is-on-a-toe.mp3
 a or an	a-or-an.mp3
+a panda	a-panda.mp3
+a panda is a wild animal	a-panda-is-a-wild-animal.mp3
 a paw can draw a blue sun	a-paw-can-draw-a-blue-sun.mp3
+a penguin	a-penguin.mp3
+a penguin is a bird	a-penguin-is-a-bird.mp3
 a pie	a-pie.mp3
 a pie can swim in the sea	a-pie-can-swim-in-the-sea.mp3
 a pig is pink	a-pig-is-pink.mp3
+a pineapple	a-pineapple.mp3
+a pineapple is a fruit	a-pineapple-is-a-fruit.mp3
 a pink circle	a-pink-circle.mp3
 a plane	a-plane.mp3
 a plane can fly	a-plane-can-fly.mp3
@@ -268,21 +344,37 @@ a plant can twist and jump	a-plant-can-twist-and-jump.mp3
 a plate can hold a cake	a-plate-can-hold-a-cake.mp3
 a plate can name a snake	a-plate-can-name-a-snake.mp3
 a plum can drum	a-plum-can-drum.mp3
+a police officer	a-police-officer.mp3
+a police officer keeps us safe	a-police-officer-keeps-us-safe.mp3
+a post box	a-post-box.mp3
+a puppy	a-puppy.mp3
 a puppy can try to read	a-puppy-can-try-to-read.mp3
 a puppy is a dog	a-puppy-is-a-dog.mp3
+a rainbow	a-rainbow.mp3
 a rectangle	a-rectangle.mp3
 a rock is singing	a-rock-is-singing.mp3
 a rock is softer than a bed	a-rock-is-softer-than-a-bed.mp3
 a rock painted a cat	a-rock-painted-a-cat.mp3
+a rocket	a-rocket.mp3
+a rocket goes up in the air	a-rocket-goes-up-in-the-air.mp3
+a rooster	a-rooster.mp3
+a rooster is a bird	a-rooster-is-a-bird.mp3
 a rope	a-rope.mp3
 a rope can be longer than a stick	a-rope-can-be-longer-than-a-stick.mp3
 a rope can eat a bone	a-rope-can-eat-a-bone.mp3
+a rose	a-rose.mp3
+a rose is a flower	a-rose-is-a-flower.mp3
 a sea monster	a-sea-monster.mp3
 a seed can be in the soil	a-seed-can-be-in-the-soil.mp3
+a seedling	a-seedling.mp3
+a seedling is a plant	a-seedling-is-a-plant.mp3
 a sentence starts with a big letter	a-sentence-starts-with-a-big-letter.mp3
+a sheep	a-sheep.mp3
+a sheep says baa	a-sheep-says-baa.mp3
 a shelf can run	a-shelf-can-run.mp3
 a ship	a-ship.mp3
 a ship can sail	a-ship-can-sail.mp3
+a ship goes on water	a-ship-goes-on-water.mp3
 a ship is on the sun	a-ship-is-on-the-sun.mp3
 a shirt can fly	a-shirt-can-fly.mp3
 a shrimp can run up a tree	a-shrimp-can-run-up-a-tree.mp3
@@ -290,16 +382,20 @@ a shrimp can swim	a-shrimp-can-swim.mp3
 a slug can snap a stick	a-slug-can-snap-a-stick.mp3
 a slug is on the step	a-slug-is-on-the-step.mp3
 a slug is slim	a-slug-is-slim.mp3
+a snail	a-snail.mp3
 a snail can drive a car	a-snail-can-drive-a-car.mp3
 a snail is the fastest of all	a-snail-is-the-fastest-of-all.mp3
+a snake	a-snake.mp3
 a snake can play a game of chess	a-snake-can-play-a-game-of-chess.mp3
 a snake has no legs	a-snake-has-no-legs.mp3
 a snake was on a rock	a-snake-was-on-a-rock.mp3
+a snowman	a-snowman.mp3
 a sphere	a-sphere.mp3
 a spine can sing	a-spine-can-sing.mp3
 a spot can sing	a-spot-can-sing.mp3
 a square	a-square.mp3
 a stamp can blink	a-stamp-can-blink.mp3
+a star	a-star.mp3
 a star can swim in a cup	a-star-can-swim-in-a-cup.mp3
 a star is up at night	a-star-is-up-at-night.mp3
 a step can swim	a-step-can-swim.mp3
@@ -313,21 +409,43 @@ a stream runs by the trail	a-stream-runs-by-the-trail.mp3
 a street can sing	a-street-can-sing.mp3
 a string can be long	a-string-can-be-long.mp3
 a stripe can trade a plane	a-stripe-can-trade-a-plane.mp3
+a sunflower	a-sunflower.mp3
+a sunflower is a flower	a-sunflower-is-a-flower.mp3
 a sunny day is hot	a-sunny-day-is-hot.mp3
+a sweet potato	a-sweet-potato.mp3
+a sweet potato is a vegetable	a-sweet-potato-is-a-vegetable.mp3
 a tent can drink milk	a-tent-can-drink-milk.mp3
 a tent is jumping	a-tent-is-jumping.mp3
 a throat is on your toe	a-throat-is-on-your-toe.mp3
 a tie can cry	a-tie-can-cry.mp3
+a tiger	a-tiger.mp3
+a tiger is a wild animal	a-tiger-is-a-wild-animal.mp3
+a tiger says roar	a-tiger-says-roar.mp3
+a tongue	a-tongue.mp3
 a town can blow	a-town-can-blow.mp3
 a toy can eat a bird	a-toy-can-eat-a-bird.mp3
+a tractor	a-tractor.mp3
+a tractor goes on the road	a-tractor-goes-on-the-road.mp3
 a trail can eat cream	a-trail-can-eat-cream.mp3
+a train	a-train.mp3
 a tray can hold a cup	a-tray-can-hold-a-cup.mp3
 a tray can play	a-tray-can-play.mp3
+a tree	a-tree.mp3
+a tree is a plant	a-tree-is-a-plant.mp3
 a triangle	a-triangle.mp3
 a trip is in a plum	a-trip-is-in-a-plum.mp3
+a tulip	a-tulip.mp3
+a tulip is a flower	a-tulip-is-a-flower.mp3
+a tv	a-tv.mp3
+a watermelon	a-watermelon.mp3
+a watermelon is a fruit	a-watermelon-is-a-fruit.mp3
+a watermelon on a hot day	a-watermelon-on-a-hot-day.mp3
+a whale	a-whale.mp3
+a whale lives in water	a-whale-lives-in-water.mp3
 a wheel goes round	a-wheel-goes-round.mp3
 a wheel is in her ear	a-wheel-is-in-her-ear.mp3
 a whip can eat lunch	a-whip-can-eat-lunch.mp3
+a woman	a-woman.mp3
 a yellow triangle	a-yellow-triangle.mp3
 about	about.mp3
 act	act.mp3
@@ -339,16 +457,26 @@ all	all.mp3
 also	also.mp3
 am	am.mp3
 an	an.mp3
+an ambulance	an-ambulance.mp3
+an ambulance takes sick people to hospital	an-ambulance-takes-sick-people-to-hospital.mp3
 an ant	an-ant.mp3
+an ant is an insect	an-ant-is-an-insect.mp3
 an apple	an-apple.mp3
+an apple is a fruit	an-apple-is-a-fruit.mp3
+an apple is good for you	an-apple-is-good-for-you.mp3
 an apple is red	an-apple-is-red.mp3
+an ear	an-ear.mp3
 an egg	an-egg.mp3
 an elephant	an-elephant.mp3
 an ice cream cone is a cone	an-ice-cream-cone-is-a-cone.mp3
 an ice cream cone is like which shape	an-ice-cream-cone-is-like-which-shape.mp3
 an octopus	an-octopus.mp3
+an octopus lives in water	an-octopus-lives-in-water.mp3
+an orange	an-orange.mp3
+an orange is a fruit	an-orange-is-a-fruit.mp3
 an owl can fly at night	an-owl-can-fly-at-night.mp3
 an owl can paint a cow	an-owl-can-paint-a-cow.mp3
+an umbrella	an-umbrella.mp3
 and	and.mp3
 and the cat is sleeping	and-the-cat-is-sleeping.mp3
 ant	ant.mp3
@@ -474,6 +602,8 @@ boxes can sing	boxes-can-sing.mp3
 boy	boy.mp3
 boys	boys.mp3
 brave	brave.mp3
+bread	bread.mp3
+bread is good for you	bread-is-good-for-you.mp3
 brick	brick.mp3
 bright	bright.mp3
 bring	bring.mp3
@@ -534,6 +664,7 @@ chimp	chimp.mp3
 chin	chin.mp3
 chip	chip.mp3
 chips	chips.mp3
+chocolate	chocolate.mp3
 chomp	chomp.mp3
 chop	chop.mp3
 circle	circle.mp3
@@ -566,6 +697,7 @@ cooks	cooks.mp3
 cool	cool.mp3
 corn	corn.mp3
 corn can run	corn-can-run.mp3
+corn is a vegetable	corn-is-a-vegetable.mp3
 cot	cot.mp3
 could	could.mp3
 count back	count-back.mp3
@@ -652,6 +784,7 @@ diwali	diwali.mp3
 do	do.mp3
 do not snatch raj	do-not-snatch-raj.mp3
 do not spill the jam raj	do-not-spill-the-jam-raj.mp3
+do not touch it	do-not-touch-it.mp3
 does	does.mp3
 dog	dog.mp3
 dog is a naming word	dog-is-a-naming-word.mp3
@@ -718,6 +851,7 @@ ess	ess.mp3
 ex	ex.mp3
 eye	eye.mp3
 eye is a vowel	eye-is-a-vowel.mp3
+eyes	eyes.mp3
 fair	fair.mp3
 falls	falls.mp3
 fan	fan.mp3
@@ -739,6 +873,8 @@ fin	fin.mp3
 find	find.mp3
 find its picture	find-its-picture.mp3
 find the big letter	find-the-big-letter.mp3
+find the calf	find-the-calf.mp3
+find the chick	find-the-chick.mp3
 find the circle	find-the-circle.mp3
 find the cone	find-the-cone.mp3
 find the cube	find-the-cube.mp3
@@ -746,8 +882,10 @@ find the cylinder	find-the-cylinder.mp3
 find the describing word	find-the-describing-word.mp3
 find the doing word	find-the-doing-word.mp3
 find the heart letters	find-the-heart-letters.mp3
+find the kitten	find-the-kitten.mp3
 find the naming word	find-the-naming-word.mp3
 find the picture	find-the-picture.mp3
+find the puppy	find-the-puppy.mp3
 find the rectangle	find-the-rectangle.mp3
 find the small letter	find-the-small-letter.mp3
 find the sphere	find-the-sphere.mp3
@@ -758,6 +896,7 @@ find the word	find-the-word.mp3
 find the word you hear	find-the-word-you-hear.mp3
 fine	fine.mp3
 fire	fire.mp3
+fire is hot	fire-is-hot.mp3
 first	first.mp3
 fish	fish.mp3
 fishing	fishing.mp3
@@ -841,6 +980,8 @@ good night dad	good-night-dad.mp3
 got	got.mp3
 grab	grab.mp3
 grapes	grapes.mp3
+grapes is a fruit	grapes-is-a-fruit.mp3
+grapes is good for you	grapes-is-good-for-you.mp3
 graph	graph.mp3
 grass	grass.mp3
 green	green.mp3
@@ -953,9 +1094,12 @@ i am so happy	i-am-so-happy.mp3
 i can see the moon	i-can-see-the-moon.mp3
 i get chips in a dish	i-get-chips-in-a-dish.mp3
 ice	ice.mp3
+ice cream	ice-cream.mp3
+ice cream on a hot day	ice-cream-on-a-hot-day.mp3
 ih	ih.mp3
 in	in.mp3
 in a box	in-a-box.mp3
+in a post box	in-a-post-box.mp3
 in a pot	in-a-pot.mp3
 in class we draw	in-class-we-draw.mp3
 in class we have a quiz	in-class-we-have-a-quiz.mp3
@@ -1165,6 +1309,7 @@ lift	lift.mp3
 light	light.mp3
 lights	lights.mp3
 like	like.mp3
+like nani	like-nani.mp3
 likes	likes.mp3
 limp	limp.mp3
 line	line.mp3
@@ -1208,6 +1353,7 @@ may	may.mp3
 me	me.mp3
 means just one	means-just-one.mp3
 means more than one	means-more-than-one.mp3
+medicine	medicine.mp3
 meena	meena.mp3
 meena and dad sit by it	meena-and-dad-sit-by-it.mp3
 meena and raj	meena-and-raj.mp3
@@ -1509,6 +1655,8 @@ planted	planted.mp3
 plants	plants.mp3
 plants grow	plants-grow.mp3
 plants grow in soil	plants-grow-in-soil.mp3
+plants need the sun	plants-need-the-sun.mp3
+plants need water	plants-need-water.mp3
 plate	plate.mp3
 play	play.mp3
 played	played.mp3
@@ -1667,6 +1815,7 @@ rex has a sore nose	rex-has-a-sore-nose.mp3
 rex is home	rex-is-home.mp3
 rex is home and he is fine	rex-is-home-and-he-is-fine.mp3
 rice	rice.mp3
+rice is good for you	rice-is-good-for-you.mp3
 ride	ride.mp3
 rides	rides.mp3
 right	right.mp3
@@ -1990,10 +2139,24 @@ th	th.mp3
 than	than.mp3
 that	that.mp3
 that is a	that-is-a.mp3
+that is a boy	that-is-a-boy.mp3
+that is a calf	that-is-a-calf.mp3
+that is a chick	that-is-a-chick.mp3
+that is a girl	that-is-a-girl.mp3
+that is a grandfather	that-is-a-grandfather.mp3
+that is a grandmother	that-is-a-grandmother.mp3
+that is a hand	that-is-a-hand.mp3
+that is a kitten	that-is-a-kitten.mp3
+that is a mouth	that-is-a-mouth.mp3
+that is a nose	that-is-a-nose.mp3
+that is a puppy	that-is-a-puppy.mp3
+that is a tongue	that-is-a-tongue.mp3
 that is afternoon	that-is-afternoon.mp3
+that is an ear	that-is-an-ear.mp3
 that is morning	that-is-morning.mp3
 that is night	that-is-night.mp3
 that is silly	that-is-silly.mp3
+that is the baby	that-is-the-baby.mp3
 that makes	that-makes.mp3
 that makes sense	that-makes-sense.mp3
 that one is tricky	that-one-is-tricky.mp3
@@ -2090,6 +2253,7 @@ the cow has bells	the-cow-has-bells.mp3
 the cow has bells and flowers	the-cow-has-bells-and-flowers.mp3
 the cup fell into the sink	the-cup-fell-into-the-sink.mp3
 the dishes	the-dishes.mp3
+the doctor gives us medicine	the-doctor-gives-us-medicine.mp3
 the dog	the-dog.mp3
 the dog hid the bone	the-dog-hid-the-bone.mp3
 the dog is big	the-dog-is-big.mp3
@@ -2117,6 +2281,8 @@ the frog hops on a flat rock	the-frog-hops-on-a-flat-rock.mp3
 the frog hops on a rock	the-frog-hops-on-a-rock.mp3
 the girls and boys run	the-girls-and-boys-run.mp3
 the girls and boys run fast	the-girls-and-boys-run-fast.mp3
+the green light	the-green-light.mp3
+the green light means go	the-green-light-means-go.mp3
 the green string is longest	the-green-string-is-longest.mp3
 the green string is the longest	the-green-string-is-the-longest.mp3
 the hat is big	the-hat-is-big.mp3
@@ -2138,6 +2304,7 @@ the light is green	the-light-is-green.mp3
 the light is red	the-light-is-red.mp3
 the lolly	the-lolly.mp3
 the lolly melted	the-lolly-melted.mp3
+the moon	the-moon.mp3
 the moon is in the sink	the-moon-is-in-the-sink.mp3
 the moon is up	the-moon-is-up.mp3
 the moon is up at night	the-moon-is-up-at-night.mp3
@@ -2146,6 +2313,7 @@ the moth sits on the chip	the-moth-sits-on-the-chip.mp3
 the mouse is in a hole	the-mouse-is-in-a-hole.mp3
 the mouse runs into a hole	the-mouse-runs-into-a-hole.mp3
 the mouth opens to	the-mouth-opens-to.mp3
+the orange light	the-orange-light.mp3
 the owl goes to sleep	the-owl-goes-to-sleep.mp3
 the owl has to wait because the mouse is in its hole	the-owl-has-to-wait-because-the-mouse-is-in-its-hole.mp3
 the owl sees a mouse	the-owl-sees-a-mouse.mp3
@@ -2157,6 +2325,8 @@ the rabbit	the-rabbit.mp3
 the rain comes	the-rain-comes.mp3
 the rain is on the roof	the-rain-is-on-the-roof.mp3
 the rain is wet	the-rain-is-wet.mp3
+the red light	the-red-light.mp3
+the red light means stop	the-red-light-means-stop.mp3
 the red string is long	the-red-string-is-long.mp3
 the room is clean	the-room-is-clean.mp3
 the rug	the-rug.mp3
@@ -2182,6 +2352,7 @@ the stars are big	the-stars-are-big.mp3
 the stars are fast	the-stars-are-fast.mp3
 the stars are sad	the-stars-are-sad.mp3
 the stars are wet	the-stars-are-wet.mp3
+the sun	the-sun.mp3
 the sun can shine	the-sun-can-shine.mp3
 the sun comes out	the-sun-comes-out.mp3
 the sun is fishing	the-sun-is-fishing.mp3
@@ -2442,6 +2613,8 @@ we had fun on the trip	we-had-fun-on-the-trip.mp3
 we have a new kitten	we-have-a-new-kitten.mp3
 we have a play at the fair	we-have-a-play-at-the-fair.mp3
 we have a quiz	we-have-a-quiz.mp3
+we hear with our ears	we-hear-with-our-ears.mp3
+we need an umbrella	we-need-an-umbrella.mp3
 we paint the horns	we-paint-the-horns.mp3
 we paint the horns of the brown cow	we-paint-the-horns-of-the-brown-cow.mp3
 we planted seeds	we-planted-seeds.mp3
@@ -2450,6 +2623,10 @@ we pulled up weeds	we-pulled-up-weeds.mp3
 we run in	we-run-in.mp3
 we run out to play	we-run-out-to-play.mp3
 we say	we-say.mp3
+we see a star at night	we-see-a-star-at-night.mp3
+we see the moon at night	we-see-the-moon-at-night.mp3
+we see the sun in the day	we-see-the-sun-in-the-day.mp3
+we see with our eyes	we-see-with-our-eyes.mp3
 we sing to him	we-sing-to-him.mp3
 we sit by the fire eating and singing	we-sit-by-the-fire-eating-and-singing.mp3
 we sit on a mat	we-sit-on-a-mat.mp3
@@ -2457,10 +2634,13 @@ we sit on a mat and keep still	we-sit-on-a-mat-and-keep-still.mp3
 we sit on the sand	we-sit-on-the-sand.mp3
 we sit on the step	we-sit-on-the-step.mp3
 we sit on the step and splash	we-sit-on-the-step-and-splash.mp3
+we smell with our nose	we-smell-with-our-nose.mp3
 we splash with dad	we-splash-with-dad.mp3
 we stay with dad and splash	we-stay-with-dad-and-splash.mp3
 we swim in the pool	we-swim-in-the-pool.mp3
+we taste with our tongue	we-taste-with-our-tongue.mp3
 we tie them in a line	we-tie-them-in-a-line.mp3
+we touch with our hands	we-touch-with-our-hands.mp3
 we wash the dishes	we-wash-the-dishes.mp3
 we went down to the town	we-went-down-to-the-town.mp3
 we went on a train	we-went-on-a-train.mp3
@@ -2487,6 +2667,8 @@ what a fine time	what-a-fine-time.mp3
 what are passing	what-are-passing.mp3
 what are the chips in	what-are-the-chips-in.mp3
 what can i see	what-can-i-see.mp3
+what can we make in the snow in winter	what-can-we-make-in-the-snow-in-winter.mp3
+what can we see after rain	what-can-we-see-after-rain.mp3
 what colour are the flowers	what-colour-are-the-flowers.mp3
 what colour is meena's kite	what-colour-is-meenas-kite.mp3
 what colour is the helmet	what-colour-is-the-helmet.mp3
@@ -2570,6 +2752,7 @@ what did they have for nani	what-did-they-have-for-nani.mp3
 what did they see	what-did-they-see.mp3
 what did we pull up	what-did-we-pull-up.mp3
 what do mum and meena get	what-do-mum-and-meena-get.mp3
+what do plants need to grow	what-do-plants-need-to-grow.mp3
 what do the foxes sniff	what-do-the-foxes-sniff.mp3
 what do they do in the sun	what-do-they-do-in-the-sun.mp3
 what do they make	what-do-they-make.mp3
@@ -2580,7 +2763,16 @@ what do we get at the end	what-do-we-get-at-the-end.mp3
 what do we glue on	what-do-we-glue-on.mp3
 what do we have	what-do-we-have.mp3
 what do we hear at the end	what-do-we-hear-at-the-end.mp3
+what do we hear with	what-do-we-hear-with.mp3
+what do we need when it rains	what-do-we-need-when-it-rains.mp3
 what do we paint	what-do-we-paint.mp3
+what do we see in the sky at night	what-do-we-see-in-the-sky-at-night.mp3
+what do we see in the sky in the day	what-do-we-see-in-the-sky-in-the-day.mp3
+what do we see with	what-do-we-see-with.mp3
+what do we smell with	what-do-we-smell-with.mp3
+what do we taste with	what-do-we-taste-with.mp3
+what do we touch with	what-do-we-touch-with.mp3
+what does a doctor give us when we are sick	what-does-a-doctor-give-us-when-we-are-sick.mp3
 what does dad sing in the shop	what-does-dad-sing-in-the-shop.mp3
 what does meena get	what-does-meena-get.mp3
 what does meena get for the plant	what-does-meena-get-for-the-plant.mp3
@@ -2614,6 +2806,7 @@ what has the monkey got	what-has-the-monkey-got.mp3
 what hops on the rock	what-hops-on-the-rock.mp3
 what is all about	what-is-all-about.mp3
 what is deep	what-is-deep.mp3
+what is good on a hot summer day	what-is-good-on-a-hot-summer-day.mp3
 what is in the net	what-is-in-the-net.mp3
 what is in the pots	what-is-in-the-pots.mp3
 what is in the tin	what-is-in-the-tin.mp3
@@ -2680,6 +2873,7 @@ wheels	wheels.mp3
 when	when.mp3
 when can we go	when-can-we-go.mp3
 when do we need thick coats	when-do-we-need-thick-coats.mp3
+when the sun comes out	when-the-sun-comes-out.mp3
 where	where.mp3
 where are we going	where-are-we-going.mp3
 where are we sleeping	where-are-we-sleeping.mp3
@@ -2691,6 +2885,7 @@ where did we go	where-did-we-go.mp3
 where do they take rex	where-do-they-take-rex.mp3
 where do we eat	where-do-we-eat.mp3
 where do we go	where-do-we-go.mp3
+where do we post a letter	where-do-we-post-a-letter.mp3
 where do we swim	where-do-we-swim.mp3
 where does dad go	where-does-dad-go.mp3
 where does it drip	where-does-it-drip.mp3
@@ -2708,6 +2903,12 @@ where is the seed	where-is-the-seed.mp3
 where was the bone	where-was-the-bone.mp3
 where was the cat	where-was-the-cat.mp3
 which	which.mp3
+which animal says baa	which-animal-says-baa.mp3
+which animal says cluck	which-animal-says-cluck.mp3
+which animal says meow	which-animal-says-meow.mp3
+which animal says moo	which-animal-says-moo.mp3
+which animal says roar	which-animal-says-roar.mp3
+which animal says woof	which-animal-says-woof.mp3
 which ball is at the bottom	which-ball-is-at-the-bottom.mp3
 which ball is at the top	which-ball-is-at-the-top.mp3
 which brush is for the dog	which-brush-is-for-the-dog.mp3
@@ -2732,9 +2933,42 @@ which is the shortest	which-is-the-shortest.mp3
 which is the smallest	which-is-the-smallest.mp3
 which is thicker	which-is-thicker.mp3
 which is thinner	which-is-thinner.mp3
+which light means go	which-light-means-go.mp3
+which light means stop	which-light-means-stop.mp3
 which makes	which-makes.mp3
 which mouth fits	which-mouth-fits.mp3
+which one can be a pet	which-one-can-be-a-pet.mp3
+which one can fly	which-one-can-fly.mp3
+which one comes when there is a fire	which-one-comes-when-there-is-a-fire.mp3
+which one gives us milk	which-one-gives-us-milk.mp3
+which one goes on the road	which-one-goes-on-the-road.mp3
+which one goes on water	which-one-goes-on-water.mp3
+which one goes up in the air	which-one-goes-up-in-the-air.mp3
+which one is a bird	which-one-is-a-bird.mp3
+which one is a boy	which-one-is-a-boy.mp3
+which one is a flower	which-one-is-a-flower.mp3
+which one is a fruit	which-one-is-a-fruit.mp3
+which one is a girl	which-one-is-a-girl.mp3
+which one is a grandfather	which-one-is-a-grandfather.mp3
+which one is a grandmother	which-one-is-a-grandmother.mp3
+which one is a hand	which-one-is-a-hand.mp3
+which one is a mouth	which-one-is-a-mouth.mp3
+which one is a nose	which-one-is-a-nose.mp3
+which one is a plant	which-one-is-a-plant.mp3
+which one is a tongue	which-one-is-a-tongue.mp3
+which one is a vegetable	which-one-is-a-vegetable.mp3
+which one is a wild animal	which-one-is-a-wild-animal.mp3
+which one is an ear	which-one-is-an-ear.mp3
+which one is an insect	which-one-is-an-insect.mp3
+which one is good to eat every day	which-one-is-good-to-eat-every-day.mp3
 which one is hers	which-one-is-hers.mp3
+which one is hot	which-one-is-hot.mp3
+which one is safe to play with	which-one-is-safe-to-play-with.mp3
+which one is the baby	which-one-is-the-baby.mp3
+which one lives in a hive	which-one-lives-in-a-hive.mp3
+which one lives in a tree	which-one-lives-in-a-tree.mp3
+which one lives in water	which-one-lives-in-water.mp3
+which one takes sick people to hospital	which-one-takes-sick-people-to-hospital.mp3
 which one was it	which-one-was-it.mp3
 which picture	which-picture.mp3
 which shape has	which-shape-has.mp3
@@ -2747,6 +2981,7 @@ whisk	whisk.mp3
 white	white.mp3
 who	who.mp3
 who asked to play	who-asked-to-play.mp3
+who builds houses	who-builds-houses.mp3
 who came home on a bus	who-came-home-on-a-bus.mp3
 who can clap and grin	who-can-clap-and-grin.mp3
 who can smell smoke	who-can-smell-smoke.mp3
@@ -2811,6 +3046,7 @@ who is the fastest	who-is-the-fastest.mp3
 who is the king	who-is-the-king.mp3
 who is with raj	who-is-with-raj.mp3
 who is with us	who-is-with-us.mp3
+who keeps us safe on the road	who-keeps-us-safe-on-the-road.mp3
 who looked at it	who-looked-at-it.mp3
 who made a cake	who-made-a-cake.mp3
 who makes toast	who-makes-toast.mp3

@@ -6,7 +6,7 @@ var LR = window.LR = window.LR || {};
 var KEY = 'littleReader.v1', OLD_KEY = 'readingGarden.v1', SCHEMA = 2;
 var MAX_WORD = 30, MAX_ITEMS = 2000, MAX_FLOWERS = 2000, MAX_STORIES = 500, MAX_DAYS = 30;
 var ID = /^[a-z]{1,2}:[a-z0-9'-]{1,30}$/, DATE = /^\d{4}-\d{2}-\d{2}$/;
-var STEP_IDS = ['words', 'tricky', 'silly', 'read', 'maths', 'garden'];
+var STEP_IDS = ['words', 'tricky', 'silly', 'read', 'maths', 'world', 'garden'];
 
 function read(key){
   try { var raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : null; } catch(e) { return null; }
@@ -60,16 +60,17 @@ function cleanItemOf(it){
   if (it.t === 'math' && LR.maths && LR.maths.ids.indexOf(it.s) > -1 && isInt(it.seed, 1, 999999999)) return { t:'math', s:it.s, lv:it.lv === 2 ? 2 : 1, seed:it.seed };
   if (it.t === 'gram' && LR.grammar && LR.grammar.ids.indexOf(it.g) > -1 && isInt(it.seed, 1, 999999999)) return { t:'gram', g:it.g, lv:it.lv === 2 ? 2 : 1, seed:it.seed };
   if (it.t === 'order' && isId(it.u) && isInt(it.k, 0, 20)) return { t:'order', u:it.u, k:it.k };
+  if (it.t === 'world' && LR.world && LR.world.ids.indexOf(it.e) > -1 && isInt(it.seed, 1, 999999999)) return { t:'world', e:it.e, seed:it.seed };
   return null;
 }
 function cleanResume(r){
   if (!isObj(r) || !isDate(r.date) || !Array.isArray(r.steps)) return null;
-  var steps = r.steps.slice(0, 6).map(function(st){
+  var steps = r.steps.slice(0, 7).map(function(st){
     if (!isObj(st) || STEP_IDS.indexOf(st.id) === -1 || !Array.isArray(st.items)) return null;
     return { id:st.id, items:st.items.slice(0, 20).map(cleanItem).filter(Boolean) };
   }).filter(Boolean);
   if (!steps.length) return null;
-  var at = Array.isArray(r.at) && isInt(r.at[0], 0, 6) && isInt(r.at[1], 0, 20) ? [r.at[0], r.at[1]] : [0, 0];
+  var at = Array.isArray(r.at) && isInt(r.at[0], 0, 7) && isInt(r.at[1], 0, 20) ? [r.at[0], r.at[1]] : [0, 0];
   return {
     date:r.date, steps:steps, at:at, done:r.done === true,
     started:isInt(r.started, 0, 9e15) ? r.started : 0,

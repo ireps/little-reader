@@ -15,6 +15,7 @@ Home is her garden and one **Start**. A session takes about 10 minutes and moves
 | Silly sentences | She reads three sentences and gives each a thumbs up (makes sense) or a thumbs down (silly). The sentence is read only after she answers. |
 | Read with me | She reads a short story to her grown-up, one sentence at a time. Nothing is read to her first. The grown-up taps any word she stumbles on: the first tap gives a hint (its ♥ letters light, and a word with the same trick or its first sound), the second says the word, and it is noted. Then the tick plays the sentence with each word lit. Two questions about the story follow: who, where or what, and *What happened first?* with short phrases from the story to choose from. A different pair comes each day, so a story read again brings the others. *Not today* (a 2 s hold) skips it. |
 | Maths | Four or five questions from the skills she has unlocked, in the order schools teach them (NCF-FS and UKG syllabi): comparing with the hungry crocodile (< and >; = once a grown-up switches it on, and first because her class is on it), counting with ten-frames, taller/shorter, thicker/thinner and top/bottom, the odd one out, numbers and amounts (then tens and ones), counting on and back, smallest and biggest, before/after/between on a number line, zero, adding, taking away, number names (to fifty), Indian coins and notes, measuring, longest and holds the most, flat shapes, solid shapes, halves, patterns, more of which colour, counting in 2s, 5s and 10s, days, months and times of day, and o'clock (then half past). Each skill unlocks when the one before is going well, and moves to bigger numbers once mastered. A skill she has already practised stays open. After two misses the answer is shown, counting along where there is something to count. |
+| My world | Two spoken picture questions about the world around her (the EVS part of KG-2): she hears the question and taps one of three pictures, with nothing to read. Topics open one at a time in the order a UKG class meets them: parts of the body, senses, family, fruit and vegetables, healthy food, plants, pet and wild animals, where animals live, animal sounds, baby animals, insects and birds, transport on land, water and in the air, helpers, weather and seasons, day and night, and safety (traffic lights, hot things). |
 | Garden | A flower for every word she has mastered (right on the first try on 3 separate days), and a sprout for every word she is learning. The garden only grows. |
 
 After two misses the answer is shown and said, and the session moves on. If nothing is tapped for a while, the instruction is repeated (three times), then a single **Go on** appears. Leaving mid-session needs a 1 s hold on Home, and Start picks up where she left off. When today's session is done, Home says *See you tomorrow!* and Start offers a little extra practice.
@@ -26,7 +27,7 @@ Hold the lock on Home for 2 seconds, then answer a sum on the number pad (a chil
 - **Progress:** her unit, flowers, words to watch, mix-ups, and the last few days' minutes and first-try accuracy.
 - **Maths:** each skill she has unlocked, its level, and the **Equals sign** switch (off until her class teaches =).
 - **Where is she?** Tap a unit to start there next time. The app moves on by itself when a unit is mastered.
-- **Practise one game:** any step on its own, including Language (three language tasks) and Maths.
+- **Practise one game:** any step on its own, including Language (three language tasks), Maths and My world.
 - **Voice:** speed, a test, and **Pace** (Calm, Normal or Quick: how long each answer stays on screen before the next one, and how slowly things move; Calm by default). Once voice clips are installed: how many there are, a switch to turn them off, and a switch to keep captions on with them.
 - **Backup:** *Save a backup* downloads `YYYY-MM-DD.littlereader.json`; *Restore* checks a backup and asks before replacing anything; *Reset everything* asks twice.
 
@@ -103,6 +104,7 @@ data/pictures.js         pictures for words (emoji), rhymes, a/an, plurals, in/o
 js/words.js              graphemes, splitting and decodability, heart letters, families, look-alikes
 js/maths.js              the maths skills and their question generators
 js/grammar.js            the language skills (letters to sentences) in teaching order, and their question generators
+js/world.js              My world: the EVS topics in teaching order, their picture questions
 js/progress.js           spaced review, flowers, unit progress, maths unlocking
 js/store.js              load/save with validation, migration, reset
 js/speech.js             clip first (if any), then the tablet's voice; captions

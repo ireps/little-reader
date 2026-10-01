@@ -144,6 +144,8 @@ function chain(ids, pre, open){
 }
 /* Language skills: the first ones are always open, then one more each time the one before reaches box 2. */
 function langUnlocked(){ return chain(LR.grammar.ORDER, 'g:', LR.grammar.OPEN); }
+/* My world topics, in teaching order. */
+function worldUnlocked(){ return chain(LR.world.ids, 'e:', LR.world.OPEN); }
 /* Level 2 (bigger numbers) once a skill reaches box 3. */
 function mathsLevel(id){ var r = items()['m:' + id]; return r && r.b >= 3 ? 2 : 1; }
 function langLevel(id){ var r = items()['g:' + id]; return r && r.b >= 3 ? 2 : 1; }
@@ -159,6 +161,6 @@ function recordDay(n, r, mins){
 LR.progress = {
   INTERVALS:INTERVALS, localDate:localDate, today:today, addDays:addDays, ensure:ensure, right:right, miss:miss, isMastered:isMastered,
   unit:unit, unitById:unitById, planWords:planWords, planExtra:planExtra, newTricky:newTricky, newTrickyCount:newTrickyCount,
-  lastAccuracy:lastAccuracy, growing:growing, sillyResult:sillyResult, mathsUnlocked:mathsUnlocked, mathsLevel:mathsLevel, langUnlocked:langUnlocked, langLevel:langLevel, nextStory:nextStory, unitDone:unitDone, advance:advance, recordDay:recordDay, wid:wid
+  lastAccuracy:lastAccuracy, growing:growing, sillyResult:sillyResult, mathsUnlocked:mathsUnlocked, mathsLevel:mathsLevel, langUnlocked:langUnlocked, langLevel:langLevel, worldUnlocked:worldUnlocked, nextStory:nextStory, unitDone:unitDone, advance:advance, recordDay:recordDay, wid:wid
 };
 })();

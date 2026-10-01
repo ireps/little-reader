@@ -19,10 +19,11 @@ function countAlong(q){
   return S.say(nums.join(', '), { parts:nums, onWord:function(k){ light(k); } }).then(function(){ return S.say(said); });
 }
 
-/* Also draws the language skills made by js/grammar.js (t:'gram'); those record their box when the item is done. */
-LR.steps.math = LR.steps.gram = {
+/* Also draws the language skills (js/grammar.js, t:'gram') and My world (js/world.js, t:'world'); those record their box
+   when the item is done. */
+LR.steps.math = LR.steps.gram = LR.steps.world = {
   render:function(item, ctx){
-    var q = item.t === 'gram' ? LR.grammar.gen(item) : LR.maths.gen(item);
+    var q = item.t === 'gram' ? LR.grammar.gen(item) : item.t === 'world' ? LR.world.gen(item) : LR.maths.gen(item);
     if (!q) { ctx.done(true, false); return; }
     cur = { item:item, q:q };
     var many = q.opts.length > 2;
@@ -32,7 +33,7 @@ LR.steps.math = LR.steps.gram = {
     ctx.prompt(q.prompt);
   },
   tap:function(el, act, ctx){
-    var q = cur.q, id = cur.item.t === 'gram' ? null : 'm:' + cur.item.s;
+    var q = cur.q, id = cur.item.t === 'math' ? 'm:' + cur.item.s : null;
     if (act === 'hear') { U.stopAll(); ctx.prompt(q.prompt); return; }
     if (act !== 'pick' || ctx.locked) return;
     var o = q.opts[+el.getAttribute('data-i')];
