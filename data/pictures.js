@@ -12,7 +12,7 @@ LR.pictures = {
   book: '📖', bell: '🔔', key: '🔑', lock: '🔒', lamp: '💡', light: '💡', clock: '⏰', watch: '⌚', bag: '👜', hat: '🎩',
   boot: '👢', shoe: '👞', ring: '💍', crown: '👑', ball: '⚽', gift: '🎁', box: '📦', tent: '⛺', flag: '🚩',
   hand: '✋', foot: '👣', ear: '👂', nose: '👃', mouth: '👄', thumb: '👍', clap: '👏', baby: '👶', girl: '👧', boy: '👦',
-  shirt: '👕', dress: '👗', horn: '📯', paint: '🎨', game: '🎮', swim: '🏊', grin: '😁', glad: '😀', smile: '😀'
+  globe: '🌐', kitten: '🐱', rabbit: '🐰', shirt: '👕', dress: '👗', horn: '📯', paint: '🎨', game: '🎮', swim: '🏊', grin: '😁', glad: '😀', smile: '😀'
 };
 
 /* Rhyming pairs with pictures: she hears the first and finds the picture that rhymes. */

@@ -20,6 +20,8 @@ ui.closestAct = function(e){ return e.target && e.target.closest ? e.target.clos
 
 /* Every parent-entered string reaches the page through esc() here. */
 ui.lettersHTML = function(word, plain){
+  /* The word I is always a capital letter, even though review keeps words in lower case. */
+  if (word === 'i') word = 'I';
   var h = plain ? [] : LR.words.heartsFor(word), out = '';
   for (var i = 0; i < word.length; i++) out += '<span class="l' + (h.indexOf(i) > -1 ? ' h' : '') + '">' + ui.esc(word.charAt(i)) + '</span>';
   return out;

@@ -125,11 +125,14 @@ function migrate(old, today){
   seedKnown(out, today);
   return out;
 }
-/* Her known tricky words go into review on the first day. */
+/* Her known tricky words, and the Phase 2 and 3 tricky words she is assumed to know, go into review at box 1.
+   Runs on every load, so existing progress gains words added later; words already there are left alone. */
 function seedKnown(st, today){
-  (LR.knownTricky || []).forEach(function(w){
-    if (!st.items['w:' + w]) st.items['w:' + w] = { b:1, d:today, u:'', m:0 };
+  var added = false, n = Object.keys(st.items).length;
+  (LR.knownTricky || []).concat(LR.baseReview || []).forEach(function(w){
+    if (!st.items['w:' + w] && n < MAX_ITEMS) { n++; st.items['w:' + w] = { b:1, d:today, u:'', m:0 }; added = true; }
   });
+  return added;
 }
 
 var failed = false;
@@ -140,12 +143,12 @@ function save(){
 
 function load(){
   var today = LR.progress ? LR.progress.localDate() : new Date().toISOString().slice(0, 10);
-  var s = read(KEY), fresh = false;
-  if (!s) { s = read(OLD_KEY); fresh = !s; }
+  var s = read(KEY);
+  if (!s) s = read(OLD_KEY);
   if (isOld(s)) { LR.state = migrate(s, today); save(); }
   else {
     LR.state = validate(s);
-    if (fresh || !Object.keys(LR.state.items).length) { seedKnown(LR.state, today); save(); }
+    if (seedKnown(LR.state, today)) save();
   }
   return LR.state;
 }

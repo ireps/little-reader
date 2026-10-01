@@ -74,6 +74,16 @@ function langItem(){
   P.unit().stories.forEach(function(st){ st.s.forEach(function(s, i){ if (LR.steps.caps.ok(s)) caps.push({ t:'caps', story:st.id, i:i }); }); });
   return caps.length ? caps[U.rand(caps.length)] : { t:'pos', p:'in' };
 }
+/* Two of a story's questions, a different pair each day in turn (1 and 2, 2 and 3, 3 and 1), by the date, so
+   rereading a story brings the others. Fewer questions: all of them. */
+function dayNumber(d){ var p = d.split('-'); return Math.round(Date.UTC(+p[0], +p[1] - 1, +p[2]) / 86400000) - 10957; }
+function questionPair(story, today){
+  var n = (story.q || []).length;
+  if (n <= 2) return n === 2 ? [0, 1] : n ? [0] : [];
+  var k = ((dayNumber(today) % n) + n) % n;
+  return [k, (k + 1) % n];
+}
+session.questionPair = questionPair; session.dayNumber = dayNumber;
 function sillyItems(n){
   var u = P.unit(), ks = (u.silly || []).map(function(x, k){ return k; });
   return U.shuffle(ks).slice(0, n).map(function(k){ return { t:'silly', u:u.id, k:k }; });
@@ -94,7 +104,7 @@ function plan(mode, only){
   if (mode === 'day' || only === 'read') {
     var story = P.nextStory();
     if (!only || only === 'read') add('read', story.s.map(function(s, i){ return { t:'read', story:story.id, i:i }; })
-      .concat((story.q || []).slice(0, 2).map(function(q, k){ return { t:'q', story:story.id, k:k }; })));
+      .concat(questionPair(story, t).map(function(k){ return { t:'q', story:story.id, k:k }; })));
   }
   if (mode === 'day' || only === 'maths') { if (!only || only === 'maths') add('maths', mathItems(4 + U.rand(2))); }
   if (mode !== 'practice') add('garden', []);

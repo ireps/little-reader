@@ -109,7 +109,7 @@ const server = http.createServer((req, res) => {
       ['flash-word', { t: 'flash', w: 'frost' }], ['flash-pick', { t: 'flash', w: 'frost' }, '.s-card'], ['pic', { t: 'pic', w: 'ship' }],
       ['build', { t: 'build', w: 'shrimp' }], ['build-split', { t: 'build', w: 'snake' }], ['silly', { t: 'silly', u: 'p4-03', k: 1 }, null, 'silly'],
       ['rhyme', { t: 'rhyme', k: 5 }], ['a-an', { t: 'an', w: 'egg' }], ['plural', { t: 'plural', w: 'bird', many: true }],
-      ['position', { t: 'pos', p: 'on' }], ['capitals', { t: 'caps', story: 'p5-06a', i: 0 }], ['question', { t: 'q', story: 'p4-03a', k: 0 }, null, 'read'],
+      ['position', { t: 'pos', p: 'on' }], ['capitals', { t: 'caps', story: 'p5-06a', i: 0 }], ['question', { t: 'q', story: 'p4-03a', k: 0 }, null, 'read'], ['question-first', { t: 'q', story: 'p4-03a', k: 2 }, null, 'read'],
       ['read-hint', { t: 'read', story: 'p5-03a', i: 2 }, '[data-act=check]:not([disabled])', 'read'],
       ['croc-eq', { t: 'croc', a: 6, b: 6, m: 'eq' }, null, 'maths'], ['croc-level2', { t: 'croc', a: 14, b: 17, m: 'more', lv: 2 }, null, 'maths']
     ].concat(['count', 'numeral', 'counton', 'neighbour', 'zero', 'add', 'take', 'names', 'money', 'measure', 'shapes', 'halves', 'pattern', 'time']

@@ -10,13 +10,13 @@ var HEARTS = {
   one:[0,1,2], two:[1,2], what:[2], who:[0,2], love:[1,3], done:[1,3], does:[1,2], could:[1,2,3],
   would:[1,2,3], should:[2,3,4], friend:[2], put:[1], push:[1], pull:[1], want:[1], water:[1], again:[2,3],
   eye:[0,1,2], people:[2], fruit:[2,3], mother:[1], other:[0], brother:[2], only:[0], move:[1,3], are:[2],
-  most:[1], money:[1], son:[1], won:[1], none:[1,3], glove:[2,4], month:[1],
+  most:[1], money:[1], son:[1], won:[1], none:[1,3], glove:[2,4], month:[1], once:[0,2,3], school:[1,2], full:[1],
   like:[1,3], so:[1], no:[1], go:[1], little:[4,5], when:[1], into:[3], he:[1], she:[2], we:[1], me:[1], be:[1], my:[1], all:[1,2]
 };
 
 /* Tricky words that share the same trick: learn them as a family. */
 var FAMILIES = [
-  {name:'o says “uh”', words:['come','some','from','done','love','one','other','mother','brother','money','son','won','none','of','glove','month']},
+  {name:'o says “uh”', words:['come','some','from','done','love','one','once','other','mother','brother','money','son','won','none','of','glove','month']},
   {name:'“oul” says “ood”', words:['could','would','should']},
   {name:'a after w says “o”', words:['was','want','what','water','watch','wash']},
   {name:'u says “oo”', words:['put','push','pull','full','bush']},
@@ -56,10 +56,22 @@ function heartsFor(word){
 function isHeart(w){ return heartsFor(w).length > 0; }
 /* Distractors for a word to find: her own past mix-ups first, then look-alikes that share the first letter
    and shape, so guessing from the first letter doesn't work. */
-function lookalikes(target, pool, mixups, n){
+function lookalikes(target, pool, mixups, n, near){
   n = n || 2;
   var mine = (mixups || []).filter(function(w){ return w !== target; }).slice(0, n);
   if (mine.length >= n) return mine;
+  /* Next, the course's same-start sets (pots, plants, plums): the target's own group, else words from any group
+     that start with the same two letters. */
+  if (near && near.length) {
+    var own = [], two = [];
+    near.forEach(function(g){
+      if (g.indexOf(target) > -1) own = own.concat(g);
+      else g.forEach(function(w){ if (w.slice(0, 2) === target.slice(0, 2)) two.push(w); });
+    });
+    var pick = shuffled(own).concat(shuffled(two)).filter(function(w, i, a){ return w !== target && mine.indexOf(w) === -1 && a.indexOf(w) === i; });
+    mine = mine.concat(pick).slice(0, n);
+    if (mine.length >= n) return mine;
+  }
   var seen = {}, cands = pool.concat(BANK).filter(function(w){ if (seen[w] || w === target || w.length < 2) return false; seen[w] = 1; return true; });
   var scored = cands.map(function(w){
     var s = Math.random() * 1.5;
@@ -71,6 +83,13 @@ function lookalikes(target, pool, mixups, n){
   });
   scored.sort(function(a, b){ return b.s - a.s; });
   return mine.concat(scored.map(function(o){ return o.w; }).filter(function(w){ return mine.indexOf(w) === -1; })).slice(0, n);
+}
+function shuffled(list){ var a = list.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+/* The same-start groups of every unit up to the current one (index in LR.units). */
+function nearUpTo(index){
+  var out = [];
+  (LR.units || []).forEach(function(u, i){ if (i <= index) out = out.concat(u.near || []); });
+  return out;
 }
 function familyOf(w){ for (var i = 0; i < FAMILIES.length; i++) if (FAMILIES[i].words.indexOf(w) > -1) return FAMILIES[i]; return null; }
 
@@ -116,15 +135,48 @@ function segment(word, allowed){
   return solve(w, {});
 }
 
-/* What a unit (by index in LR.units) allows: graphemes and tricky words taught so far. */
+/* What a unit (by index in LR.units) allows: graphemes, suffixes and tricky words taught so far. */
 function allowedFor(index){
-  var g = BASE.slice(), t = TRICKY_BASE.concat(NAMES, LR.knownTricky || []);
+  var g = BASE.slice(), t = TRICKY_BASE.concat(NAMES, LR.knownTricky || []), sf = [];
   for (var i = 0; i <= index && i < LR.units.length; i++) {
     var u = LR.units[i];
     (u.sounds || []).forEach(function(x){ if (P5.indexOf(x) > -1) g.push(x); });
     t = t.concat((u.tricky || []).map(clean));
+    sf = sf.concat(u.suffixes || []);
   }
-  return { graphemes:g, tricky:t, all:allTricky() };
+  return { graphemes:g, tricky:t, suffixes:sf, all:allTricky() };
+}
+
+/* ---------- Suffixes (Phase 6) ---------- */
+/* Endings taught as units of meaning, longest first. A plain -s (cats, jumps) reads letter by letter from Phase 2,
+   so it isn't checked. */
+var SUFFIXES = ['ing', 'est', 'es', 'ed', 'er'];
+/* Words the course knows, so a suffix is only split off a real word: tall+er, but not corn+er or lett+er. */
+var known = null;
+function knownWords(){
+  if (known) return known;
+  known = {};
+  function add(text){ (String(text).match(/[A-Za-z']+/g) || []).forEach(function(w){ known[clean(w)] = 1; }); }
+  BANK.forEach(add); Object.keys(HEARTS).forEach(add); TRICKY_BASE.forEach(add);
+  Object.keys((LR.pictures) || {}).forEach(add);
+  (LR.units || []).forEach(function(u){
+    u.words.forEach(add); (u.tricky || []).forEach(add);
+    (u.stories || []).forEach(function(st){ st.s.forEach(add); (st.q || []).forEach(function(q){ q.opts.forEach(add); }); });
+    (u.silly || []).forEach(function(x){ add(x.s); });
+    (u.near || []).forEach(function(g){ g.forEach(add); });
+  });
+  return known;
+}
+/* The suffix a word is made with ('ing' for jumping), or '' if it is not root + suffix. */
+function suffixOf(word){
+  var w = clean(word), k = knownWords();
+  /* A plain -s on a known word (kite+s, cube+s) is not -es (kit+es). */
+  if (w.length > 1 && w.slice(-1) === 's' && k[w.slice(0, -1)]) return '';
+  for (var i = 0; i < SUFFIXES.length; i++) {
+    var s = SUFFIXES[i], root = w.slice(0, -s.length);
+    if (w.length > s.length && w.slice(-s.length) === s && root.length >= 3 && k[root]) return s;
+  }
+  return '';
 }
 /* Every tricky word the app knows of. These are never "decodable": they must have been taught. */
 function allTricky(){
@@ -138,6 +190,9 @@ function decodable(word, index, allowed){
   allowed = allowed || allowedFor(index);
   if (allowed.tricky.indexOf(w) > -1) return true;
   if ((allowed.all || allTricky()).indexOf(w) > -1) return false;
+  /* Root + suffix (jump + ing): the suffix must be taught and the root decodable. */
+  var sf = suffixOf(w);
+  if (sf) return (allowed.suffixes || []).indexOf(sf) > -1 && decodable(w.slice(0, -sf.length), index, allowed);
   /* Read the word the way it is really read (all graphemes, longest first), then every part must be taught. */
   var parts = segment(w);
   return !!parts && parts.every(function(g){ return allowed.graphemes.indexOf(g) > -1; });
@@ -155,6 +210,7 @@ function checkUnits(){
       (st.q || []).forEach(function(q){ q.opts.forEach(function(o){ check(st.id + ' answers', o); }); });
     });
     (u.silly || []).forEach(function(x){ check('silly', x.s); });
+    (u.near || []).forEach(function(g){ g.forEach(function(w){ check('near', w); }); });
   });
   return problems;
 }
@@ -170,5 +226,5 @@ function soundOf(g){ return SOUNDS[g] || (g.length === 2 && g.charAt(0) === g.ch
 function isTricky(w){ return allTricky().indexOf(clean(w)) > -1; }
 
 LR.words = { segment:segment, isTricky:isTricky, soundOf:soundOf, allowedFor:allowedFor, decodable:decodable, checkUnits:checkUnits, BASE:BASE, P5:P5, TRICKY_BASE:TRICKY_BASE, NAMES:NAMES,
-  HEARTS:HEARTS, FAMILIES:FAMILIES, BANK:BANK, LETTER_NAMES:LETTER_NAMES, heartsFor:heartsFor, isHeart:isHeart, familyOf:familyOf, lookalikes:lookalikes, clean:clean };
+  SUFFIXES:SUFFIXES, suffixOf:suffixOf, nearUpTo:nearUpTo, HEARTS:HEARTS, FAMILIES:FAMILIES, BANK:BANK, LETTER_NAMES:LETTER_NAMES, heartsFor:heartsFor, isHeart:isHeart, familyOf:familyOf, lookalikes:lookalikes, clean:clean };
 })();

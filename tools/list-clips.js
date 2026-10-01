@@ -17,7 +17,7 @@ const sandbox = { console };
 sandbox.window = sandbox;
 vm.createContext(sandbox);
 vm.runInContext('var LR = window.LR = { ui: { esc: function(s){ return String(s); } } };', sandbox);
-['data/units.js', 'data/units-p5.js', 'data/pictures.js', 'data/phrases.js', 'js/words.js', 'js/maths.js'].forEach(f => {
+['data/units.js', 'data/units-p5.js', 'data/units-p6.js', 'data/pictures.js', 'data/phrases.js', 'js/words.js', 'js/maths.js'].forEach(f => {
   vm.runInContext(fs.readFileSync(path.join(ROOT, f), 'utf8'), sandbox, { filename: f });
 });
 const LR = sandbox.LR, W = LR.words, M = LR.maths;
@@ -38,8 +38,9 @@ LR.units.forEach(u => {
     (st.q || []).forEach(q => { add(q.q); q.opts.forEach(add); });
   });
   (u.silly || []).forEach(x => { add(x.s); words(x.s); });
+  (u.near || []).forEach(g => g.forEach(add));
 });
-(LR.knownTricky || []).forEach(add);
+(LR.knownTricky || []).concat(LR.baseReview || []).forEach(add);
 Object.keys(W.HEARTS).forEach(add);
 W.FAMILIES.forEach(f => f.words.forEach(add));
 W.BANK.forEach(add);

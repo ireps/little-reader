@@ -363,6 +363,13 @@ input[type=range]{padding:0;border:0}
 .s-main > .s-row > .s-picimg{font-size:96px}
 .s-answer{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;min-width:200px;min-height:150px;font-size:44px}
 .s-answer .s-picimg{font-size:64px}
+/* "What happened first?": short phrases as wide cards, side by side in landscape and one above the other in portrait. */
+.s-cards.s-col{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
+.s-answer.s-phrase{flex-direction:row;width:290px;min-width:0;min-height:140px;font-size:34px;line-height:1.15;text-align:center;padding:10px 16px}
+@media (orientation:portrait){
+  .s-cards.s-col{flex-direction:column;flex-wrap:nowrap;align-items:stretch;width:600px;max-width:100%;margin:0 auto}
+  .s-answer.s-phrase{width:auto;min-height:120px;font-size:38px}
+}
 .s-word-card{min-width:180px;font-size:72px}
 .s-blank{text-align:center;font-size:60px;padding:10px 36px}
 .s-gap{display:inline-block;min-width:1.4em;border-bottom:6px solid var(--line);text-align:center;color:var(--leaf-deep)}
@@ -386,6 +393,7 @@ input[type=range]{padding:0;border:0}
 @media (max-height:700px) and (min-width:701px){
   .s-picimg{font-size:70px}
   .s-pic,.s-answer{min-height:130px}
+  .s-answer.s-phrase{min-height:130px;font-size:32px}
   .s-slot{height:116px;font-size:66px}
   .s-tile{font-size:56px}
   .s-scene{width:150px;height:120px}
