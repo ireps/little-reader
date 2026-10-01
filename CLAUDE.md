@@ -124,6 +124,7 @@ Changing the shape means bumping `schema`, migrating in `store.js`, and extendin
 - **Pictures are emoji up to Unicode 6** (not 8), because the tablet runs Android 5.1. A word without one never appears in a picture task.
 - **Course content is checked, not trusted:** every word she reads must pass the decodability check for its unit.
 - **Choice screens have no primary target;** the sun-yellow target is only for single-action screens (Start, the tick, Go on, Done).
+- **One design language** (`unify-child-design`; `tests/run.js` enforces the first three): solid sun yellow only on the target (the current path step is leaf green; a word being said gets the soft lit style). Replay only under the guide's words (`ctx.screen({ replay:true })` or `ctx.replay(on)`, never in `main`). One answer-card minimum size (`.s-card`; don't set min sizes on variants). Raised means tap and flat paper means read. Andika Regular for words and letters, bold for numbers. One missing-piece mark, `<span class="s-gap">?</span>`, given `.full` when answered.
 
 ## Roadmap
 
@@ -143,6 +144,8 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 | 8a | `deepen-kg2-english` (built) | After a syllabus audit (NCF-FS Balvatika outcomes, Indian UKG syllabi): 4 stories per unit with 3 questions each (one "What happened first?"), new themes (family, home, school, festivals, seasons, safety), the Phase 2 and 3 tricky words in review, same-start look-alike sets against first-letter guessing, and 6 new units (2 mixed review, then -s/-es, -ing, -ed, -er/-est). |
 | 8b | `add-kg2-school-skills` (built) | School grammar and maths gaps. 12 language skills (letters, vowels, alphabet order, naming/doing/describing words, opposites, this/these, is/are, he/she/they, word order, sentence-picture) join the 5 old ones as `g:` skills in one UKG-ordered chain, 2 a session. 8 maths skills (size words, odd one out, ordering, longest/capacity, solids, data, skip counting, o'clock) are inserted where schools teach them. Number names go to fifty. Practised skills always stay open. |
 | 8c | `add-my-world` (built) | "My world" (EVS) as a session step after Maths: 2 spoken picture questions a day from 16 topics in UKG order (body, senses, family, food, plants, animals, insects and birds, transport, helpers, weather, day and night, safety), `e:` skills like maths and language. Writing, reciting, drawing and Hindi stay out of scope for a tap-only app. |
+
+After 8c, `unify-child-design` (built) brings the child screens into one design language (see "Decisions made"). It has no content changes.
 
 **Superseded:** the old Phase 3 (typed weekly content). Its backup, restore and reset items moved to Phase 4.
 
@@ -168,6 +171,7 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 
 ## Pending owner actions
 
+- Design pass (`unify-child-design`): does she find the replay button under Tilly's words? Does she ever tap the green current step on the path? Do the dashed "?" boxes read as "something goes here"?
 - Phase 8c: which My world topics needed explaining? Does the session still feel about 10 minutes with the extra step?
 - Phase 8b: which new language and maths tasks needed explaining? Is word order easy to use? Do sessions stay around 10 minutes? Grown-ups > Practise one game now has Language and Maths.
 - Phase 8a: a week of sessions. Do new stories appear? Does "What happened first?" need explaining? Do same-start words (pots, plants, plums) still catch her (Grown-ups shows mix-ups)? Do sessions stay around 10 minutes? Then 8b is proposed.
