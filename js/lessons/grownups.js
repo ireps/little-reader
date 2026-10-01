@@ -74,7 +74,15 @@ function settings(){
     + [['words', 'Sounds and words'], ['tricky', 'Tricky word'], ['silly', 'Silly sentences'], ['read', 'Read with me'], ['maths', 'Crocodile']].map(function(g){
       return '<a class="btn soft small" href="#practice-' + g[0] + '">' + g[1] + '</a>'; }).join('') + '</section>'
     + '<section><h2>Voice</h2><p class="help" id="vstatus"></p><label for="rate">Speed</label><input id="rate" type="range" min="0.75" max="1.1" step="0.05">'
-    + '<div class="row"><button class="btn soft small" data-act="test">Test voice</button></div></section>'
+    + '<div class="row"><button class="btn soft small" data-act="test">Test voice</button></div>'
+    + '<p class="help">Pace: how long each answer stays on screen before the next one, and how slowly things move.</p><div class="row">'
+    + [['calm', 'Calm'], ['normal', 'Normal'], ['quick', 'Quick']].map(function(p){
+      return '<button class="btn soft small" data-act="pace" data-v="' + p[0] + '" aria-pressed="' + ((st.pace || 'calm') === p[0]) + '">' + p[1] + '</button>'; }).join('') + '</div>'
+    + (Object.keys(LR.clips || {}).length ? '<p class="help">' + Object.keys(LR.clips).length + ' voice clips are installed.</p>'
+      + '<button class="btn soft small" data-act="clips" aria-pressed="' + (st.clips !== false) + '">Voice clips: ' + (st.clips !== false ? 'on' : 'off') + '</button>'
+      + '<button class="btn soft small" data-act="captions" aria-pressed="' + !!st.captions + '">Captions with clips: ' + (st.captions ? 'on' : 'off') + '</button>'
+      : '<p class="help">No voice clips yet: the tablet’s voice speaks, with captions. See audio/README.md.</p>')
+    + '</section>'
     + '<section><h2>Backup</h2><p class="help">Everything is saved in this tablet’s browser only. A backup keeps it safe if Silk’s data is cleared.</p>'
     + '<button class="btn soft small" data-act="backup">Save a backup</button>'
     + '<label class="btn soft small file">Restore from a backup<input type="file" id="restore" accept=".json,application/json"></label>'
@@ -83,7 +91,9 @@ function settings(){
   var rate = document.getElementById('rate');
   rate.value = st.rate;
   rate.onchange = function(){ var r = parseFloat(rate.value); LR.state.rate = r >= 0.75 && r <= 1.1 ? r : 0.9; LR.store.save(); };
-  document.getElementById('vstatus').textContent = S.canSpeak ? 'Speech uses this tablet’s voice. Everything said also shows as a caption until the voice clips arrive.' : 'This browser can’t read aloud. Captions still show what would be said.';
+  var nClips = Object.keys(LR.clips || {}).length;
+  document.getElementById('vstatus').textContent = nClips && st.clips !== false ? 'Speech uses the voice clips. Anything without a clip is said by this tablet’s voice, with a caption.'
+    : S.canSpeak ? 'Speech uses this tablet’s voice. Everything said also shows as a caption.' : 'This browser can’t read aloud. Captions still show what would be said.';
   document.getElementById('restore').onchange = function(){ if (this.files && this.files[0]) restore(this.files[0]); this.value = ''; };
   app.onclick = function(e){
     var el = U.closestAct(e);
@@ -96,6 +106,9 @@ function settings(){
       LR.store.save(); settings();
     }
     else if (a === 'test') { U.stopAll(); S.say('Come and read with me.'); }
+    else if (a === 'pace') { LR.state.pace = el.getAttribute('data-v'); LR.store.save(); U.applyPace(); settings(); }
+    else if (a === 'clips') { LR.state.clips = LR.state.clips === false; LR.store.save(); settings(); }
+    else if (a === 'captions') { LR.state.captions = !LR.state.captions; LR.store.save(); settings(); }
     else if (a === 'equals') { LR.state.equals = !LR.state.equals; LR.store.save(); settings(); }
     else if (a === 'backup') backup();
     else if (a === 'reset') confirmReset();

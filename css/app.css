@@ -123,7 +123,7 @@ button.num[disabled]{cursor:default}
 .num.big{border-color:var(--leaf);background:var(--right)}
 .slot{width:150px;height:150px;margin:0 18px;display:flex;align-items:center;justify-content:center;font-size:80px;color:#9DB6C2}
 .mouth{width:100%;height:100%;color:var(--leaf);display:block}
-.mouth.chomp{animation:chomp .7s ease-out}
+.mouth.chomp{animation:chomp calc(.7s * var(--pace, 1)) ease-out}
 .mouth.bad{color:var(--dim)}
 @keyframes chomp{0%{transform:scaleY(.15)}45%{transform:scaleY(1.2)}70%{transform:scaleY(.85)}100%{transform:scaleY(1)}}
 .frame{display:block;width:150px;margin-top:10px;font-size:0;line-height:0}
@@ -198,7 +198,7 @@ input[type=range]{padding:0;border:0}
 .lbtn.h{color:var(--berry)}
 .modes{display:inline-flex;margin:4px 6px}
 .mode{min-width:120px;min-height:120px;font-size:24px;padding:0 22px;margin:0 3px;border:2px solid var(--line);border-radius:999px;background:var(--paper);cursor:pointer}
-.mode[aria-pressed="true"]{background:var(--leaf);border-color:var(--leaf);color:#fff}
+.btn.soft[aria-pressed="true"],.mode[aria-pressed="true"]{background:var(--leaf);border-color:var(--leaf);color:#fff}
 .say-btn{min-height:120px;min-width:120px;font-size:26px;padding:0 26px;margin:8px;background:var(--paper);border:3px solid var(--line);border-bottom-width:8px;border-radius:22px;cursor:pointer}
 .mix{display:inline-block;margin:4px;padding:6px 12px;border:2px dashed var(--line);border-radius:12px;font-size:20px}
 

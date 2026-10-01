@@ -44,10 +44,53 @@ function chooseVoice(){
   return en[0];
 }
 
-/* Clip hook: LR.clips = { 'come': 'come.mp3', ... } from audio/manifest.js (Phase 7). */
-function clipFor(text){
-  var m = LR.clips, k = String(text).toLowerCase().replace(/[^a-z' ]/g, '').trim();
-  return m && has(m, k) ? 'audio/words/' + m[k] : null;
+/* ---------- Voice clips (Phase 7) ----------
+   audio/manifest.js sets LR.clips = { key: { f: file, d: length in ms, t: [start ms of each word] } }.
+   A key is the text in lower case, without punctuation. */
+var CLIP_DIR = 'audio/clips/', cache = {}, cacheOrder = [], CACHE_MAX = 40;
+function keyOf(s){
+  return String(s).toLowerCase().replace(/[\u2018\u2019]/g, "'").replace(/[^a-z0-9' ]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+function clipsOn(){ return !!LR.clips && (!LR.state || LR.state.clips !== false); }
+function hasClip(k){ return !!LR.clips && has(LR.clips, k); }
+/* Turns text into a list of clip keys: the whole text if there is a clip for it, else clause by clause, each made
+   of the longest known phrases ("That says cone." -> "that says" + "cone"). Returns null if anything is missing. */
+function resolveClips(text, hasKey){
+  hasKey = hasKey || hasClip;
+  var whole = keyOf(text);
+  if (!whole) return [];
+  if (hasKey(whole)) return [whole];
+  var out = [], clauses = String(text).split(/[.!?,;:"\u201C\u201D]+/);
+  for (var c = 0; c < clauses.length; c++) {
+    var k = keyOf(clauses[c]);
+    if (!k) continue;
+    if (hasKey(k)) { out.push(k); continue; }
+    var w = k.split(' '), i = 0;
+    while (i < w.length) {
+      var found = 0;
+      for (var j = Math.min(w.length, i + 8); j > i; j--) if (hasKey(w.slice(i, j).join(' '))) { found = j; break; }
+      if (!found) return null;
+      out.push(w.slice(i, found).join(' '));
+      i = found;
+    }
+  }
+  return out;
+}
+/* Audio elements, kept for the clips used most recently, so they start at once. */
+function audioFor(k){
+  var url = CLIP_DIR + LR.clips[k].f;
+  if (cache[url]) { cacheOrder.splice(cacheOrder.indexOf(url), 1); cacheOrder.push(url); return cache[url]; }
+  var a = new Audio(url);
+  a.preload = 'auto';
+  cache[url] = a; cacheOrder.push(url);
+  while (cacheOrder.length > CACHE_MAX) { var old = cacheOrder.shift(); if (cache[old] !== currentAudio) delete cache[old]; }
+  return a;
+}
+/* Starts loading the clips for some text that is about to be said. */
+function preload(text){
+  if (!clipsOn()) return;
+  var seq = resolveClips(text);
+  if (seq) seq.forEach(function(k){ try { audioFor(k); } catch(e) {} });
 }
 
 /* ---------- Captions (placeholder for the voice) ---------- */
@@ -79,7 +122,7 @@ function calibrate(text, ms, rate){
 function partOffsets(text, parts){
   var out = [], from = 0;
   if (!parts) {
-    var re = /[A-Za-z']+/g, m;
+    var re = /[A-Za-z0-9']+/g, m;
     while ((m = re.exec(text))) out.push(m.index);
     return out;
   }
@@ -147,23 +190,54 @@ function say(text, opts){
       });
     }
     me = current = { fin:function(){ fin(false); } };
-    caption(typeof opts.caption === 'string' ? opts.caption : text);
+    var seq = clipsOn() ? resolveClips(text) : null;
+    /* Captions stand in for the voice: shown with the tablet voice, and with clips only if Grown-ups keeps them on. */
+    var cap = typeof opts.caption === 'string' ? opts.caption : text;
+    caption(!seq || (LR.state && LR.state.captions) ? cap : '');
 
     if (!unlocked) { begin(); later(function(){ fin(false); }, est); return; }
+    if (seq && seq.length) { playClips(seq); return; }
+    tts();
 
-    var clip = clipFor(text);
-    if (clip) {
-      try {
-        var a = new Audio(clip);
+    /* Plays clips one after another (the next starts on the last one's "ended"), lighting words at their recorded times. */
+    function playClips(keys){
+      var partStart = null, w = 0, k = 0;
+      if (opts.parts) { partStart = []; var n = 0; opts.parts.forEach(function(p){ partStart.push(n); n += Math.max(1, keyOf(p).split(' ').length); }); }
+      function wordAt(gw){ if (!partStart) return gw; var i = partStart.indexOf(gw); return i; }
+      function next(){
+        if (done) return;
+        if (k >= keys.length) { currentAudio = null; fin(false); return; }
+        var key = keys[k++], info = LR.clips[key], words = key.split(' ').length, a;
+        try { a = audioFor(key); } catch(e) { fallback(); return; }
         currentAudio = a;
-        a.onplaying = begin;
-        a.onended = function(){ currentAudio = null; fin(false); };
-        a.onerror = function(){ currentAudio = null; fin(false); };
-        var pr = a.play(); if (pr && pr.catch) pr.catch(function(){ fin(false); });
-      } catch(e) { fin(false); }
-      later(function(){ fin(false); }, 8000);
-      return;
+        var playbackRate = Math.max(0.75, Math.min(1.2, rate / 0.9));
+        try { a.currentTime = 0; a.playbackRate = playbackRate; } catch(e) {}
+        var base = w, times = info.t && info.t.length === words ? info.t : null, dur = info.d || 1500;
+        w += words;
+        a.onplaying = function(){
+          begin();
+          if (!opts.onWord) return;
+          for (var i = 0; i < words; i++) (function(i){
+            var at = times ? times[i] : Math.round(dur * i / words), p = wordAt(base + i);
+            if (p > -1) later(function(){ fire(p); }, Math.round(at / playbackRate));
+          })(i);
+        };
+        a.onended = function(){ if (currentAudio === a) next(); };
+        a.onerror = function(){ if (currentAudio === a) fallback(); };
+        later(function(){ if (currentAudio === a) next(); }, Math.round(dur / playbackRate) + 1000);
+        try { var pr = a.play(); if (pr && pr.catch) pr.catch(function(){ if (currentAudio === a) fallback(); }); } catch(e) { fallback(); }
+      }
+      next();
     }
+    /* A clip failed: say the whole text with the tablet voice instead, and show the caption. */
+    function fallback(){
+      if (currentAudio) { try { currentAudio.pause(); } catch(e) {} currentAudio = null; }
+      clear(); fired = -1;
+      caption(cap);
+      tts();
+    }
+
+    function tts(){
     if (!canSpeak) { begin(); later(function(){ fin(false); }, est); return; }
 
     var busy = false;
@@ -199,6 +273,7 @@ function say(text, opts){
       later(function(){ fin(false); }, 600 + est + 1000);
     }
     if (wait) later(speak, wait); else speak();
+    }
   });
 }
 
@@ -219,6 +294,9 @@ LR.speech = {
   say: say,
   cancel: cancel,
   estimate: estimate,
+  resolve: resolveClips,
+  keyOf: keyOf,
+  preload: preload,
   isUnlocked: function(){ return unlocked; },
   englishVoices: englishVoices,
   chooseVoice: chooseVoice,

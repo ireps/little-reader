@@ -1,0 +1,1400 @@
+# Voice clips for Little Reader: key <TAB> file name. Made by tools/list-clips.js; do not edit by hand.
+# Supply one Indian English computer-voice recording per line, named as in the second column (see audio/README.md).
+0	0.mp3
+1	1.mp3
+10	10.mp3
+100	100.mp3
+11	11.mp3
+12	12.mp3
+13	13.mp3
+14	14.mp3
+15	15.mp3
+16	16.mp3
+17	17.mp3
+18	18.mp3
+19	19.mp3
+2	2.mp3
+20	20.mp3
+21	21.mp3
+22	22.mp3
+23	23.mp3
+24	24.mp3
+25	25.mp3
+26	26.mp3
+27	27.mp3
+28	28.mp3
+29	29.mp3
+3	3.mp3
+30	30.mp3
+31	31.mp3
+32	32.mp3
+33	33.mp3
+34	34.mp3
+35	35.mp3
+36	36.mp3
+37	37.mp3
+38	38.mp3
+39	39.mp3
+4	4.mp3
+40	40.mp3
+41	41.mp3
+42	42.mp3
+43	43.mp3
+44	44.mp3
+45	45.mp3
+46	46.mp3
+47	47.mp3
+48	48.mp3
+49	49.mp3
+5	5.mp3
+50	50.mp3
+51	51.mp3
+52	52.mp3
+53	53.mp3
+54	54.mp3
+55	55.mp3
+56	56.mp3
+57	57.mp3
+58	58.mp3
+59	59.mp3
+6	6.mp3
+60	60.mp3
+61	61.mp3
+62	62.mp3
+63	63.mp3
+64	64.mp3
+65	65.mp3
+66	66.mp3
+67	67.mp3
+68	68.mp3
+69	69.mp3
+7	7.mp3
+70	70.mp3
+71	71.mp3
+72	72.mp3
+73	73.mp3
+74	74.mp3
+75	75.mp3
+76	76.mp3
+77	77.mp3
+78	78.mp3
+79	79.mp3
+8	8.mp3
+80	80.mp3
+81	81.mp3
+82	82.mp3
+83	83.mp3
+84	84.mp3
+85	85.mp3
+86	86.mp3
+87	87.mp3
+88	88.mp3
+89	89.mp3
+9	9.mp3
+90	90.mp3
+91	91.mp3
+92	92.mp3
+93	93.mp3
+94	94.mp3
+95	95.mp3
+96	96.mp3
+97	97.mp3
+98	98.mp3
+99	99.mp3
+a	a.mp3
+a bell	a-bell.mp3
+a bench can munch lunch	a-bench-can-munch-lunch.mp3
+a big cloud is up in the sky	a-big-cloud-is-up-in-the-sky.mp3
+a big red fish is in the tub	a-big-red-fish-is-in-the-tub.mp3
+a bike can smile	a-bike-can-smile.mp3
+a bird can fly	a-bird-can-fly.mp3
+a blue square	a-blue-square.mp3
+a boat can sail	a-boat-can-sail.mp3
+a book	a-book.mp3
+a boy had a toy bird	a-boy-had-a-toy-bird.mp3
+a boy is a bird	a-boy-is-a-bird.mp3
+a brown cow can fly	a-brown-cow-can-fly.mp3
+a brown owl is in the tree	a-brown-owl-is-in-the-tree.mp3
+a brush can sing a song	a-brush-can-sing-a-song.mp3
+a bun is a snack	a-bun-is-a-snack.mp3
+a bus	a-bus.mp3
+a cake	a-cake.mp3
+a car can sing	a-car-can-sing.mp3
+a cat	a-cat.mp3
+a cat can sing a song	a-cat-can-sing-a-song.mp3
+a cat has a paw	a-cat-has-a-paw.mp3
+a chest can hold things	a-chest-can-hold-things.mp3
+a circle	a-circle.mp3
+a cloud can shout	a-cloud-can-shout.mp3
+a cloud is up in the sky	a-cloud-is-up-in-the-sky.mp3
+a coat can run	a-coat-can-run.mp3
+a coin can bark	a-coin-can-bark.mp3
+a coin can enjoy a song	a-coin-can-enjoy-a-song.mp3
+a coin is round	a-coin-is-round.mp3
+a cow can grow in a pot	a-cow-can-grow-in-a-pot.mp3
+a cow can moo	a-cow-can-moo.mp3
+a cow looks at it moo	a-cow-looks-at-it-moo.mp3
+a crab can fly a flag	a-crab-can-fly-a-flag.mp3
+a crab can grab	a-crab-can-grab.mp3
+a cube can play a flute	a-cube-can-play-a-flute.mp3
+a cube has six sides	a-cube-has-six-sides.mp3
+a dog	a-dog.mp3
+a dog can dig for a bone	a-dog-can-dig-for-a-bone.mp3
+a dog had a bone	a-dog-had-a-bone.mp3
+a dog has a tail	a-dog-has-a-tail.mp3
+a dog has fur	a-dog-has-fur.mp3
+a dolphin can haul a cart up a hill	a-dolphin-can-haul-a-cart-up-a-hill.mp3
+a dolphin can swim	a-dolphin-can-swim.mp3
+a dolphin is in the water	a-dolphin-is-in-the-water.mp3
+a drum can grin	a-drum-can-grin.mp3
+a duck spots the slug	a-duck-spots-the-slug.mp3
+a few cows can draw	a-few-cows-can-draw.mp3
+a fish can run up the hill	a-fish-can-run-up-the-hill.mp3
+a fish is in the pond	a-fish-is-in-the-pond.mp3
+a fish is wet	a-fish-is-wet.mp3
+a flag can flap	a-flag-can-flap.mp3
+a flash is bright	a-flash-is-bright.mp3
+a fly can fly	a-fly-can-fly.mp3
+a fork can fly to the moon	a-fork-can-fly-to-the-moon.mp3
+a frog can hop	a-frog-can-hop.mp3
+a frog can jump	a-frog-can-jump.mp3
+a frog sat on a log in the pond	a-frog-sat-on-a-log-in-the-pond.mp3
+a funny monkey is up a tree	a-funny-monkey-is-up-a-tree.mp3
+a gate can bake a cake	a-gate-can-bake-a-cake.mp3
+a girl asked can i play	a-girl-asked-can-i-play.mp3
+a girl can play	a-girl-can-play.mp3
+a goat can look at a book	a-goat-can-look-at-a-book.mp3
+a grown up can hold this	a-grown-up-can-hold-this.mp3
+a hat	a-hat.mp3
+a hen sits on a pot of corn	a-hen-sits-on-a-pot-of-corn.mp3
+a home can run to the shop	a-home-can-run-to-the-shop.mp3
+a huge mule is in a cup	a-huge-mule-is-in-a-cup.mp3
+a key can fly in the sky	a-key-can-fly-in-the-sky.mp3
+a key can open a lock	a-key-can-open-a-lock.mp3
+a kite can fly	a-kite-can-fly.mp3
+a kite can ride a bike	a-kite-can-ride-a-bike.mp3
+a lake is in a cup	a-lake-is-in-a-cup.mp3
+a lamp can sing	a-lamp-can-sing.mp3
+a leaf can eat a bun	a-leaf-can-eat-a-bun.mp3
+a leaf fell in the stream	a-leaf-fell-in-the-stream.mp3
+a leaf is green	a-leaf-is-green.mp3
+a man can blow a huge horn	a-man-can-blow-a-huge-horn.mp3
+a monkey can drive a bus	a-monkey-can-drive-a-bus.mp3
+a moth can sit on a pin	a-moth-can-sit-on-a-pin.mp3
+a moth is on the shed	a-moth-is-on-the-shed.mp3
+a mouth is on a foot	a-mouth-is-on-a-foot.mp3
+a mule can carry things	a-mule-can-carry-things.mp3
+a mule can fly to the moon	a-mule-can-fly-to-the-moon.mp3
+a mule hears it	a-mule-hears-it.mp3
+a nest can sing a song	a-nest-can-sing-a-song.mp3
+a new hat can fly to the moon	a-new-hat-can-fly-to-the-moon.mp3
+a nose is on a toe	a-nose-is-on-a-toe.mp3
+a or an	a-or-an.mp3
+a paw can draw a blue sun	a-paw-can-draw-a-blue-sun.mp3
+a pie can swim in the sea	a-pie-can-swim-in-the-sea.mp3
+a pink circle	a-pink-circle.mp3
+a plant can grow in a pot	a-plant-can-grow-in-a-pot.mp3
+a plant can twist and jump	a-plant-can-twist-and-jump.mp3
+a plate can hold a cake	a-plate-can-hold-a-cake.mp3
+a plate can name a snake	a-plate-can-name-a-snake.mp3
+a plum can drum	a-plum-can-drum.mp3
+a puppy can try to read	a-puppy-can-try-to-read.mp3
+a puppy is a dog	a-puppy-is-a-dog.mp3
+a rectangle	a-rectangle.mp3
+a rope can eat a bone	a-rope-can-eat-a-bone.mp3
+a seed can be in the soil	a-seed-can-be-in-the-soil.mp3
+a sentence starts with a big letter	a-sentence-starts-with-a-big-letter.mp3
+a shelf can run	a-shelf-can-run.mp3
+a ship	a-ship.mp3
+a ship is on the sun	a-ship-is-on-the-sun.mp3
+a shirt can fly	a-shirt-can-fly.mp3
+a shrimp can run up a tree	a-shrimp-can-run-up-a-tree.mp3
+a shrimp can swim	a-shrimp-can-swim.mp3
+a slug can snap a stick	a-slug-can-snap-a-stick.mp3
+a slug is on the step	a-slug-is-on-the-step.mp3
+a slug is slim	a-slug-is-slim.mp3
+a snail can drive a car	a-snail-can-drive-a-car.mp3
+a snake can play a game of chess	a-snake-can-play-a-game-of-chess.mp3
+a snake has no legs	a-snake-has-no-legs.mp3
+a snake was on a rock	a-snake-was-on-a-rock.mp3
+a spot can sing	a-spot-can-sing.mp3
+a square	a-square.mp3
+a stamp can blink	a-stamp-can-blink.mp3
+a star can swim in a cup	a-star-can-swim-in-a-cup.mp3
+a star is up at night	a-star-is-up-at-night.mp3
+a step can swim	a-step-can-swim.mp3
+a stone can smile	a-stone-can-smile.mp3
+a stone is hard	a-stone-is-hard.mp3
+a strap can scrub the sun	a-strap-can-scrub-the-sun.mp3
+a street can sing	a-street-can-sing.mp3
+a string can be long	a-string-can-be-long.mp3
+a sunny day is hot	a-sunny-day-is-hot.mp3
+a tent can drink milk	a-tent-can-drink-milk.mp3
+a tie can cry	a-tie-can-cry.mp3
+a town can blow	a-town-can-blow.mp3
+a toy can eat a bird	a-toy-can-eat-a-bird.mp3
+a tray can hold a cup	a-tray-can-hold-a-cup.mp3
+a tray can play	a-tray-can-play.mp3
+a triangle	a-triangle.mp3
+a trip is in a plum	a-trip-is-in-a-plum.mp3
+a wheel goes round	a-wheel-goes-round.mp3
+a wheel is in her ear	a-wheel-is-in-her-ear.mp3
+a whip can eat lunch	a-whip-can-eat-lunch.mp3
+a yellow triangle	a-yellow-triangle.mp3
+act	act.mp3
+afternoon	afternoon.mp3
+again	again.mp3
+air	air.mp3
+aitch	aitch.mp3
+all	all.mp3
+also	also.mp3
+am	am.mp3
+an	an.mp3
+an ant	an-ant.mp3
+an apple	an-apple.mp3
+an egg	an-egg.mp3
+an elephant	an-elephant.mp3
+an octopus	an-octopus.mp3
+an owl can fly at night	an-owl-can-fly-at-night.mp3
+an owl can paint a cow	an-owl-can-paint-a-cow.mp3
+and	and.mp3
+ant	ant.mp3
+any	any.mp3
+apple	apple.mp3
+april	april.mp3
+ar	ar.mp3
+are	are.mp3
+as	as.mp3
+ask	ask.mp3
+asked	asked.mp3
+at	at.mp3
+august	august.mp3
+aw	aw.mp3
+ay	ay.mp3
+baby	baby.mp3
+back	back.mp3
+bad	bad.mp3
+bag	bag.mp3
+bake	bake.mp3
+ball	ball.mp3
+balls	balls.mp3
+banana	banana.mp3
+band	band.mp3
+bang	bang.mp3
+bang bang bang	bang-bang-bang.mp3
+bark	bark.mp3
+barn	barn.mp3
+bath	bath.mp3
+be	be.mp3
+beach	beach.mp3
+because	because.mp3
+bed	bed.mp3
+bee	bee.mp3
+bees	bees.mp3
+bell	bell.mp3
+belt	belt.mp3
+bench	bench.mp3
+bent	bent.mp3
+big	big.mp3
+bike	bike.mp3
+bird	bird.mp3
+birds	birds.mp3
+bits	bits.mp3
+black	black.mp3
+blink	blink.mp3
+blow	blow.mp3
+blue	blue.mp3
+blue square	blue-square.mp3
+boat	boat.mp3
+bond	bond.mp3
+bone	bone.mp3
+book	book.mp3
+books	books.mp3
+boot	boot.mp3
+both	both.mp3
+box	box.mp3
+boy	boy.mp3
+bright	bright.mp3
+broke	broke.mp3
+brother	brother.mp3
+brown	brown.mp3
+brush	brush.mp3
+brushes	brushes.mp3
+buds	buds.mp3
+bug	bug.mp3
+buh	buh.mp3
+build the word you hear	build-the-word-you-hear.mp3
+bump	bump.mp3
+bump meena and raj grin	bump-meena-and-raj-grin.mp3
+bun	bun.mp3
+burn	burn.mp3
+bus	bus.mp3
+bush	bush.mp3
+but	but.mp3
+but they both had fun	but-they-both-had-fun.mp3
+by	by.mp3
+cake	cake.mp3
+cakes	cakes.mp3
+called	called.mp3
+came	came.mp3
+can	can.mp3
+can it swim no it can not	can-it-swim-no-it-can-not.mp3
+can meena stand on one leg	can-meena-stand-on-one-leg.mp3
+cane	cane.mp3
+car	car.mp3
+carry	carry.mp3
+cars	cars.mp3
+cart	cart.mp3
+cat	cat.mp3
+catch	catch.mp3
+cats	cats.mp3
+ch	ch.mp3
+champ	champ.mp3
+cheer	cheer.mp3
+cherry	cherry.mp3
+chess	chess.mp3
+chest	chest.mp3
+chick	chick.mp3
+chimp	chimp.mp3
+chip	chip.mp3
+chomp	chomp.mp3
+chop	chop.mp3
+circle	circle.mp3
+clap	clap.mp3
+clay	clay.mp3
+clay can run round the town	clay-can-run-round-the-town.mp3
+clip	clip.mp3
+clock	clock.mp3
+cloud	cloud.mp3
+clue	clue.mp3
+coat	coat.mp3
+coin	coin.mp3
+cold	cold.mp3
+come	come.mp3
+come and read with me	come-and-read-with-me.mp3
+cone	cone.mp3
+corn	corn.mp3
+corn can run	corn-can-run.mp3
+cot	cot.mp3
+could	could.mp3
+count back	count-back.mp3
+count the dots	count-the-dots.mp3
+cow	cow.mp3
+cows	cows.mp3
+crab	crab.mp3
+crash	crash.mp3
+crash a box drops on the rug	crash-a-box-drops-on-the-rug.mp3
+cried	cried.mp3
+crisp	crisp.mp3
+crown	crown.mp3
+crunchy	crunchy.mp3
+crust	crust.mp3
+crust can stand up and sing	crust-can-stand-up-and-sing.mp3
+cry	cry.mp3
+cube	cube.mp3
+cubes	cubes.mp3
+cup	cup.mp3
+cut	cut.mp3
+dad	dad.mp3
+dad can chop a log	dad-can-chop-a-log.mp3
+dad has a brush	dad-has-a-brush.mp3
+dad has a cart with a big wheel	dad-has-a-cart-with-a-big-wheel.mp3
+dad has a fish shop	dad-has-a-fish-shop.mp3
+dad has a net	dad-has-a-net.mp3
+dad has a red tie	dad-has-a-red-tie.mp3
+dad sings a song in the shop	dad-sings-a-song-in-the-shop.mp3
+day	day.mp3
+december	december.mp3
+dee	dee.mp3
+desk	desk.mp3
+did	did.mp3
+dig	dig.mp3
+dirt	dirt.mp3
+do	do.mp3
+do not spill the jam raj	do-not-spill-the-jam-raj.mp3
+does	does.mp3
+dog	dog.mp3
+dogs	dogs.mp3
+dolls	dolls.mp3
+dolphin	dolphin.mp3
+done	done.mp3
+dot	dot.mp3
+dots	dots.mp3
+double you	double-you.mp3
+down	down.mp3
+draw	draw.mp3
+dream	dream.mp3
+dress	dress.mp3
+drew	drew.mp3
+dried	dried.mp3
+drink	drink.mp3
+drip	drip.mp3
+drip drip drip	drip-drip-drip.mp3
+drive	drive.mp3
+drops	drops.mp3
+drum	drum.mp3
+dry	dry.mp3
+duck	duck.mp3
+ducks	ducks.mp3
+dug	dug.mp3
+duh	duh.mp3
+dusk	dusk.mp3
+ear	ear.mp3
+eat	eat.mp3
+ee	ee.mp3
+ef	ef.mp3
+egg	egg.mp3
+eh	eh.mp3
+eight	eight.mp3
+eighteen	eighteen.mp3
+el	el.mp3
+elephant	elephant.mp3
+eleven	eleven.mp3
+elf	elf.mp3
+em	em.mp3
+empty glass	empty-glass.mp3
+en	en.mp3
+end	end.mp3
+enjoy	enjoy.mp3
+enjoys	enjoys.mp3
+equal halves	equal-halves.mp3
+er	er.mp3
+ess	ess.mp3
+ex	ex.mp3
+eye	eye.mp3
+falls	falls.mp3
+farm	farm.mp3
+fast	fast.mp3
+february	february.mp3
+feet	feet.mp3
+fell	fell.mp3
+few	few.mp3
+fff	fff.mp3
+fifteen	fifteen.mp3
+fin	fin.mp3
+find	find.mp3
+find its picture	find-its-picture.mp3
+find the circle	find-the-circle.mp3
+find the heart letters	find-the-heart-letters.mp3
+find the picture	find-the-picture.mp3
+find the rectangle	find-the-rectangle.mp3
+find the square	find-the-square.mp3
+find the triangle	find-the-triangle.mp3
+find the word	find-the-word.mp3
+find the word you hear	find-the-word-you-hear.mp3
+fine	fine.mp3
+first	first.mp3
+fish	fish.mp3
+five	five.mp3
+five is a number	five-is-a-number.mp3
+five white mice can drive a bus	five-white-mice-can-drive-a-bus.mp3
+flag	flag.mp3
+flap	flap.mp3
+flash	flash.mp3
+flat	flat.mp3
+flower	flower.mp3
+flowers	flowers.mp3
+flute	flute.mp3
+fly	fly.mp3
+fog	fog.mp3
+foot	foot.mp3
+for	for.mp3
+fork	fork.mp3
+form	form.mp3
+found	found.mp3
+four	four.mp3
+fourteen	fourteen.mp3
+friday	friday.mp3
+friend	friend.mp3
+frog	frog.mp3
+from	from.mp3
+frost	frost.mp3
+frost is cold	frost-is-cold.mp3
+frown	frown.mp3
+fruit	fruit.mp3
+full	full.mp3
+full glass	full-glass.mp3
+fun	fun.mp3
+funny	funny.mp3
+fur	fur.mp3
+game	game.mp3
+gate	gate.mp3
+gave	gave.mp3
+get	get.mp3
+gets	gets.mp3
+gift	gift.mp3
+girl	girl.mp3
+glad	glad.mp3
+glove	glove.mp3
+glow	glow.mp3
+glue	glue.mp3
+glue can grow	glue-can-grow.mp3
+glue is sticky	glue-is-sticky.mp3
+go	go.mp3
+go away	go-away.mp3
+goat	goat.mp3
+goes	goes.mp3
+good	good.mp3
+got	got.mp3
+grab	grab.mp3
+grapes	grapes.mp3
+graph	graph.mp3
+green	green.mp3
+grew	grew.mp3
+grin	grin.mp3
+grip	grip.mp3
+grow	grow.mp3
+grows	grows.mp3
+guh	guh.mp3
+gum	gum.mp3
+had	had.mp3
+hair	hair.mp3
+halves	halves.mp3
+hand	hand.mp3
+happy	happy.mp3
+hard	hard.mp3
+has	has.mp3
+hat	hat.mp3
+hats	hats.mp3
+haul	haul.mp3
+have	have.mp3
+he	he.mp3
+he brushes the shelf	he-brushes-the-shelf.mp3
+he gets a shrimp in it	he-gets-a-shrimp-in-it.mp3
+he plays a huge tune	he-plays-a-huge-tune.mp3
+hear	hear.mp3
+hears	hears.mp3
+hello	hello.mp3
+hen	hen.mp3
+her	her.mp3
+her cow is in the barn	her-cow-is-in-the-barn.mp3
+here the ball is	here-the-ball-is.mp3
+hid	hid.mp3
+high	high.mp3
+hill	hill.mp3
+hills	hills.mp3
+his	his.mp3
+hiss	hiss.mp3
+hits	hits.mp3
+hive	hive.mp3
+hold	hold.mp3
+hold it	hold-it.mp3
+hold to go home	hold-to-go-home.mp3
+hole	hole.mp3
+home	home.mp3
+hop	hop.mp3
+hope	hope.mp3
+hops	hops.mp3
+horn	horn.mp3
+hot	hot.mp3
+hot tea	hot-tea.mp3
+house	house.mp3
+how	how.mp3
+how fun it was	how-fun-it-was.mp3
+how many are left	how-many-are-left.mp3
+how many dots	how-many-dots.mp3
+how many in all	how-many-in-all.mp3
+hug	hug.mp3
+huge	huge.mp3
+huh	huh.mp3
+hut	hut.mp3
+i	i.mp3
+ih	ih.mp3
+in	in.mp3
+into	into.mp3
+is	is.mp3
+is afternoon	is-afternoon.mp3
+is cold	is-cold.mp3
+is empty	is-empty.mp3
+is equal to	is-equal-to.mp3
+is full	is-full.mp3
+is greater than	is-greater-than.mp3
+is heavy	is-heavy.mp3
+is hot	is-hot.mp3
+is it a crab no it is a frog	is-it-a-crab-no-it-is-a-frog.mp3
+is it a true cat no	is-it-a-true-cat-no.mp3
+is it in the car no	is-it-in-the-car-no.mp3
+is it silly	is-it-silly.mp3
+is less than	is-less-than.mp3
+is light	is-light.mp3
+is long	is-long.mp3
+is morning	is-morning.mp3
+is night	is-night.mp3
+is short	is-short.mp3
+is there any more	is-there-any-more.mp3
+it	it.mp3
+it can jump and it can swim	it-can-jump-and-it-can-swim.mp3
+it can try to catch a fly	it-can-try-to-catch-a-fly.mp3
+it dug and dug and it got the bone again	it-dug-and-dug-and-it-got-the-bone-again.mp3
+it gets wet	it-gets-wet.mp3
+it goes up and down	it-goes-up-and-down.mp3
+it grew and grew	it-grew-and-grew.mp3
+it has a key	it-has-a-key.mp3
+it has a round mouth	it-has-a-round-mouth.mp3
+it hid the bone by a stone	it-hid-the-bone-by-a-stone.mp3
+it is	it-is.mp3
+it is a clay mouse	it-is-a-clay-mouse.mp3
+it is a funny puppy	it-is-a-funny-puppy.mp3
+it is a hot day	it-is-a-hot-day.mp3
+it is a strong little shrimp	it-is-a-strong-little-shrimp.mp3
+it is a sunny day	it-is-a-sunny-day.mp3
+it is a thin moth	it-is-a-thin-moth.mp3
+it is in her hair	it-is-in-her-hair.mp3
+it is in her purse	it-is-in-her-purse.mp3
+it is lunch on the bench	it-is-lunch-on-the-bench.mp3
+it is night	it-is-night.mp3
+it is on a plate by the gate	it-is-on-a-plate-by-the-gate.mp3
+it is snowing on the hills	it-is-snowing-on-the-hills.mp3
+it is so slim and wet	it-is-so-slim-and-wet.mp3
+it is spring	it-is-spring.mp3
+it is time to fly it	it-is-time-to-fly-it.mp3
+it jumps splash	it-jumps-splash.mp3
+it jumps up high	it-jumps-up-high.mp3
+it made a hiss and went into the lake	it-made-a-hiss-and-went-into-the-lake.mp3
+it said hello nani	it-said-hello-nani.mp3
+it sees a mouse on the soil	it-sees-a-mouse-on-the-soil.mp3
+it springs out of the net	it-springs-out-of-the-net.mp3
+it stops to look	it-stops-to-look.mp3
+it was	it-was.mp3
+it was a green leaf	it-was-a-green-leaf.mp3
+it went past a team of ducks	it-went-past-a-team-of-ducks.mp3
+it will be a big plant with buds	it-will-be-a-big-plant-with-buds.mp3
+its	its.mp3
+its shape was long and thin	its-shape-was-long-and-thin.mp3
+jam	jam.mp3
+january	january.mp3
+jay	jay.mp3
+jee	jee.mp3
+joy	joy.mp3
+juh	juh.mp3
+july	july.mp3
+jump	jump.mp3
+jumps	jumps.mp3
+june	june.mp3
+junk	junk.mp3
+kay	kay.mp3
+key	key.mp3
+kick	kick.mp3
+kid	kid.mp3
+kit	kit.mp3
+kite	kite.mp3
+ks	ks.mp3
+kuh	kuh.mp3
+kwuh	kwuh.mp3
+lake	lake.mp3
+lamp	lamp.mp3
+launch	launch.mp3
+leaf	leaf.mp3
+leg	leg.mp3
+legs	legs.mp3
+lemon	lemon.mp3
+lent	lent.mp3
+let	let.mp3
+letter	letter.mp3
+lick	lick.mp3
+lift	lift.mp3
+light	light.mp3
+like	like.mp3
+likes	likes.mp3
+limp	limp.mp3
+line	line.mp3
+list	list.mp3
+little	little.mp3
+lll	lll.mp3
+lock	lock.mp3
+log	log.mp3
+long	long.mp3
+long pencil	long-pencil.mp3
+look	look.mp3
+look again	look-again.mp3
+looked	looked.mp3
+looks	looks.mp3
+lot	lot.mp3
+lots	lots.mp3
+love	love.mp3
+lump	lump.mp3
+lunch	lunch.mp3
+lunch can crash a car	lunch-can-crash-a-car.mp3
+made	made.mp3
+make	make.mp3
+makes	makes.mp3
+man	man.mp3
+many	many.mp3
+map	map.mp3
+march	march.mp3
+mat	mat.mp3
+may	may.mp3
+me	me.mp3
+means just one	means-just-one.mp3
+means more than one	means-more-than-one.mp3
+meena	meena.mp3
+meena and raj cheer	meena-and-raj-cheer.mp3
+meena and raj go out	meena-and-raj-go-out.mp3
+meena called out i am first	meena-called-out-i-am-first.mp3
+meena can clap and grin	meena-can-clap-and-grin.mp3
+meena can draw	meena-can-draw.mp3
+meena can see the fish wag its fin	meena-can-see-the-fish-wag-its-fin.mp3
+meena can see the moon	meena-can-see-the-moon.mp3
+meena enjoys paint	meena-enjoys-paint.mp3
+meena gets in bed good night	meena-gets-in-bed-good-night.mp3
+meena had a pie to eat	meena-had-a-pie-to-eat.mp3
+meena had a red shirt	meena-had-a-red-shirt.mp3
+meena had milk and a bun	meena-had-milk-and-a-bun.mp3
+meena has a coin	meena-has-a-coin.mp3
+meena has a cup of milk	meena-has-a-cup-of-milk.mp3
+meena has a little plant in a pot	meena-has-a-little-plant-in-a-pot.mp3
+meena has a lump of clay	meena-has-a-lump-of-clay.mp3
+meena has a string with a red bell on it	meena-has-a-string-with-a-red-bell-on-it.mp3
+meena has nuts in a cup	meena-has-nuts-in-a-cup.mp3
+meena has these cubes	meena-has-these-cubes.mp3
+meena is not upset	meena-is-not-upset.mp3
+meena likes the slide	meena-likes-the-slide.mp3
+meena munches a crunchy apple	meena-munches-a-crunchy-apple.mp3
+melt	melt.mp3
+men	men.mp3
+mice	mice.mp3
+milk	milk.mp3
+milk is in a cup	milk-is-in-a-cup.mp3
+mill	mill.mp3
+mist	mist.mp3
+mmm	mmm.mp3
+monday	monday.mp3
+money	money.mp3
+monkey	monkey.mp3
+month	month.mp3
+moo	moo.mp3
+moon	moon.mp3
+mop	mop.mp3
+more	more.mp3
+morning	morning.mp3
+moss	moss.mp3
+most	most.mp3
+moth	moth.mp3
+mother	mother.mp3
+mouse	mouse.mp3
+mouth	mouth.mp3
+move	move.mp3
+mr	mr.mp3
+mr sharma wants his key back	mr-sharma-wants-his-key-back.mp3
+mrs	mrs.mp3
+mrs rao has a puppy	mrs-rao-has-a-puppy.mp3
+mule	mule.mp3
+mum	mum.mp3
+mum has a ring	mum-has-a-ring.mp3
+mum made a cake	mum-made-a-cake.mp3
+mum said it is not bad	mum-said-it-is-not-bad.mp3
+munch	munch.mp3
+munches	munches.mp3
+must	must.mp3
+my	my.mp3
+name	name.mp3
+nani	nani.mp3
+nani gave them a big hug	nani-gave-them-a-big-hug.mp3
+nani gets corn for the hen	nani-gets-corn-for-the-hen.mp3
+nani has a farm	nani-has-a-farm.mp3
+nani has a new plant	nani-has-a-new-plant.mp3
+nani rode home on a bus	nani-rode-home-on-a-bus.mp3
+nap	nap.mp3
+nest	nest.mp3
+net	net.mp3
+new	new.mp3
+next	next.mp3
+ng	ng.mp3
+night	night.mp3
+nine	nine.mp3
+nineteen	nineteen.mp3
+nnn	nnn.mp3
+no	no.mp3
+none	none.mp3
+none left	none-left.mp3
+nose	nose.mp3
+not	not.mp3
+not that one	not-that-one.mp3
+note	note.mp3
+november	november.mp3
+now	now.mp3
+now we go home	now-we-go-home.mp3
+number	number.mp3
+nut	nut.mp3
+nuts	nuts.mp3
+o	o.mp3
+october	october.mp3
+octopus	octopus.mp3
+of	of.mp3
+oh	oh.mp3
+oh it is a chest of dolls	oh-it-is-a-chest-of-dolls.mp3
+oh no a cat is on the bench	oh-no-a-cat-is-on-the-bench.mp3
+on	on.mp3
+one	one.mp3
+one cat is a big frog	one-cat-is-a-big-frog.mp3
+ones	ones.mp3
+only	only.mp3
+oo	oo.mp3
+oops	oops.mp3
+oops paint is on his mouth	oops-paint-is-on-his-mouth.mp3
+open	open.mp3
+or	or.mp3
+other	other.mp3
+ouch	ouch.mp3
+ouch it hits raj on his toe	ouch-it-hits-raj-on-his-toe.mp3
+out	out.mp3
+ow	ow.mp3
+owl	owl.mp3
+oy	oy.mp3
+paint	paint.mp3
+paints	paints.mp3
+parts	parts.mp3
+past	past.mp3
+paw	paw.mp3
+pear	pear.mp3
+pee	pee.mp3
+pen	pen.mp3
+people	people.mp3
+people clap for her clay mouse	people-clap-for-her-clay-mouse.mp3
+pet	pet.mp3
+pete	pete.mp3
+pete has a flute	pete-has-a-flute.mp3
+pets	pets.mp3
+pie	pie.mp3
+pig	pig.mp3
+pin	pin.mp3
+pink circle	pink-circle.mp3
+pit	pit.mp3
+plan	plan.mp3
+plans	plans.mp3
+plant	plant.mp3
+plants	plants.mp3
+plants grow	plants-grow.mp3
+plants grow in soil	plants-grow-in-soil.mp3
+plate	plate.mp3
+play	play.mp3
+plays	plays.mp3
+plug	plug.mp3
+plum	plum.mp3
+plums	plums.mp3
+pond	pond.mp3
+pool	pool.mp3
+posts	posts.mp3
+pot	pot.mp3
+pots	pots.mp3
+prune	prune.mp3
+puddle	puddle.mp3
+puh	puh.mp3
+pull	pull.mp3
+puppy	puppy.mp3
+pure	pure.mp3
+purse	purse.mp3
+push	push.mp3
+put	put.mp3
+quack	quack.mp3
+queue	queue.mp3
+quit	quit.mp3
+quiz	quiz.mp3
+rain	rain.mp3
+rains	rains.mp3
+raj	raj.mp3
+raj and meena grin at their dolls	raj-and-meena-grin-at-their-dolls.mp3
+raj and meena haul it up the hill	raj-and-meena-haul-it-up-the-hill.mp3
+raj and meena play a game	raj-and-meena-play-a-game.mp3
+raj and meena play out in the sun	raj-and-meena-play-out-in-the-sun.mp3
+raj and meena run out to the street	raj-and-meena-run-out-to-the-street.mp3
+raj and meena sit for a snack	raj-and-meena-sit-for-a-snack.mp3
+raj and meena were at home	raj-and-meena-were-at-home.mp3
+raj can stand on one leg	raj-can-stand-on-one-leg.mp3
+raj could see a crab on a rock	raj-could-see-a-crab-on-a-rock.mp3
+raj gets a chip	raj-gets-a-chip.mp3
+raj gets his coat	raj-gets-his-coat.mp3
+raj had dirt on his shirt	raj-had-dirt-on-his-shirt.mp3
+raj has a big bun	raj-has-a-big-bun.mp3
+raj has a big red drum	raj-has-a-big-red-drum.mp3
+raj has a bun with jam	raj-has-a-bun-with-jam.mp3
+raj has a red boat	raj-has-a-red-boat.mp3
+raj has a white kite	raj-has-a-white-kite.mp3
+raj is all right	raj-is-all-right.mp3
+raj is sad the moth is not	raj-is-sad-the-moth-is-not.mp3
+raj looked and looked	raj-looked-and-looked.mp3
+raj looked at it	raj-looked-at-it.mp3
+raj said jump frog jump	raj-said-jump-frog-jump.mp3
+raj saw a few buds on it	raj-saw-a-few-buds-on-it.mp3
+raj sprays paint on a box	raj-sprays-paint-on-a-box.mp3
+raj tips as well	raj-tips-as-well.mp3
+raj was third	raj-was-third.mp3
+rao	rao.mp3
+rat	rat.mp3
+read	read.mp3
+read to your grown up	read-to-your-grown-up.mp3
+rectangle	rectangle.mp3
+red	red.mp3
+rice	rice.mp3
+ride	ride.mp3
+rides	rides.mp3
+right	right.mp3
+ring	ring.mp3
+ring ring the bell is a lot of fun	ring-ring-the-bell-is-a-lot-of-fun.mp3
+rock	rock.mp3
+rocket	rocket.mp3
+rode	rode.mp3
+rolls	rolls.mp3
+roof	roof.mp3
+rope	rope.mp3
+rose	rose.mp3
+round	round.mp3
+rrr	rrr.mp3
+rude	rude.mp3
+rug	rug.mp3
+run	run.mp3
+runs	runs.mp3
+rupee	rupee.mp3
+rupees	rupees.mp3
+sad	sad.mp3
+said	said.mp3
+sail	sail.mp3
+same	same.mp3
+same trick	same-trick.mp3
+sand	sand.mp3
+sat	sat.mp3
+saturday	saturday.mp3
+saw	saw.mp3
+says	says.mp3
+scrap	scrap.mp3
+scrub	scrub.mp3
+sea	sea.mp3
+see	see.mp3
+seed	seed.mp3
+sees	sees.mp3
+september	september.mp3
+seven	seven.mp3
+seventeen	seventeen.mp3
+shape	shape.mp3
+sharma	sharma.mp3
+she	she.mp3
+she can then she tips	she-can-then-she-tips.mp3
+she drew a blue cat	she-drew-a-blue-cat.mp3
+she gets a drink for it	she-gets-a-drink-for-it.mp3
+she goes down five times	she-goes-down-five-times.mp3
+she has a big smile	she-has-a-big-smile.mp3
+she makes a huge tower	she-makes-a-huge-tower.mp3
+she makes it again	she-makes-it-again.mp3
+she paints a brown cow	she-paints-a-brown-cow.mp3
+she rolls it round and round	she-rolls-it-round-and-round.mp3
+she sat at the desk with it	she-sat-at-the-desk-with-it.mp3
+shed	shed.mp3
+sheep	sheep.mp3
+shelf	shelf.mp3
+shell	shell.mp3
+shh	shh.mp3
+shine	shine.mp3
+shines	shines.mp3
+ship	ship.mp3
+shirt	shirt.mp3
+shoe	shoe.mp3
+shop	shop.mp3
+short pencil	short-pencil.mp3
+should	should.mp3
+shout	shout.mp3
+show	show.mp3
+shrimp	shrimp.mp3
+sides	sides.mp3
+sides the same	sides-the-same.mp3
+silk	silk.mp3
+sing	sing.mp3
+sings	sings.mp3
+sink	sink.mp3
+sit	sit.mp3
+sits	sits.mp3
+six	six.mp3
+sixteen	sixteen.mp3
+skip	skip.mp3
+skirt	skirt.mp3
+sky	sky.mp3
+slap	slap.mp3
+sleep	sleep.mp3
+slide	slide.mp3
+slim	slim.mp3
+slip	slip.mp3
+slow	slow.mp3
+slug	slug.mp3
+smile	smile.mp3
+snack	snack.mp3
+snail	snail.mp3
+snake	snake.mp3
+snap	snap.mp3
+snap the bun is in bits	snap-the-bun-is-in-bits.mp3
+snip	snip.mp3
+snow	snow.mp3
+snow is cold	snow-is-cold.mp3
+snow is hot	snow-is-hot.mp3
+snowing	snowing.mp3
+snowman	snowman.mp3
+so	so.mp3
+sob	sob.mp3
+sock	sock.mp3
+soil	soil.mp3
+soil is good to eat	soil-is-good-to-eat.mp3
+some	some.mp3
+son	son.mp3
+song	song.mp3
+space	space.mp3
+spend	spend.mp3
+spill	spill.mp3
+spin	spin.mp3
+splash	splash.mp3
+splash it is back in the pond	splash-it-is-back-in-the-pond.mp3
+splash it went into the pond	splash-it-went-into-the-pond.mp3
+splash raj is in a big puddle	splash-raj-is-in-a-big-puddle.mp3
+spoil	spoil.mp3
+spot	spot.mp3
+spots	spots.mp3
+spray	spray.mp3
+sprays	sprays.mp3
+spring	spring.mp3
+spring is in a cup	spring-is-in-a-cup.mp3
+springs	springs.mp3
+square	square.mp3
+sss	sss.mp3
+stamp	stamp.mp3
+stand	stand.mp3
+star	star.mp3
+stars	stars.mp3
+step	step.mp3
+stick	stick.mp3
+sticky	sticky.mp3
+stir	stir.mp3
+stone	stone.mp3
+stop	stop.mp3
+stop at the red light	stop-at-the-red-light.mp3
+stop duck let the slug go	stop-duck-let-the-slug-go.mp3
+stops	stops.mp3
+strap	strap.mp3
+stream	stream.mp3
+street	street.mp3
+string	string.mp3
+strong	strong.mp3
+sun	sun.mp3
+sunday	sunday.mp3
+sunny	sunny.mp3
+sweet	sweet.mp3
+swim	swim.mp3
+tail	tail.mp3
+take away	take-away.mp3
+tap the tick when done	tap-the-tick-when-done.mp3
+tap to go on	tap-to-go-on.mp3
+tea	tea.mp3
+team	team.mp3
+tee	tee.mp3
+ten	ten.mp3
+tens and	tens-and.mp3
+tent	tent.mp3
+test	test.mp3
+th	th.mp3
+that	that.mp3
+that is a	that-is-a.mp3
+that is afternoon	that-is-afternoon.mp3
+that is morning	that-is-morning.mp3
+that is night	that-is-night.mp3
+that is silly	that-is-silly.mp3
+that makes	that-makes.mp3
+that makes sense	that-makes-sense.mp3
+that one is tricky	that-one-is-tricky.mp3
+that one sounds the way it looks	that-one-sounds-the-way-it-looks.mp3
+that says	that-says.mp3
+the	the.mp3
+the ball is in the box	the-ball-is-in-the-box.mp3
+the ball is on the box	the-ball-is-on-the-box.mp3
+the ball is under the box	the-ball-is-under-the-box.mp3
+the beach can dream	the-beach-can-dream.mp3
+the bird is in her cup of tea	the-bird-is-in-her-cup-of-tea.mp3
+the bird was red with a long tail	the-bird-was-red-with-a-long-tail.mp3
+the boat is in the rain	the-boat-is-in-the-rain.mp3
+the box	the-box.mp3
+the boy said yes	the-boy-said-yes.mp3
+the cat gets their lunch	the-cat-gets-their-lunch.mp3
+the cat had a big paw	the-cat-had-a-big-paw.mp3
+the cow gets corn as well	the-cow-gets-corn-as-well.mp3
+the cup fell into the sink	the-cup-fell-into-the-sink.mp3
+the dog is in the cup	the-dog-is-in-the-cup.mp3
+the ducks cried quack	the-ducks-cried-quack.mp3
+the first word gets a big letter	the-first-word-gets-a-big-letter.mp3
+the fish shop is fun	the-fish-shop-is-fun.mp3
+the frog did a big jump	the-frog-did-a-big-jump.mp3
+the frog hops on a flat rock	the-frog-hops-on-a-flat-rock.mp3
+the kite goes up up up	the-kite-goes-up-up-up.mp3
+the leaf dried in the sun	the-leaf-dried-in-the-sun.mp3
+the moon is in the sink	the-moon-is-in-the-sink.mp3
+the moon is up	the-moon-is-up.mp3
+the moth sits on the chip	the-moth-sits-on-the-chip.mp3
+the mouse runs into a hole	the-mouse-runs-into-a-hole.mp3
+the mouth opens to	the-mouth-opens-to.mp3
+the owl has to wait because the mouse is in its hole	the-owl-has-to-wait-because-the-mouse-is-in-its-hole.mp3
+the rain is on the roof	the-rain-is-on-the-roof.mp3
+the rain is wet	the-rain-is-wet.mp3
+the same size	the-same-size.mp3
+the sea is wet	the-sea-is-wet.mp3
+the sea was green	the-sea-was-green.mp3
+the sink can jump	the-sink-can-jump.mp3
+the sky is blue	the-sky-is-blue.mp3
+the sky is in a box	the-sky-is-in-a-box.mp3
+the slide is in the sky	the-slide-is-in-the-sky.mp3
+the snowman is slow to melt	the-snowman-is-slow-to-melt.mp3
+the sun can shine	the-sun-can-shine.mp3
+the sun is up at night	the-sun-is-up-at-night.mp3
+the sun shines on her	the-sun-shines-on-her.mp3
+their	their.mp3
+them	them.mp3
+then	then.mp3
+then it falls	then-it-falls.mp3
+then it goes down fast	then-it-goes-down-fast.mp3
+then it had a nap and woke up	then-it-had-a-nap-and-woke-up.mp3
+then it had blue flowers	then-it-had-blue-flowers.mp3
+then it rains	then-it-rains.mp3
+then she rides her bike	then-she-rides-her-bike.mp3
+then the boat can sail on a pool	then-the-boat-can-sail-on-a-pool.mp3
+then the coin is not in her purse	then-the-coin-is-not-in-her-purse.mp3
+then the owl goes to sleep	then-the-owl-goes-to-sleep.mp3
+then we all had a nap	then-we-all-had-a-nap.mp3
+there	there.mp3
+there is a band on the step	there-is-a-band-on-the-step.mp3
+there was a big show	there-was-a-big-show.mp3
+there were plums and nuts	there-were-plums-and-nuts.mp3
+these	these.mp3
+these are the heart letters	these-are-the-heart-letters.mp3
+these cubes can sing	these-cubes-can-sing.mp3
+they	they.mp3
+they all had cake	they-all-had-cake.mp3
+they both enjoy a funny day	they-both-enjoy-a-funny-day.mp3
+they don't rhyme	they-dont-rhyme.mp3
+they had a note for her	they-had-a-note-for-her.mp3
+they had lots of fun	they-had-lots-of-fun.mp3
+they make a snowman	they-make-a-snowman.mp3
+they rhyme	they-rhyme.mp3
+they shout and run in	they-shout-and-run-in.mp3
+they were so glad	they-were-so-glad.mp3
+thin	thin.mp3
+things	things.mp3
+think about the story	think-about-the-story.mp3
+third	third.mp3
+thirteen	thirteen.mp3
+this	this.mp3
+this is the	this-is-the.mp3
+this one says	this-one-says.mp3
+thorn	thorn.mp3
+those	those.mp3
+three	three.mp3
+thrill	thrill.mp3
+throw	throw.mp3
+thumb	thumb.mp3
+thursday	thursday.mp3
+tie	tie.mp3
+tiger	tiger.mp3
+time	time.mp3
+times	times.mp3
+tips	tips.mp3
+to	to.mp3
+toe	toe.mp3
+top	top.mp3
+tower	tower.mp3
+town	town.mp3
+toy	toy.mp3
+train	train.mp3
+trap	trap.mp3
+tray	tray.mp3
+tree	tree.mp3
+triangle	triangle.mp3
+trip	trip.mp3
+truck	truck.mp3
+true	true.mp3
+trunk	trunk.mp3
+try	try.mp3
+try again	try-again.mp3
+tub	tub.mp3
+tube	tube.mp3
+tuesday	tuesday.mp3
+tuh	tuh.mp3
+tune	tune.mp3
+twelve	twelve.mp3
+twenty	twenty.mp3
+twist	twist.mp3
+two	two.mp3
+uh	uh.mp3
+under	under.mp3
+up	up.mp3
+upset	upset.mp3
+us	us.mp3
+use	use.mp3
+vee	vee.mp3
+vvv	vvv.mp3
+wag	wag.mp3
+wait	wait.mp3
+want	want.mp3
+wants	wants.mp3
+was	was.mp3
+wash	wash.mp3
+watch	watch.mp3
+water	water.mp3
+water is dry	water-is-dry.mp3
+water is wet	water-is-wet.mp3
+way	way.mp3
+we	we.mp3
+we are happy to see it	we-are-happy-to-see-it.mp3
+we gave it lots of space	we-gave-it-lots-of-space.mp3
+we had fun on the trip	we-had-fun-on-the-trip.mp3
+we say	we-say.mp3
+we went down to the town	we-went-down-to-the-town.mp3
+we went on a trip to the hills	we-went-on-a-trip-to-the-hills.mp3
+we went to the beach	we-went-to-the-beach.mp3
+we went to the lake	we-went-to-the-lake.mp3
+web	web.mp3
+wednesday	wednesday.mp3
+well	well.mp3
+well done	well-done.mp3
+went	went.mp3
+were	were.mp3
+wet	wet.mp3
+whale	whale.mp3
+what	what.mp3
+what a fine time	what-a-fine-time.mp3
+what colour are the flowers	what-colour-are-the-flowers.mp3
+what colour is the kite	what-colour-is-the-kite.mp3
+what comes after	what-comes-after.mp3
+what comes before	what-comes-before.mp3
+what comes between	what-comes-between.mp3
+what comes next	what-comes-next.mp3
+what day comes after friday	what-day-comes-after-friday.mp3
+what day comes after monday	what-day-comes-after-monday.mp3
+what day comes after saturday	what-day-comes-after-saturday.mp3
+what day comes after sunday	what-day-comes-after-sunday.mp3
+what day comes after thursday	what-day-comes-after-thursday.mp3
+what day comes after tuesday	what-day-comes-after-tuesday.mp3
+what day comes after wednesday	what-day-comes-after-wednesday.mp3
+what did meena draw	what-did-meena-draw.mp3
+what did meena paint	what-did-meena-paint.mp3
+what did mum make	what-did-mum-make.mp3
+what did the dog hide	what-did-the-dog-hide.mp3
+what did the owl see	what-did-the-owl-see.mp3
+what did the wheel hit	what-did-the-wheel-hit.mp3
+what do they do in the sun	what-do-they-do-in-the-sun.mp3
+what do they make	what-do-they-make.mp3
+what does meena go down	what-does-meena-go-down.mp3
+what does meena make	what-does-meena-make.mp3
+what does meena make with the clay	what-does-meena-make-with-the-clay.mp3
+what does pete play	what-does-pete-play.mp3
+what does raj see on a rock	what-does-raj-see-on-a-rock.mp3
+what does the puppy try to catch	what-does-the-puppy-try-to-catch.mp3
+what fell in the stream	what-fell-in-the-stream.mp3
+what fell into the sink	what-fell-into-the-sink.mp3
+what has dad got	what-has-dad-got.mp3
+what has meena got in a pot	what-has-meena-got-in-a-pot.mp3
+what has raj got	what-has-raj-got.mp3
+what has the monkey got	what-has-the-monkey-got.mp3
+what hops on the rock	what-hops-on-the-rock.mp3
+what is in the net	what-is-in-the-net.mp3
+what is in the water	what-is-in-the-water.mp3
+what is on the step	what-is-on-the-step.mp3
+what is red	what-is-red.mp3
+what is up at night	what-is-up-at-night.mp3
+what month comes after april	what-month-comes-after-april.mp3
+what month comes after august	what-month-comes-after-august.mp3
+what month comes after december	what-month-comes-after-december.mp3
+what month comes after february	what-month-comes-after-february.mp3
+what month comes after january	what-month-comes-after-january.mp3
+what month comes after july	what-month-comes-after-july.mp3
+what month comes after june	what-month-comes-after-june.mp3
+what month comes after march	what-month-comes-after-march.mp3
+what month comes after may	what-month-comes-after-may.mp3
+what month comes after november	what-month-comes-after-november.mp3
+what month comes after october	what-month-comes-after-october.mp3
+what month comes after september	what-month-comes-after-september.mp3
+what rhymes with	what-rhymes-with.mp3
+what toy has the boy got	what-toy-has-the-boy-got.mp3
+what will it be	what-will-it-be.mp3
+wheel	wheel.mp3
+when	when.mp3
+where	where.mp3
+where did the snake go	where-did-the-snake-go.mp3
+where did we go	where-did-we-go.mp3
+where is the cake	where-is-the-cake.mp3
+where is the coin at the end	where-is-the-coin-at-the-end.mp3
+where is the lunch	where-is-the-lunch.mp3
+where is the moth at the start	where-is-the-moth-at-the-start.mp3
+where was the bone	where-was-the-bone.mp3
+which	which.mp3
+which has more	which-has-more.mp3
+which is cold	which-is-cold.mp3
+which is cut in half	which-is-cut-in-half.mp3
+which is empty	which-is-empty.mp3
+which is full	which-is-full.mp3
+which is heavier	which-is-heavier.mp3
+which is hot	which-is-hot.mp3
+which is lighter	which-is-lighter.mp3
+which is longer	which-is-longer.mp3
+which is more	which-is-more.mp3
+which is shorter	which-is-shorter.mp3
+which makes	which-makes.mp3
+which mouth fits	which-mouth-fits.mp3
+which one was it	which-one-was-it.mp3
+which picture	which-picture.mp3
+which shape has	which-shape-has.mp3
+which shape has no corners	which-shape-has-no-corners.mp3
+which way will it go	which-way-will-it-go.mp3
+which word needs a big letter	which-word-needs-a-big-letter.mp3
+whip	whip.mp3
+whisk	whisk.mp3
+white	white.mp3
+who	who.mp3
+who came home on a bus	who-came-home-on-a-bus.mp3
+who did a big jump	who-did-a-big-jump.mp3
+who has a bun with jam	who-has-a-bun-with-jam.mp3
+who has a farm	who-has-a-farm.mp3
+who has a fish shop	who-has-a-fish-shop.mp3
+who is in the puddle	who-is-in-the-puddle.mp3
+who is that it is meena on her bike	who-is-that-it-is-meena-on-her-bike.mp3
+who stands on one leg first	who-stands-on-one-leg-first.mp3
+who was first	who-was-first.mp3
+why	why.mp3
+why is it so happy	why-is-it-so-happy.mp3
+will	will.mp3
+with	with.mp3
+woke	woke.mp3
+won	won.mp3
+work	work.mp3
+would	would.mp3
+wuh	wuh.mp3
+yak	yak.mp3
+yell	yell.mp3
+yellow triangle	yellow-triangle.mp3
+yes	yes.mp3
+you	you.mp3
+you can blow on hot milk	you-can-blow-on-hot-milk.mp3
+you can clap	you-can-clap.mp3
+you can draw with a pen	you-can-draw-with-a-pen.mp3
+you can drink milk	you-can-drink-milk.mp3
+you can eat a pie	you-can-eat-a-pie.mp3
+you can eat cake	you-can-eat-cake.mp3
+you can get dirt on a shirt	you-can-get-dirt-on-a-shirt.mp3
+you can hear with an ear	you-can-hear-with-an-ear.mp3
+you can munch lunch	you-can-munch-lunch.mp3
+you can paint with a brush	you-can-paint-with-a-brush.mp3
+you can play a game	you-can-play-a-game.mp3
+you can play a tune on a flute	you-can-play-a-tune-on-a-flute.mp3
+you can play in the sun	you-can-play-in-the-sun.mp3
+you can ride a bike	you-can-ride-a-bike.mp3
+you can scrub a pot	you-can-scrub-a-pot.mp3
+you can shout	you-can-shout.mp3
+you can sit at a desk	you-can-sit-at-a-desk.mp3
+you can sit on a bench	you-can-sit-on-a-bench.mp3
+you can skip with a rope	you-can-skip-with-a-rope.mp3
+you can spin a top	you-can-spin-a-top.mp3
+you can splash in the bath	you-can-splash-in-the-bath.mp3
+you can stand on one leg	you-can-stand-on-one-leg.mp3
+you can stir a pot	you-can-stir-a-pot.mp3
+you can use a tube of glue	you-can-use-a-tube-of-glue.mp3
+you found them all	you-found-them-all.mp3
+you grew	you-grew.mp3
+you grew 1 flower	you-grew-1-flower.mp3
+you have a nose	you-have-a-nose.mp3
+you have a toe	you-have-a-toe.mp3
+your seeds are growing	your-seeds-are-growing.mp3
+yuh	yuh.mp3
+zed	zed.mp3
+zero	zero.mp3
+zzz	zzz.mp3

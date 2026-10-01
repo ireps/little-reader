@@ -31,9 +31,16 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   p.on('console', m => { if (m.type() === 'error' && !/404/.test(m.text())) errs.push(m.text()); });
   p.on('request', r => hosts.add(new URL(r.url()).host));
   let dialog = false; p.on('dialog', d => { dialog = true; d.dismiss(); });
+  // Everything the app asks to say, across all the tests, for the voice-clip coverage check at the end.
+  const heard = new Set();
+  await p.exposeFunction('__heard', t => { heard.add(t); });
+  await p.addInitScript(() => { window.addEventListener('DOMContentLoaded', () => {
+    const S = window.LR && LR.speech; if (!S) return;
+    const say = S.say; S.say = function(t){ if (String(t).trim()) window.__heard(String(t)); return say.apply(this, arguments); };
+  }); });
   // A stand-in for the tablet's speech engine: records each utterance and when it was requested.
   // __tts.endMs sets how long speaking takes; __tts.never = true means onend never fires (to test the watchdog).
-  await p.addInitScript(() => {
+  const ttsStub = () => {
     const tts = window.__tts = { calls: [], endMs: 20, never: false };
     function Utterance(text){ this.text = text; }
     const synth = {
@@ -50,8 +57,11 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
     };
     Object.defineProperty(window, 'speechSynthesis', { value: synth, configurable: true });
     window.SpeechSynthesisUtterance = Utterance;
-  });
-  await p.addInitScript(() => { window.addEventListener('DOMContentLoaded', () => { if (window.LR && LR.steps && LR.steps.flash) LR.steps.flash.SHOW_MS = 150; }); });
+  };
+  await p.addInitScript(ttsStub);
+  // Quick looks and no pause between items, so the checks run fast (the pace beat has its own test).
+  await p.addInitScript(() => { window.addEventListener('DOMContentLoaded', () => { if (window.LR && LR.steps && LR.steps.flash) LR.steps.flash.SHOW_MS = 150;
+    if (window.LR && LR.ui && LR.ui.PACE && !window.__realPace) Object.keys(LR.ui.PACE).forEach(k => { LR.ui.PACE[k].beat = 0; }); }); });
   const said = () => p.evaluate(() => __tts.calls.map(c => c.text).filter(t => t.trim()));
   const clearSaid = () => p.evaluate(() => { __tts.calls.length = 0; });
   const touch = () => p.mouse.click(640, 5);
@@ -176,6 +186,17 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
     return ws.filter(w => !LR.words.lookalikes(w, [], [], 2).some(x => x.charAt(0) === w.charAt(0)));
   });
   ok(firstLetter.length === 0, 'every word has a look-alike with the same first letter, so first-letter guessing fails' + (firstLetter.length ? ': ' + firstLetter : ''));
+
+  // ---------- Pace: the answer stays on screen for a beat before the next item ----------
+  await seed(s2({ 'w:come': { b: 2, d: t0 }, 'w:some': { b: 2, d: t0 } })); await startSession();
+  await p.evaluate(() => { LR.ui.PACE.calm.beat = 1000; });
+  c = await item();
+  await p.click(`.s-card[data-w="${c.it.w}"]`);
+  await p.waitForTimeout(400);
+  ok(await p.$(`.s-card.fb-right[data-w="${c.it.w}"]`) !== null, 'at the Calm pace, the right answer is still on screen just after the praise');
+  await p.waitForFunction(w => !document.querySelector(`.s-card.fb-right[data-w="${w}"]`), c.it.w, { timeout: 3000 });
+  ok(true, 'then the next item is drawn');
+  await p.evaluate(() => { LR.ui.PACE.calm.beat = 0; });
 
   // ---------- New tricky word ----------
   /* All of unit 1's words are known and not due, so nothing is reviewed today. */
@@ -614,6 +635,13 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   ok((await p.textContent('[data-act=equals]')).includes('off'), 'the Equals sign switch starts off');
   await p.click('[data-act=equals]'); await p.waitForTimeout(30);
   ok(await p.evaluate(() => LR.state.equals === true && JSON.parse(localStorage.getItem('littleReader.v1')).equals === true), 'turning Equals sign on is saved');
+  ok(await p.$eval('[data-act=pace][data-v=calm]', e => e.getAttribute('aria-pressed') === 'true'), 'the pace starts at Calm');
+  await p.click('[data-act=pace][data-v=quick]'); await p.waitForTimeout(30);
+  ok(await p.evaluate(() => JSON.parse(localStorage.getItem('littleReader.v1')).pace === 'quick' && getComputedStyle(document.documentElement).getPropertyValue('--pace').trim() === '0.75'), 'choosing the Quick pace is saved and applied');
+  ok(await p.evaluate(() => LR.store.validate(Object.assign(JSON.parse(JSON.stringify(LR.state)), { pace: 'zoom' })).pace === 'calm'), 'a stored pace is validated (anything odd means Calm)');
+  await p.click('[data-act=pace][data-v=calm]'); await p.waitForTimeout(30);
+  ok(/No voice clips yet/.test(await p.textContent('#app')) && !(await p.$('[data-act=clips]')), 'with no clips installed, Grown-ups says so and shows no clip switches');
+  ok(await p.evaluate(() => { const v = LR.store.validate(Object.assign(JSON.parse(JSON.stringify(LR.state)), { clips: 'no', captions: 1 })); return v.clips === true && v.captions === false; }), 'stored clip settings are validated (anything odd means clips on, captions off)');
 
   // ---------- Speed, captions, feedback (Phase 3 rules, in the session) ----------
   await seed(s2({ 'w:come': { b: 2, d: t0 }, 'w:some': { b: 2, d: t0 }, 'w:from': { b: 2, d: t0 } }));
@@ -718,11 +746,94 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   const font = await p.evaluate(async () => { await document.fonts.ready; return { loaded: [...document.fonts].some(f => /Andika/.test(f.family) && f.status === 'loaded'), family: getComputedStyle(document.querySelector('.s-main .s-card, .s-main .s-tile, .s-main .s-word')).fontFamily }; });
   ok(font.loaded && /^"?Andika/.test(font.family), 'Andika is loaded and used: ' + font.family);
 
-  const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8'), refs = html.match(/(?:src|href)="(?:js|data|css)\/[^"]+"/g) || [];
+  const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8'), refs = html.match(/(?:src|href)="(?:js|data|css|audio)\/[^"]+"/g) || [];
   const vers = new Set(refs.map(r => (r.match(/\?v=(\d+)/) || [])[1]));
   ok(refs.length > 20 && vers.size === 1 && !vers.has(undefined), 'every script and stylesheet in index.html carries the same ?v= version: ' + [...vers].join(','));
   ok([...hosts].every(h => h.startsWith('localhost')), 'no requests leave the site: ' + [...hosts].join(', '));
   ok(errs.length === 0, 'no page errors or CSP violations' + (errs.length ? ': ' + errs.join(' | ') : ''));
+
+  // ---------- Voice clips (Phase 7): playback with a stand-in manifest ----------
+  {
+    /* A short silent WAV stands in for every clip; "missing" is a clip whose file isn't there. */
+    const wavOf = n => { const b = Buffer.alloc(44 + n * 2); b.write('RIFF', 0); b.writeUInt32LE(36 + n * 2, 4); b.write('WAVEfmt ', 8);
+      b.writeUInt32LE(16, 16); b.writeUInt16LE(1, 20); b.writeUInt16LE(1, 22); b.writeUInt32LE(8000, 24); b.writeUInt32LE(16000, 28); b.writeUInt16LE(2, 32);
+      b.writeUInt16LE(16, 34); b.write('data', 36); b.writeUInt32LE(n * 2, 40); return b; };
+    const wav = (() => { const n = 1600, b = Buffer.alloc(44 + n * 2); b.write('RIFF', 0); b.writeUInt32LE(36 + n * 2, 4); b.write('WAVEfmt ', 8);
+      b.writeUInt32LE(16, 16); b.writeUInt16LE(1, 20); b.writeUInt16LE(1, 22); b.writeUInt32LE(8000, 24); b.writeUInt32LE(16000, 28); b.writeUInt16LE(2, 32);
+      b.writeUInt16LE(16, 34); b.write('data', 36); b.writeUInt32LE(n * 2, 40); return b; })();
+    const man = { 'that says': { f: 'that-says.wav', d: 200, t: [0, 100] }, 'come': { f: 'come.wav', d: 200 }, 'yes': { f: 'yes.wav', d: 200 },
+      'come and read with me': { f: 'come-and-read-with-me.wav', d: 200, t: [0, 50, 100, 150, 180] }, 'some': { f: 'missing.wav', d: 200 }, 'from': { f: 'long.wav', d: 100 } };
+    const q = await ctx.newPage(), clipReqs = [];
+    q.on('pageerror', e => errs.push(e.message));
+    await q.addInitScript(ttsStub);
+    await q.route('**/audio/manifest.js*', r => r.fulfill({ contentType: 'text/javascript', body: 'window.LR = window.LR || {}; LR.clips = ' + JSON.stringify(man) + ';' }));
+    await q.route('**/audio/clips/*', r => { const f = r.request().url().split('/').pop(); clipReqs.push(f);
+      return f === 'missing.wav' ? r.fulfill({ status: 404, body: '' }) : f === 'long.wav' ? r.fulfill({ contentType: 'audio/wav', body: wavOf(8000 * 6) }) : r.fulfill({ contentType: 'audio/wav', body: wav }); });
+    await q.goto(U + '#home'); await q.evaluate(() => localStorage.clear()); await q.reload(); await q.mouse.click(640, 5);
+    const run = (text, opts) => q.evaluate(([t, o]) => { __tts.calls.length = 0; const words = [], caps = [];
+      const el = document.getElementById('caption'), mo = new MutationObserver(() => caps.push(el.textContent)); mo.observe(el, { childList: true, characterData: true, subtree: true });
+      const t0 = performance.now();
+      return LR.speech.say(t, Object.assign({ onWord: i => words.push(i) }, o || {})).then(() => { mo.disconnect();
+        return { tts: __tts.calls.map(c => c.text), words, caps: caps.filter(Boolean), ms: performance.now() - t0 }; }); }, [text, opts || null]);
+    ok(await q.evaluate(() => JSON.stringify(LR.speech.resolve('That says come.'))) === '["that says","come"]', 'a sentence resolves into the longest clips it has: that says + come');
+    ok(await q.evaluate(() => LR.speech.resolve('That says cone.')) === null, 'a sentence with a missing word does not resolve');
+    let r = await run('That says come.');
+    ok(r.tts.length === 0 && clipReqs.includes('that-says.wav') && clipReqs.includes('come.wav'), 'with clips, the sentence plays from its clips and the tablet voice stays silent: ' + JSON.stringify(r.tts));
+    ok(r.caps.length === 0, 'with clips, no caption shows (Grown-ups can turn captions back on)');
+    ok(JSON.stringify(r.words) === '[0,1,2]', 'words light in order from the clips’ word times: ' + JSON.stringify(r.words));
+    r = await run('Come and read with me.', { parts: ['Come and', 'read with me.'] });
+    ok(JSON.stringify(r.words) === '[0,1]' && r.tts.length === 0, 'a whole-sentence clip maps its word times onto the parts: ' + JSON.stringify(r.words));
+    r = await run('That says cone.');
+    ok(r.tts.join() === 'That says cone.' && r.caps.includes('That says cone.'), 'a sentence without all its clips is spoken by the tablet voice, with the caption');
+    r = await run('Some');
+    ok(r.tts.join() === 'Some' && r.caps.includes('Some'), 'a clip that fails to load falls back to the tablet voice and the caption');
+    r = await run('From');
+    ok(r.tts.length === 0 && r.ms < 2500, 'a clip that runs on past its length is ended by the watchdog (length + 1 s): ' + Math.round(r.ms) + ' ms');
+    await q.evaluate(() => { LR.state.captions = true; });
+    r = await run('Yes');
+    ok(r.tts.length === 0 && r.caps.includes('Yes'), 'with captions on, clips play with the caption');
+    await q.evaluate(() => { LR.state.clips = false; LR.state.captions = false; });
+    r = await run('Yes');
+    ok(r.tts.join() === 'Yes', 'with voice clips switched off, the tablet voice speaks');
+    await q.evaluate(() => { LR.state.clips = true; });
+    const pre = clipReqs.length;
+    await q.evaluate(() => { LR.speech.cancel(); const t = LR.speech.say('Come and read with me.'); setTimeout(() => LR.speech.cancel(), 30); return t; });
+    ok(await q.evaluate(() => !document.getElementById('caption').textContent), 'stopping a clip settles say() and clears the caption: ' + (clipReqs.length - pre));
+    await q.goto(U + '#grownups');
+    const [qa, qb] = (await q.textContent('.gate .prompt')).match(/(\d+) \+ (\d+)/).slice(1).map(Number);
+    for (const k of String(qa + qb)) await q.click(`[data-k="${k}"]`);
+    await q.click('[data-k="OK"]'); await q.waitForTimeout(40);
+    ok(/6 voice clips are installed/.test(await q.textContent('#app')), 'Grown-ups says how many voice clips are installed');
+    await q.click('[data-act=clips]');
+    ok(await q.evaluate(() => JSON.parse(localStorage.getItem('littleReader.v1')).clips === false) && /Voice clips: off/.test(await q.textContent('[data-act=clips]')), 'Grown-ups can switch voice clips off, and it is saved');
+    await q.click('[data-act=captions]');
+    ok(await q.evaluate(() => JSON.parse(localStorage.getItem('littleReader.v1')).captions === true), 'Grown-ups can turn captions on with clips, and it is saved');
+    await q.close();
+  }
+
+  // ---------- Voice clips (Phase 7) ----------
+  const clipKeys = new Set(fs.readFileSync(path.join(ROOT, 'tools/clip-list.txt'), 'utf8').split('\n').filter(l => l && l[0] !== '#').map(l => l.split('\t')[0]));
+  const missing = await p.evaluate(([texts, keys]) => { const k = new Set(keys); return texts.filter(t => !LR.speech.resolve(t, x => k.has(x))); }, [[...heard].filter(t => !/still being spoken/.test(t)), [...clipKeys]]);
+  ok(heard.size > 100 && !missing.length, `everything said in the tests (${heard.size} texts) can be played from tools/clip-list.txt` + (missing.length ? ': ' + missing.slice(0, 30).join(' | ') : ''));
+  {
+    /* The importer: 38 MP3 frames (128 kbps, 44.1 kHz) last 993 ms; word times are kept only if they fit the words. */
+    const os = require('os'), tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'lr-clips-')), inDir = path.join(tmp, 'in');
+    fs.mkdirSync(inDir);
+    const frame = Buffer.alloc(417); Buffer.from([0xFF, 0xFB, 0x90, 0x64]).copy(frame);
+    const mp3 = Buffer.concat(Array(38).fill(frame));
+    fs.writeFileSync(path.join(inDir, 'that-says.mp3'), mp3); fs.writeFileSync(path.join(inDir, 'that-says.json'), '[0, 400]');
+    fs.writeFileSync(path.join(inDir, 'come.mp3'), mp3); fs.writeFileSync(path.join(inDir, 'come.json'), '[0, 5]');
+    fs.writeFileSync(path.join(inDir, 'yes.mp3'), 'not an mp3');
+    const imp = require('child_process').spawnSync(process.execPath, [path.join(ROOT, 'tools/import-clips.js'), inDir, '--out', tmp]);
+    const sandbox = { window: {} }; sandbox.window = sandbox;
+    require('vm').runInNewContext(fs.readFileSync(path.join(tmp, 'manifest.js'), 'utf8'), sandbox);
+    const m = sandbox.LR.clips;
+    ok(imp.status === 0 && Object.keys(m).length === 2 && m['that says'].d === 993 && JSON.stringify(m['that says'].t) === '[0,400]' && !m.come.t && !m.yes
+      && fs.readdirSync(path.join(tmp, 'clips')).sort().join() === 'come.mp3,that-says.mp3', 'the clip importer copies the clips, measures them, keeps good word times and skips bad files');
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+  const stale = require('child_process').spawnSync(process.execPath, [path.join(ROOT, 'tools/list-clips.js'), '--check']);
+  ok(stale.status === 0, 'tools/clip-list.txt is up to date with the course and phrases');
 
   await b.close(); server.close();
   console.log(failed ? `\n${failed} failed` : '\nAll passed');

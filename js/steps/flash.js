@@ -1,4 +1,4 @@
-/* Flash: a word shows for 2 seconds, then hides, and she picks it from 3 look-alikes.
+/* Flash: a word shows for 2 seconds (3 at the Calm pace), then hides, and she picks it from 3 look-alikes.
    Nothing is said until she answers: this is reading at a glance, not listening. */
 (function(){
 'use strict';
@@ -13,12 +13,12 @@ LR.steps.flash = {
     cur = { w:w, opts:U.shuffle([w].concat(W.lookalikes(w, pool, mix, 2))) };
     ctx.screen({ main:'<div class="s-flash">' + K.word(w, -1) + '</div>' });
     ctx.prompt('Look!', { caption:'Look!' });
-    /* The word hides after 2 s: a timed reveal, part of the activity (not a wait before moving on). */
+    /* The word hides after 2 s times the pace: a timed reveal, part of the activity (not a wait before moving on). */
     setTimeout(function(){
       if (!ctx.live()) return;
       U.app().querySelector('.s-main').innerHTML = '<div class="s-row s-cards">' + cur.opts.map(function(o){ return K.card(o); }).join('') + '</div>';
       ctx.prompt('Which one was it?');
-    }, LR.steps.flash.SHOW_MS);
+    }, Math.round(LR.steps.flash.SHOW_MS * U.pace().f));
   },
   tap:function(el, act, ctx){
     if (act !== 'pick') return;

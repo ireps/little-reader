@@ -27,7 +27,7 @@ Hold the lock on Home for 2 seconds, then answer a sum on the number pad (a chil
 - **Maths:** each skill she has unlocked, its level, and the **Equals sign** switch (off until her class teaches =).
 - **Where is she?** Tap a unit to start there next time. The app moves on by itself when a unit is mastered.
 - **Practise one game:** any step on its own.
-- **Voice:** speed and a test.
+- **Voice:** speed, a test, and **Pace** (Calm, Normal or Quick: how long each answer stays on screen before the next one, and how slowly things move; Calm by default). Once voice clips are installed: how many there are, a switch to turn them off, and a switch to keep captions on with them.
 - **Backup:** *Save a backup* downloads `YYYY-MM-DD.littlereader.json`; *Restore* checks a backup and asks before replacing anything; *Reset everything* asks twice.
 
 ## The course
@@ -39,8 +39,8 @@ All stories are original, written for this app. Pictures are emoji the tablet ca
 ## How it feels
 
 - **Every tap answers at once:** a right answer turns green with a ✓ and a soft chime; a wrong one dims with a dot and a low, quiet tone. No red, no cross, no buzzer.
-- **No waiting:** the app speaks as soon as it is tapped and moves on as soon as it has finished speaking. Letters and words light up while they are spoken, not before.
-- **Captions:** everything the app says also shows at the top of the screen. It stands in for the planned Indian English voice clips (Phase 7); until then the tablet's own voice speaks.
+- **Speaks at once, moves on calmly:** the app speaks as soon as it is tapped. After an answer, it stays on screen for a beat (set by Pace) before the next one. Letters and words light up while they are spoken, not before.
+- **Voice and captions:** with Indian English voice clips installed (computer-made; see [audio/README.md](audio/README.md)), the app plays them, and the tablet's own voice says anything without a clip. Until clips are added, the tablet's voice speaks everything and it also shows as a caption.
 - **Big targets:** at least 120 px (about 2 cm on the tablet) for everything she taps.
 - **Font:** Andika, made for early readers (single-storey *a* and *g*).
 - **Silent until touched:** nothing is spoken before the first tap.
@@ -113,7 +113,11 @@ js/steps/*.js            find, flash, pic, build, tricky, silly, read, q, lang, 
 js/lessons/grownups.js   Grown-ups
 js/main.js               start
 fonts/                   Andika (Regular and Bold, Latin), SIL OFL
-audio/                   empty unless the tablet can't speak
+data/phrases.js          everything the app says besides the course (for the clip list; not loaded by the app)
+audio/                   manifest.js and clips/ (voice clips, once supplied); README.md says how
+tools/list-clips.js      makes tools/clip-list.txt, the clips the app can need
+tools/import-clips.js    checks supplied clips and writes audio/clips/ and audio/manifest.js
+tools/make-clips.ps1     makes the clips with a Windows computer voice (Heera, en-IN)
 tools/device-check.html  Phase 0 test page
 tools/prototype.html     Phase 4 prototype, every session screen (npm run prototype)
 tests/run.js             browser checks (npm test)

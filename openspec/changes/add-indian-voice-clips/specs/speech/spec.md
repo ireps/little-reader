@@ -21,16 +21,21 @@ Speech SHALL play the clip supplied for the text, in an Indian English female co
 ## ADDED Requirements
 
 ### Requirement: Complete clip coverage
-Every string the app can say SHALL have a clip.
+Every string the app can say SHALL be playable from the clips in `tools/clip-list.txt`, whole or as its longest phrases.
 
 #### Scenario: Full coverage
-- **WHEN** npm test runs with a manifest present
-- **THEN** every string from the clip list has a manifest entry
+- **WHEN** npm test runs
+- **THEN** everything said during the tests resolves to keys in the clip list
 
 #### Scenario: New string without a clip
-- **GIVEN** a story sentence is added without a clip
+- **GIVEN** a story sentence is added and the list is not regenerated
 - **WHEN** npm test runs
-- **THEN** the coverage test fails and names the sentence
+- **THEN** the test fails and says the clip list is out of date
+
+#### Scenario: Clip not supplied
+- **GIVEN** the list has a key with no supplied clip
+- **WHEN** it is spoken
+- **THEN** the tablet voice says the whole text with its caption
 
 ### Requirement: Clip sentences
 A sentence with a clip SHALL play as one clip, with each word lit at the start time recorded for it.
@@ -43,5 +48,5 @@ A sentence with a clip SHALL play as one clip, with each word lit at the start t
 Text spoken as several clips SHALL play with no gap longer than 150 ms between them.
 
 #### Scenario: Praise plus word
-- **WHEN** "Yes! come" plays as the clips "Yes!" and "come"
+- **WHEN** "Yes! come" plays as the clips "yes" and "come"
 - **THEN** the gap between them is at most 150 ms

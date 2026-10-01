@@ -124,6 +124,9 @@ function run(){
   U.stopAll();
   var step = LR.steps[item.t];
   step.render(item, makeCtx(r, st, item));
+  /* With voice clips, start loading the next word's clips now so they play at once. */
+  var nx = st.items[r.at[1] + 1] || (r.steps[r.at[0] + 1] && r.steps[r.at[0] + 1].items[0]);
+  if (nx && typeof nx.w === 'string') S.preload('Yes! ' + nx.w);
 }
 
 function makeCtx(r, st, item){
@@ -153,7 +156,9 @@ function makeCtx(r, st, item){
       if (counted !== false) { r.answered++; if (firstTry) r.right++; }
       r.at = [r.at[0], r.at[1] + 1];
       save();
-      if (tok === token) run();
+      /* The answer stays on screen for a beat (Grown-ups > Pace), then the next item is drawn. */
+      var hash = location.hash;
+      if (tok === token) setTimeout(function(){ if (tok === token && location.hash === hash) run(); }, U.pace().beat);
     },
     /* Ends the whole step (Read with me's "Not today"). */
     skipStep:function(){

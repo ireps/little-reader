@@ -18,7 +18,7 @@ function isInt(n, lo, hi){ return typeof n === 'number' && n % 1 === 0 && n >= l
 function keys(o, max){ return Object.keys(o).slice(0, max); }
 
 function blank(){
-  return { schema:SCHEMA, unit:LR.startUnit || LR.units[0].id, items:{}, flowers:[], confusions:{}, stories:{}, silly:{}, resume:null, days:[], rate:0.9, last:'', equals:false };
+  return { schema:SCHEMA, unit:LR.startUnit || LR.units[0].id, items:{}, flowers:[], confusions:{}, stories:{}, silly:{}, resume:null, days:[], rate:0.9, last:'', equals:false, clips:true, captions:false, pace:'calm' };
 }
 
 /* confusions: { target: { word she picked instead: count } } */
@@ -102,6 +102,9 @@ function validate(s){
   if (typeof s.rate === 'number' && s.rate >= 0.75 && s.rate <= 1.1) out.rate = s.rate;
   if (isDate(s.last)) out.last = s.last;
   out.equals = s.equals === true;
+  out.clips = s.clips !== false;
+  out.captions = s.captions === true;
+  out.pace = s.pace === 'normal' || s.pace === 'quick' ? s.pace : 'calm';
   return out;
 }
 

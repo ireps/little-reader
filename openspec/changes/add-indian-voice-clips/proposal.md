@@ -22,6 +22,8 @@ clips earlier would mean re-running the tool after every content change.
 - **One clip per sentence,** with word highlighting driven by the clip's timings instead of the
   estimate.
 - **Joined clip sequences** with gaps under 150 ms.
+- **A Pace setting** in Grown-ups (owner feedback: actions felt too fast). Calm, the default, holds each
+  answer on screen for a beat before the next item and slows sweeps, Flash and animations.
 - **A coverage test** that fails when any string lacks a clip, from this phase onward.
 - **A Grown-ups switch** turns clips on or off.
 - **Captions** (the Phase 3 placeholder) are hidden when clips play, with a Grown-ups switch to

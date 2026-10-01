@@ -56,7 +56,7 @@ Never commit:
 - backup files (`*.littlereader.json` is in `.gitignore`)
 - progress data from the tablet
 
-Audio clips, if ever needed, are generated from a computer voice. No one's voice is recorded.
+Voice clips are generated from a computer voice (see `audio/README.md`). No one's voice is recorded. Clips load only from the site's own `audio/clips/` folder.
 
 ## Account
 
