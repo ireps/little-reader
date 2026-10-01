@@ -50,7 +50,7 @@ LR.steps.find = {
       if (right) { U.feedback(right, 'right'); dimOthers(right); }
       S.say('That says ' + picked + '. This one says ' + w + '.').then(function(){ ctx.done(false); });
     } else {
-      var n = el.querySelectorAll('.l').length, step = Math.max(80, Math.min(220, Math.round(S.estimate(picked) / Math.max(1, n))));
+      var n = el.querySelectorAll('.l').length, step = Math.max(80, Math.min(Math.round(220 * U.pace().f), Math.round(S.voiceMs(picked) / Math.max(1, n))));
       S.say('That says ' + picked + '.', { onWord:function(i){ if (i === 2 && ctx.live()) U.lightLetters(el, step); } });
     }
     recordMixUp(w, picked);

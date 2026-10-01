@@ -47,6 +47,13 @@ phrases and words in turn. For example, "That says cone." plays as `that-says.mp
 3. Bump `?v=` in `index.html`, run `npm test`, and commit `audio/clips/` and `audio/manifest.js`.
    `audio/incoming/` is not committed.
 
+## Highlights and the voice
+
+The importer needs ffmpeg for this. It cuts the long silence edge-tts leaves at the end of each clip down to 0.2 s.
+It also moves the word times to match the audio, because edge-tts reports every word about 170 ms before it is
+heard. In the app, words light when the clip's own clock reaches their time, and letter sweeps last as long as
+the clip's voice.
+
 ## If the clips sound muffled
 
 Listen to a WAV in `audio/incoming/` and to the same clip in `audio/clips/`.

@@ -12,6 +12,8 @@ var unlocked = false;    /* no speech before the first touch */
 var hasBoundary = false; /* true once this engine has sent a word boundary event */
 /* Calibration: ms per character at rate 1, a moving average of the last 10 utterances. Memory only. */
 var MS_PER_CHAR = 75, PAUSE_MS = 250, samples = [];
+/* Silence the clip importer leaves at the end of each clip (tools/import-clips.js TAIL). */
+var CLIP_TAIL = 200;
 
 /* Voices don't report gender, so this guesses from the name. Grown-ups can always pick another. */
 var FEMALE = /raveena|aditi|kajal|heera|veena|lekha|isha|neerja|swara|salli|joanna|kendra|kimberly|ivy|amy|emma|nicole|olivia|samantha|karen|moira|tessa|fiona|victoria|zira|hazel|susan|serena|kate|catherine|allison|ava|libby|sonia|natasha/i;
@@ -175,14 +177,16 @@ function say(text, opts){
       fired = i;
       if (opts.onWord) opts.onWord(i);
     }
-    /* Called once, when sound starts (or should have). Runs the estimated schedule unless boundaries arrive. */
-    function begin(){
+    /* Called once, when sound starts (or should have). Runs the estimated schedule unless boundaries arrive.
+       Clips pass their own voice length (ms) and light their words themselves. */
+    function begin(ms){
       if (started || done) return;
       started = Date.now();
-      if (opts.onStart) opts.onStart(est);
+      var clip = typeof ms === 'number';
+      if (opts.onStart) opts.onStart(clip ? ms : est);
       if (!opts.onWord) return;
       fire(0);
-      if (hasBoundary) return;
+      if (hasBoundary || clip) return;
       var per = msPerChar(rate);
       offs.forEach(function(o, i){
         if (!i) return;
@@ -199,30 +203,43 @@ function say(text, opts){
     if (seq && seq.length) { playClips(seq); return; }
     tts();
 
-    /* Plays clips one after another (the next starts on the last one's "ended"), lighting words at their recorded times. */
+    /* Plays clips one after another (the next starts on the last one's "ended"). Words light when the clip's own
+       clock (currentTime) reaches their recorded times, so highlights stay with the voice through a slow start, a
+       stall or a changed speed. Sound starts (begin) when the first word is heard, not when the file starts. */
     function playClips(keys){
       var partStart = null, w = 0, k = 0;
       if (opts.parts) { partStart = []; var n = 0; opts.parts.forEach(function(p){ partStart.push(n); n += Math.max(1, keyOf(p).split(' ').length); }); }
       function wordAt(gw){ if (!partStart) return gw; var i = partStart.indexOf(gw); return i; }
+      var playbackRate = Math.max(0.75, Math.min(1.2, rate / 0.9));
+      function timesOf(key){ var info = LR.clips[key], words = key.split(' ').length, dur = info.d || 1500;
+        if (info.t && info.t.length === words) return info.t;
+        var t = []; for (var i = 0; i < words; i++) t.push(Math.round(dur * i / words)); return t; }
+      /* How long the voice lasts, first word to last sound, for sweeps paced by onStart. */
+      var spokenMs = Math.round(Math.max(200, keys.reduce(function(s, key){ return s + (LR.clips[key].d || 1500); }, 0)
+        - timesOf(keys[0])[0] - CLIP_TAIL) / playbackRate);
+      var tick = window.requestAnimationFrame ? function(fn){ window.requestAnimationFrame(fn); } : function(fn){ setTimeout(fn, 16); };
       function next(){
         if (done) return;
         if (k >= keys.length) { currentAudio = null; fin(false); return; }
         var key = keys[k++], info = LR.clips[key], words = key.split(' ').length, a;
         try { a = audioFor(key); } catch(e) { fallback(); return; }
         currentAudio = a;
-        var playbackRate = Math.max(0.75, Math.min(1.2, rate / 0.9));
         try { a.currentTime = 0; a.playbackRate = playbackRate; } catch(e) {}
-        var base = w, times = info.t && info.t.length === words ? info.t : null, dur = info.d || 1500;
+        var base = w, times = timesOf(key), dur = info.d || 1500, idx = 0, watching = false;
         w += words;
-        a.onplaying = function(){
-          begin();
-          if (!opts.onWord) return;
-          for (var i = 0; i < words; i++) (function(i){
-            var at = times ? times[i] : Math.round(dur * i / words), p = wordAt(base + i);
-            if (p > -1) later(function(){ fire(p); }, Math.round(at / playbackRate));
-          })(i);
-        };
-        a.onended = function(){ if (currentAudio === a) next(); };
+        /* Light every word whose time has come (all of them when the clip has ended). */
+        function catchUp(all){
+          var now = all ? Infinity : (a.currentTime || 0) * 1000;
+          if (!started && now >= times[0]) begin(spokenMs);
+          while (started && idx < words && now >= times[idx]) { var p = wordAt(base + idx); if (p > -1) fire(p); idx++; }
+        }
+        function watch(){
+          if (done || currentAudio !== a) { watching = false; return; }
+          catchUp(false);
+          if (idx < words) tick(watch); else watching = false;
+        }
+        a.onplaying = function(){ if (!watching) { watching = true; watch(); } };
+        a.onended = function(){ if (currentAudio === a) { catchUp(true); next(); } };
         a.onerror = function(){ if (currentAudio === a) fallback(); };
         later(function(){ if (currentAudio === a) next(); }, Math.round(dur / playbackRate) + 1000);
         try { var pr = a.play(); if (pr && pr.catch) pr.catch(function(){ if (currentAudio === a) fallback(); }); } catch(e) { fallback(); }
@@ -288,12 +305,21 @@ document.addEventListener('pointerdown', unlock, true);
 document.addEventListener('touchstart', unlock, true);
 document.addEventListener('keydown', unlock, true);
 
+/* How long the voice takes to say text: from its clip when there is one (first word to last sound), else the estimate. */
+function voiceMs(text, rate){
+  var k = keyOf(text), c = clipsOn() && hasClip(k) ? LR.clips[k] : null;
+  if (!c) return estimate(text, rate);
+  var t0 = c.t && c.t.length ? c.t[0] : 0;
+  return Math.round(Math.max(200, (c.d || 1500) - t0 - CLIP_TAIL) / Math.max(0.75, Math.min(1.2, rateOf(rate) / 0.9)));
+}
+
 LR.speech = {
   canSpeak: canSpeak,
   hasBoundary: false,
   say: say,
   cancel: cancel,
   estimate: estimate,
+  voiceMs: voiceMs,
   resolve: resolveClips,
   keyOf: keyOf,
   preload: preload,

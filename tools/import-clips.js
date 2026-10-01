@@ -5,7 +5,8 @@
    Each clip is named as in the second column of tools/clip-list.txt. MP3 is copied as it is; WAV is converted to
    MP3 (96 kbps mono, at the WAV's own sample rate, so the voice stays clear) with ffmpeg (which must then be installed). An optional <name>.json next to a clip holds the start of each
    word in ms ([0, 420, 900]), as tools/make-clips.ps1 writes; without it the app spreads the words evenly.
-   With ffmpeg on the PATH, long silence at the end of a clip is cut to 0.2 s (stream copy, no re-encoding).
+   With ffmpeg on the PATH, long silence at the end of a clip is cut to 0.2 s (stream copy, no re-encoding), and the
+   word times shift so the first word starts where the voice is first heard.
    Missing clips are fine: the app says those with the tablet's voice and shows the caption. */
 'use strict';
 const fs = require('fs');
@@ -42,23 +43,26 @@ function mp3Ms(buf){
   return rate ? Math.round(samples * 1000 / rate) : 0;
 }
 
-/* Cuts long silence off the end of a clip (edge-tts adds over a second), keeping TAIL ms, so the app doesn't wait
-   on silence and joined clips flow. Stream copy, so no quality is lost. Skipped quietly without ffmpeg. */
+/* With ffmpeg: cuts long silence off the end of a clip (edge-tts adds over a second), keeping TAIL ms, so the app
+   doesn't wait on silence and joined clips flow (stream copy, so no quality is lost). Returns when the voice starts
+   (ms), because edge-tts reports each word about 170 ms before it is heard. Skipped quietly without ffmpeg. */
 const TAIL = 200;
-let ffmpeg = true, trimmed = 0;
+let ffmpeg = true, trimmed = 0, aligned = 0;
 function trimEnd(file, ms){
-  if (!ffmpeg) return;
-  const r = spawnSync('ffmpeg', ['-hide_banner', '-i', file, '-af', 'silencedetect=noise=-50dB:d=0.15', '-f', 'null', '-'], { encoding: 'utf8' });
-  if (r.error) { ffmpeg = false; console.warn('ffmpeg not found: silence at the end of clips is kept.'); return; }
+  if (!ffmpeg) return 0;
+  const r = spawnSync('ffmpeg', ['-hide_banner', '-i', file, '-af', 'silencedetect=noise=-45dB:d=0.05', '-f', 'null', '-'], { encoding: 'utf8' });
+  if (r.error) { ffmpeg = false; console.warn('ffmpeg not found: silence at the end of clips is kept, and word times are not aligned.'); return 0; }
   const starts = [...r.stderr.matchAll(/silence_start: ([\d.]+)/g)].map(m => +m[1] * 1000);
   const ends = [...r.stderr.matchAll(/silence_end: ([\d.]+)/g)].map(m => +m[1] * 1000);
+  const onset = starts.length && starts[0] < 1 && ends.length && ends[0] < ms - 30 ? Math.round(ends[0]) : 0;
   const last = starts[starts.length - 1];
   // Trailing silence: the last silence has no end, or ends at the end of the file.
-  if (last == null || last <= 0 || (ends.length === starts.length && ends[ends.length - 1] < ms - 30)) return;
-  if (ms - last <= TAIL + 100) return;
+  if (last == null || last <= onset || (ends.length === starts.length && ends[ends.length - 1] < ms - 30)) return onset;
+  if (ms - last <= TAIL + 100) return onset;
   const tmp = file + '.tmp.mp3';
   const c = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', file, '-t', ((last + TAIL) / 1000).toFixed(3), '-c', 'copy', tmp]);
   if (c.status === 0) { fs.renameSync(tmp, file); trimmed++; } else if (fs.existsSync(tmp)) fs.unlinkSync(tmp);
+  return onset;
 }
 
 if (!fs.existsSync(IN)) { console.error('No folder ' + IN + ': put the clips there (see audio/README.md).'); process.exit(1); }
@@ -75,16 +79,23 @@ for (const c of list) {
     if (r.status !== 0) { console.error('ffmpeg could not convert ' + c.base + '.wav: ' + r.stderr); process.exit(1); }
     converted++;
   } else { missing.push(c.file); continue; }
-  trimEnd(dest, mp3Ms(fs.readFileSync(dest)));
+  const onset = trimEnd(dest, mp3Ms(fs.readFileSync(dest)));
   const d = mp3Ms(fs.readFileSync(dest));
   if (!d) { bad.push(c.file); fs.unlinkSync(dest); continue; }
   const entry = { f: c.file, d };
+  const words = c.key.split(' ').length;
   if (have.has(c.base + '.json')) {
     let t = null;
     try { t = JSON.parse(fs.readFileSync(path.join(IN, c.base + '.json'), 'utf8')); } catch (e) {}
-    const words = c.key.split(' ').length;
     if (Array.isArray(t) && t.length === words && t.every((x, i) => typeof x === 'number' && x >= 0 && x <= d && (!i || x >= t[i - 1]))) entry.t = t.map(Math.round);
     else console.warn('Ignoring word times in ' + c.base + '.json: expected ' + words + ' rising numbers within the clip');
+  }
+  /* edge-tts reports every word about 170 ms before it is heard (measured: a constant lag, the same for each word).
+     Shift all the times so the first word starts when the voice does, and highlights don't run ahead of it. */
+  if (onset && (entry.t ? onset > entry.t[0] : words === 1)) {
+    const shift = onset - (entry.t ? entry.t[0] : 0);
+    entry.t = entry.t ? entry.t.map(x => Math.min(d, x + shift)) : [onset];
+    aligned++;
   }
   manifest[c.key] = entry;
 }
@@ -100,7 +111,7 @@ fs.writeFileSync(path.join(OUT, 'manifest.js'), '/* Voice clips: written by tool
   + 'window.LR = window.LR || {};\nLR.clips = ' + JSON.stringify(manifest, null, 0).replace(/},"/g, '},\n"') + ';\n');
 
 const n = Object.keys(manifest).length;
-console.log(`Imported ${n} of ${list.length} clips` + (converted ? ` (${converted} converted from WAV)` : '') + (trimmed ? `, ${trimmed} with long end silence cut` : '') + (removed ? `, removed ${removed} old` : '') + '.');
+console.log(`Imported ${n} of ${list.length} clips` + (converted ? ` (${converted} converted from WAV)` : '') + (trimmed ? `, ${trimmed} with long end silence cut` : '') + (aligned ? `, ${aligned} with word times aligned to the voice` : '') + (removed ? `, removed ${removed} old` : '') + '.');
 if (missing.length) console.log(`${missing.length} missing (the tablet's voice says these): ${missing.slice(0, 10).join(', ')}${missing.length > 10 ? ', …' : ''}`);
 if (bad.length) console.log(`${bad.length} not readable as MP3, skipped: ${bad.slice(0, 10).join(', ')}`);
 if (extra.length) console.log(`${extra.length} files not in the list, ignored: ${extra.slice(0, 10).join(', ')}`);
