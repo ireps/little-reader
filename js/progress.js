@@ -129,14 +129,24 @@ function advance(){
 }
 
 /* ---------- Maths ---------- */
-/* Skills unlock in order: each opens when the one before it reaches box 2. Comparing is always open. */
-function mathsUnlocked(){
-  var it = items(), ids = LR.maths.ids, out = [ids[0]];
-  for (var i = 1; i < ids.length; i++) { var prev = it['m:' + ids[i - 1]]; if (prev && prev.b >= 2) out.push(ids[i]); else break; }
+/* Skills unlock in order: each opens when the one before it reaches box 2. Comparing is always open. A skill she has
+   already practised stays open, so a skill added earlier in the order never locks one she could use before. */
+function mathsUnlocked(){ return chain(LR.maths.ids, 'm:', 1); }
+function chain(ids, pre, open){
+  var it = items(), out = ids.slice(0, open), prevOpen = true;
+  for (var i = open; i < ids.length; i++) {
+    var prev = it[pre + ids[i - 1]], mine = it[pre + ids[i]];
+    var ok = (prevOpen && prev && prev.b >= 2) || !!mine;
+    if (ok) out.push(ids[i]);
+    prevOpen = ok;
+  }
   return out;
 }
+/* Language skills: the first ones are always open, then one more each time the one before reaches box 2. */
+function langUnlocked(){ return chain(LR.grammar.ORDER, 'g:', LR.grammar.OPEN); }
 /* Level 2 (bigger numbers) once a skill reaches box 3. */
 function mathsLevel(id){ var r = items()['m:' + id]; return r && r.b >= 3 ? 2 : 1; }
+function langLevel(id){ var r = items()['g:' + id]; return r && r.b >= 3 ? 2 : 1; }
 
 /* Adds a session's results to the day's record (last 30 days kept). */
 function recordDay(n, r, mins){
@@ -149,6 +159,6 @@ function recordDay(n, r, mins){
 LR.progress = {
   INTERVALS:INTERVALS, localDate:localDate, today:today, addDays:addDays, ensure:ensure, right:right, miss:miss, isMastered:isMastered,
   unit:unit, unitById:unitById, planWords:planWords, planExtra:planExtra, newTricky:newTricky, newTrickyCount:newTrickyCount,
-  lastAccuracy:lastAccuracy, growing:growing, sillyResult:sillyResult, mathsUnlocked:mathsUnlocked, mathsLevel:mathsLevel, nextStory:nextStory, unitDone:unitDone, advance:advance, recordDay:recordDay, wid:wid
+  lastAccuracy:lastAccuracy, growing:growing, sillyResult:sillyResult, mathsUnlocked:mathsUnlocked, mathsLevel:mathsLevel, langUnlocked:langUnlocked, langLevel:langLevel, nextStory:nextStory, unitDone:unitDone, advance:advance, recordDay:recordDay, wid:wid
 };
 })();

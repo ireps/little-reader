@@ -16,21 +16,21 @@ Number names SHALL match a numeral to its written name, one to ten at level 1 an
 - **THEN** every number is between 11 and 50 and its options are written names
 
 ### Requirement: Skill order
-Skills SHALL unlock in order (compare, count, numerals, count on and back, before and after, zero, add, take away, number names, money, measure, shapes, halves, patterns, time, skip counting, order, size, longest, solids, odd one out, data, clock), each when the previous reaches box 2, and each session SHALL include 4 to 5 maths items.
+Skills SHALL unlock in the order schools teach them (compare, count, size words, odd one out, numerals, count on and back, order, before and after, zero, add, take away, number names, money, measure, longest, shapes, solids, halves, patterns, data, skip counting, time, clock), each when the previous reaches box 2; a skill she has already practised SHALL stay open even if a skill before it is not yet open. Each session SHALL include 4 to 5 maths items.
 
 #### Scenario: Unlock
 - **GIVEN** counting objects reaches box 2
 - **WHEN** the next session is planned
-- **THEN** numerals and quantities items can appear
+- **THEN** size-word items can appear
 
 #### Scenario: Session share
 - **WHEN** any session is planned
 - **THEN** the Maths step has 4 or 5 items
 
-#### Scenario: New skills last
-- **GIVEN** time (days, months and times of day) reaches box 2
+#### Scenario: Practised skills stay open
+- **GIVEN** counting is at box 2, size words were never practised, and numerals has been practised
 - **WHEN** the next session is planned
-- **THEN** skip-counting items can appear
+- **THEN** size words and numerals are both open
 
 ## ADDED Requirements
 

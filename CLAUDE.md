@@ -62,7 +62,8 @@ data/units-p6.js         the course, part 3: mixed review, then Phase 6 suffixes
 data/phrases.js          LR.phrases: everything said besides the course, {w} for a word (dev-only, for tools/list-clips.js)
 data/pictures.js         LR.pictures (emoji, Unicode 6 only) and LR.lang (rhymes, a/an, plurals, positions)
 js/words.js              graphemes (Letters and Sounds), segment(), decodable(), checkUnits(), hearts, families, look-alikes
-js/maths.js              LR.maths: the 15 KG-2 skills in unlock order, seeded question generators, ten-frames
+js/maths.js              LR.maths: the 23 KG-2 skills in teaching (unlock) order, seeded question generators, ten-frames
+js/grammar.js            LR.grammar: the 17 language skills in UKG term order (g: items), generators drawn by steps/math.js
 js/progress.js           LR.progress: boxes, due dates, flowers, review plan, pacing, unit advance, dates
 js/store.js              LR.state schema 2, load/save/validate, migration from schema 1 and readingGarden.v1, reset
 js/speech.js             LR.speech: voice choice, clips (whole text or longest phrases, else the tablet voice), say() with timings and captions, cancel(), preload()
@@ -71,7 +72,7 @@ js/ui.js                 LR.ui helpers, letters and hearts, finger sweep, feedba
 js/guide.js, garden.js   Tilly the tortoise (4 still poses) and her garden (flowers and sprouts)
 js/kit.js                LR.kit: session screen components (path, seeds, target, cards, sentence, hold)
 js/session.js            Home, today's plan, the runner (routes home, session, practice-<step>)
-js/steps/*.js            find, flash, pic, build, tricky, silly, read, q, lang (rhyme, an, plural, pos, caps), maths (crocodile), math:
+js/steps/*.js            find, flash, pic, build, tricky, silly, read, q, lang (rhyme, an, plural, pos, caps), order (word order), maths (crocodile), math:
                          each registers LR.steps.<type> = { render, tap }; choice.js (shared answer logic), help.js (help ladder)
 js/lessons/grownups.js   Grown-ups (route grownups)
 js/main.js               load state, start router
@@ -112,6 +113,7 @@ Changing the shape means bumping `schema`, migrating in `store.js`, and extendin
 
 - **Voice:** "any female voice". The tablet has only one voice, so `chooseVoice()` prefers a female one where there's a choice. If the tablet's voice isn't female, the owner can change it in the tablet's text-to-speech settings.
 - **No recordings, ever.** If clips are ever needed, generate them from a computer voice.
+- **Teaching order everywhere:** content and skills follow the order the school teaches them (Letters and Sounds for phonics, UKG term order for language, NCF-FS and school order for maths), never appended. A skill she has practised stays open when the order changes.
 - **Old words** keep coming back until she gets each one right first try on 3 separate days (box 3, mastered; Phase 4). After that they return about every 2 weeks, and a miss drops them one box.
 - **Sound patterns:** yes, folded into Phase 5 (`add-kg2-english`).
 - **No Amazon Kids profile** on the tablet.
@@ -138,7 +140,7 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 | 6 | `add-kg2-maths` | The NCF-FS KG-2 numeracy skills, with the crocodile's = behind a Grown-ups switch (off by default). |
 | 7 | `add-indian-voice-clips` (built, clips in) | Indian English clips supplied by the owner (matched to a generated list) for every string, with word timings, preloading and a coverage test. Last, because the full list of strings is only known once Phases 4 to 6 exist. |
 | 8a | `deepen-kg2-english` (built) | After a syllabus audit (NCF-FS Balvatika outcomes, Indian UKG syllabi): 4 stories per unit with 3 questions each (one "What happened first?"), new themes (family, home, school, festivals, seasons, safety), the Phase 2 and 3 tricky words in review, same-start look-alike sets against first-letter guessing, and 6 new units (2 mixed review, then -s/-es, -ing, -ed, -er/-est). |
-| 8b | (not proposed yet) | School grammar and maths gaps: naming/doing/describing words, opposites, this/that/these/those, is/are, pronouns, word order, vowels, letter order, capital-small matching; number names to 50, skip counting in 5s, ordering numbers, longest of three, capacity, 3D shapes, sorting and odd one out, simple data, o'clock. |
+| 8b | `add-kg2-school-skills` (built) | School grammar and maths gaps. 12 language skills (letters, vowels, alphabet order, naming/doing/describing words, opposites, this/these, is/are, he/she/they, word order, sentence-picture) join the 5 old ones as `g:` skills in one UKG-ordered chain, 2 a session. 8 maths skills (size words, odd one out, ordering, longest/capacity, solids, data, skip counting, o'clock) are inserted where schools teach them. Number names go to fifty. Practised skills always stay open. |
 | 8c | (not proposed yet) | "My world" (EVS): picture sorting (where animals live, what they eat, their young; land, water and air transport; helpers; seasons; senses; good habits and safety). Writing, reciting, drawing and Hindi are out of scope for a tap-only app. |
 
 **Superseded:** the old Phase 3 (typed weekly content). Its backup, restore and reset items moved to Phase 4.
@@ -165,6 +167,7 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 
 ## Pending owner actions
 
+- Phase 8b: which new language and maths tasks needed explaining? Is word order easy to use? Do sessions stay around 10 minutes? Grown-ups > Practise one game now has Language and Maths.
 - Phase 8a: a week of sessions. Do new stories appear? Does "What happened first?" need explaining? Do same-start words (pots, plants, plums) still catch her (Grown-ups shows mix-ups)? Do sessions stay around 10 minutes? Then 8b is proposed.
 - Clip sync: do letters and words light as each word is heard on the tablet (Android may add audio delay)?
 - Phase 6: check that the ₹ sign shows on the coins, and whether her class teaches = yet (the Equals sign switch).

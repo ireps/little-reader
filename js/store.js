@@ -41,6 +41,11 @@ function cleanConfusions(c){
 var WORD_TYPES = ['find', 'flash', 'pic', 'build', 'tricky', 'an'];
 function isId(x){ return typeof x === 'string' && /^[a-z0-9-]{1,20}$/.test(x); }
 function cleanItem(it){
+  var out = cleanItemOf(it);
+  if (out && typeof it.g === 'string' && LR.grammar && LR.grammar.ORDER.indexOf(it.g) > -1) out.g = it.g;
+  return out;
+}
+function cleanItemOf(it){
   if (!isObj(it)) return null;
   if (WORD_TYPES.indexOf(it.t) > -1 && typeof it.w === 'string' && cleanWord(it.w)) return { t:it.t, w:cleanWord(it.w) };
   if (it.t === 'plural' && typeof it.w === 'string' && cleanWord(it.w)) return { t:'plural', w:cleanWord(it.w), many:it.many === true };
@@ -53,6 +58,8 @@ function cleanItem(it){
   if (it.t === 'croc' && isInt(it.a, 0, 20) && isInt(it.b, 0, 20) && ((it.a !== it.b && (it.m === 'more' || it.m === 'mouth')) || it.m === 'eq'))
     return { t:'croc', a:it.a, b:it.b, m:it.m, lv:it.lv === 2 ? 2 : 1 };
   if (it.t === 'math' && LR.maths && LR.maths.ids.indexOf(it.s) > -1 && isInt(it.seed, 1, 999999999)) return { t:'math', s:it.s, lv:it.lv === 2 ? 2 : 1, seed:it.seed };
+  if (it.t === 'gram' && LR.grammar && LR.grammar.ids.indexOf(it.g) > -1 && isInt(it.seed, 1, 999999999)) return { t:'gram', g:it.g, lv:it.lv === 2 ? 2 : 1, seed:it.seed };
+  if (it.t === 'order' && isId(it.u) && isInt(it.k, 0, 20)) return { t:'order', u:it.u, k:it.k };
   return null;
 }
 function cleanResume(r){
@@ -132,6 +139,10 @@ function seedKnown(st, today){
   (LR.knownTricky || []).concat(LR.baseReview || []).forEach(function(w){
     if (!st.items['w:' + w] && n < MAX_ITEMS) { n++; st.items['w:' + w] = { b:1, d:today, u:'', m:0 }; added = true; }
   });
+  /* Someone who has done sessions before the language order existed keeps the five tasks they had. */
+  if (st.days && st.days.length && LR.grammar && !Object.keys(st.items).some(function(k){ return k.indexOf('g:') === 0; })) {
+    LR.grammar.EARLIER.forEach(function(g){ if (n < MAX_ITEMS) { st.items['g:' + g] = { b:1, d:today, u:'', m:0 }; n++; added = true; } });
+  }
   return added;
 }
 
@@ -162,7 +173,7 @@ function reset(){
 }
 
 LR.store = {
-  load:load, save:save, reset:reset, validate:validate, migrate:migrate, isOld:isOld, cleanWord:cleanWord,
+  load:load, save:save, reset:reset, validate:validate, migrate:migrate, isOld:isOld, cleanWord:cleanWord, seedKnown:seedKnown,
   failed:function(){ return failed; }, SCHEMA:SCHEMA, KEY:KEY
 };
 })();

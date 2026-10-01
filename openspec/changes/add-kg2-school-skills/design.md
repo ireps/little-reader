@@ -31,13 +31,25 @@
 - Every language item carries `g`. `ctx.done(firstTry)` then records `P.right('g:'+g)` (growing a flower when that makes it box 3) or `P.miss('g:'+g)`. Existing steps need no change.
 - The session's Sounds and words step ends with these 2 items, instead of 1. *Session length:* about +20 s. The time budget (12 min) still trims steps if needed.
 
-**3. School order for the new language skills:** letters (capital-small), next letter, vowels, naming words, doing words, describing words, opposites, this/these, is/are, he/she/they, word order, sentence-picture. This follows the first-term-to-second-term order of typical UKG syllabi: letters before parts of speech, and sentences last.
+**3. Teaching order, not appended (owner's request).**
+
+*Language* follows the UKG term order, for **all** 17 skills (the owner: "the order should be for the entire app"), including the 5 old ones. The first 2 (capital/small letters, vowels) are open at the start. A learner with sessions already done gets the old 5 seeded as practised (box 1, in `seedKnown()`), so nothing she had disappears.
+- First term: letters (capital-small), vowels, alphabet order, naming words, he/she/they, this/these, is/are.
+- Second term: doing words, describing words, opposites, word order, sentence-picture.
+
+*Maths:* each new skill is inserted where schools teach it, not after the clock. The full order is: compare, count, **size, odd one out**, numerals, count on and back, **order**, before/after, zero, add, take away, names, money, measure, **longest**, shapes, **solids**, halves, patterns, **data**, **skip counting**, time, **clock**.
+- Pre-number ideas (size words, sorting) come before numbers.
+- Ordering numbers comes with sequencing.
+- 3D shapes come after 2D shapes.
+- Skip counting and o'clock come with time, in the second term.
+
+*Unlocking an inserted skill:* skills unlock as a chain, and an inserted skill could block one she already uses. So a skill whose `m:`/`g:` item already exists stays open whatever comes before it (`chain()` in `js/progress.js`).
 
 **4. Word banks are fixed and decodable from Phase 3 graphemes.**
 - Naming words: cat, dog, hat, bus, sun, pen, cup, bed, fish, duck.
 - Doing words: run, jump, sit, hop, dig, swim, sing, kick, clap, nap.
 - Describing words: big, red, hot, wet, sad, thin, soft, fast, pink, long.
-- Opposite pairs: hot/cold, up/down, on/off, long/short, thick/thin, soft/hard, top/bottom, open/shut, fast/slow, big/little.
+- Opposite pairs: hot/cold, up/down, on/off, long/short, thick/thin, soft/hard, top/bottom, open/shut, fast/slow, big/small.
 - *this/these* and *is/are* use the plural word list (with pictures).
 - Pronoun sentences come from a small built-in list about Raj, Meena and "Raj and Meena".
 - Word order uses the current unit's sense sentences (`silly` with `ok: true`) of 3 to 5 words, so its words are decodable for her unit. If the unit has none, it uses a built-in short list.

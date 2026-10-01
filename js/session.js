@@ -63,9 +63,21 @@ function noRuns(items){
   }
   return items;
 }
-/* One language task a day, in turn: rhyme, a or an, one or many, where is it, capital letters. */
-function langItem(){
-  var L = LR.lang, kind = ['rhyme', 'an', 'plural', 'pos', 'caps'][LR.state.days.length % 5];
+/* Two language items a day from the open language skills, least recently practised first (never practised first). */
+function langItems(n){
+  var it = LR.state.items, open = P.langUnlocked();
+  var order = U.shuffle(open).sort(function(x, y){
+    var a = it['g:' + x], b = it['g:' + y];
+    if (!a !== !b) return a ? 1 : -1;
+    return (a ? a.d : '') < (b ? b.d : '') ? -1 : (a ? a.d : '') > (b ? b.d : '') ? 1 : 0;
+  });
+  return order.slice(0, n).map(function(g){ var item = langItem(g); item.g = g; return item; });
+}
+/* One item of a language skill. */
+function langItem(kind){
+  var L = LR.lang;
+  if (LR.grammar.ids.indexOf(kind) > -1) return { t:'gram', g:kind, lv:P.langLevel(kind), seed:1 + U.rand(999999998) };
+  if (kind === 'order') { var u = P.unit(); return { t:'order', u:u.id, k:U.rand(LR.grammar.orderSentences(u).length) }; }
   if (kind === 'rhyme') return { t:'rhyme', k:U.rand(L.rhymes.length) };
   if (kind === 'an') { var list = U.rand(2) ? L.an : L.a; return { t:'an', w:list[U.rand(list.length)] }; }
   if (kind === 'plural') return { t:'plural', w:L.plural[U.rand(L.plural.length)], many:!!U.rand(2) };
@@ -93,8 +105,9 @@ function plan(mode, only){
   function add(id, items){ if (items.length || id === 'garden') steps.push({ id:id, items:items }); }
   var words = mode === 'extra' ? P.planExtra(8) : P.planWords(10);
   var wordItems = words.map(function(w, i){ return mode === 'extra' ? { t:i % 2 ? 'flash' : 'find', w:w } : wordItem(w, i); });
-  if (mode !== 'extra' && wordItems.length) wordItems.push(langItem());
+  if (mode !== 'extra' && wordItems.length) wordItems = wordItems.concat(langItems(2));
   if (!only || only === 'words') add('words', noRuns(wordItems));
+  if (only === 'lang') add('words', langItems(3));
   if (mode === 'day' || only === 'tricky') {
     var tricky = P.newTricky();
     if (only === 'tricky' && !tricky.length) tricky = P.unit().tricky.slice(0, 1);
@@ -164,6 +177,8 @@ function makeCtx(r, st, item){
       finished = true;
       clearIdle();
       if (counted !== false) { r.answered++; if (firstTry) r.right++; }
+      /* Language skills keep a box, like the maths skills. */
+      if (item.g) { if (firstTry) { if (P.right('g:' + item.g)) r.fresh++; } else P.miss('g:' + item.g); LR.store.save(); }
       r.at = [r.at[0], r.at[1] + 1];
       save();
       /* The answer stays on screen for a beat (Grown-ups > Pace), then the next item is drawn. */
@@ -315,7 +330,7 @@ function start(mode, only){
 }
 session.mathItems = mathItems;
 LR.routes.session = function(){ document.title = 'Little Reader'; start('day'); };
-['words', 'tricky', 'silly', 'read', 'maths'].forEach(function(id){
+['words', 'lang', 'tricky', 'silly', 'read', 'maths'].forEach(function(id){
   LR.routes['practice-' + id] = function(){ document.title = 'Practise – Little Reader'; start('practice', id); };
 });
 

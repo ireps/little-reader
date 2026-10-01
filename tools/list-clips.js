@@ -17,10 +17,10 @@ const sandbox = { console };
 sandbox.window = sandbox;
 vm.createContext(sandbox);
 vm.runInContext('var LR = window.LR = { ui: { esc: function(s){ return String(s); } } };', sandbox);
-['data/units.js', 'data/units-p5.js', 'data/units-p6.js', 'data/pictures.js', 'data/phrases.js', 'js/words.js', 'js/maths.js'].forEach(f => {
+['data/units.js', 'data/units-p5.js', 'data/units-p6.js', 'data/pictures.js', 'data/phrases.js', 'js/words.js', 'js/maths.js', 'js/grammar.js'].forEach(f => {
   vm.runInContext(fs.readFileSync(path.join(ROOT, f), 'utf8'), sandbox, { filename: f });
 });
-const LR = sandbox.LR, W = LR.words, M = LR.maths;
+const LR = sandbox.LR, W = LR.words, M = LR.maths, G = LR.grammar;
 
 /* The same rules as LR.speech.keyOf() and its clause split. */
 const keyOf = s => String(s).toLowerCase().replace(/[‘’]/g, "'").replace(/[^a-z0-9' ]+/g, ' ').replace(/\s+/g, ' ').trim();
@@ -84,6 +84,17 @@ M.ids.forEach(s => [1, 2].forEach(lv => {
     q.opts.forEach(o => clauses(o.label).forEach(pieces));
   }
 }));
+
+/* 6. Language skills (js/grammar.js): the same sweep, and the built-in word-order sentences. */
+G.ids.forEach(g => [1, 2].forEach(lv => {
+  for (let seed = 1; seed <= 4000; seed++) {
+    const q = G.gen({ g, lv, seed });
+    if (!q) continue;
+    [q.prompt, q.right, q.right.replace(/^Yes! /, '')].forEach(t => clauses(t).forEach(c => (atoms.has(c) ? keys.add(c) : pieces(c))));
+    q.opts.forEach(o => clauses(o.label).forEach(pieces));
+  }
+}));
+G.ORDER_SENTENCES.forEach(s => { add(s); words(s); });
 
 /* File names: the key with dashes, unique. */
 const used = new Set(), lines = [...keys].sort().map(k => {

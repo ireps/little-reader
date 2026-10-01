@@ -379,6 +379,16 @@ input[type=range]{padding:0;border:0}
   background:var(--paper);border:4px dashed var(--line);border-radius:24px;font-size:76px;line-height:1}
 .s-slot.full{border-style:solid;border-color:var(--leaf);background:var(--right)}
 .s-slot.next{border-color:var(--ink)}
+/* Word order: word slots and word tiles (wrap onto 2 rows on a narrow screen). */
+.s-wslots{flex-wrap:wrap;gap:8px 0}
+.s-slot.s-wslot{min-width:120px;height:120px;padding:0 14px;font-size:48px}
+.s-tile.s-wtile{font-size:48px}
+/* Language skills drawn by the question screen. */
+.g-letter{font-size:72px}
+.g-sent{font-size:44px;display:block;margin:8px auto;max-width:900px}
+.s-q .s-picimg + .g-sent{margin-top:4px}
+.m-size{width:110px;height:160px;display:block}
+.m-clock{width:190px;height:190px;display:block;margin:0 auto}
 .s-slot .sb{bottom:14px;font-size:76px}
 .s-tile{position:relative;min-width:120px;min-height:120px;margin:6px;padding:0 16px;background:var(--paper);border:4px solid var(--line);border-bottom-width:10px;
   border-radius:24px;font-size:64px;line-height:1;cursor:pointer}

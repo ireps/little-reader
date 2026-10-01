@@ -93,6 +93,11 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
       else await p.click(`[data-act=sym][data-s="${it.a > it.b ? '>' : it.a < it.b ? '<' : '='}"]`);
     }
     else if (it.t === 'math') await p.click(`.m-opt[data-i="${await p.evaluate(i => { const q = LR.maths.gen(i); return q.opts.map(o => o.v).indexOf(q.answer); }, it)}"]`);
+    else if (it.t === 'gram') await p.click(`.m-opt[data-i="${await p.evaluate(i => { const q = LR.grammar.gen(i); return q.opts.map(o => o.v).indexOf(q.answer); }, it)}"]`);
+    else if (it.t === 'order') {
+      const words = await p.evaluate(i => { const l = LR.grammar.orderSentences(LR.progress.unitById(i.u)); return l[i.k % l.length].split(' '); }, it);
+      for (const w of words) await p.evaluate(x => [...document.querySelectorAll('.s-wtile')].find(t => t.textContent === x).click(), w);
+    }
     else if (it.t === 'flash') { await p.waitForSelector('.s-card'); await p.click(`.s-card[data-w="${it.w}"]`); }
     else if (it.t === 'pic') await p.click(`.s-pic[data-w="${it.w}"]`);
     else if (it.t === 'build') {
@@ -418,6 +423,10 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
     await p.waitForFunction(o => !LR.session.ctx || LR.session.ctx.item !== o || location.hash === '#grownups', cc, { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(30); }
   await p.waitForFunction(() => location.hash === '#grownups', null, { timeout: 5000 }).catch(() => {});
   ok(await p.evaluate(() => location.hash) === '#grownups', 'after the game it returns to Grown-ups');
+  ok(await p.$$eval('a[href^="#practice-"]', x => x.map(a => a.textContent).join()) === 'Sounds and words,Language,Tricky word,Silly sentences,Read with me,Maths', 'Practise one game lists Language and Maths');
+  await p.click('a[href="#practice-lang"]'); await p.waitForTimeout(60);
+  ok(await p.evaluate(() => { const it = LR.session.ctx && LR.session.ctx.item; return !!it && !!it.g && LR.state.resume === null; }), 'Practise Language opens language tasks without replacing the day\'s plan');
+  await p.goto(U + '#grownups'); await p.waitForTimeout(60);
   // Backup
   await p.waitForSelector('[data-act=backup]');
   const [dl] = await Promise.all([p.waitForEvent('download'), p.click('[data-act=backup]')]);
@@ -583,14 +592,14 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   await startSession();
   const planned = await p.evaluate(() => { const r = LR.state.resume; return { words: r.steps[0].items.map(i => i.t), read: (r.steps.find(s => s.id === 'read') || { items: [] }).items.map(i => i.t) }; });
   ok(planned.read.slice(-1)[0] === 'q' && planned.read[0] === 'read', 'story questions come after the story\'s sentences: ' + planned.read.join(','));
-  ok(new Set(planned.words).size >= 3 && ['rhyme', 'an', 'plural', 'pos', 'caps'].includes(planned.words.slice(-1)[0]), 'Sounds and words mixes activities and ends with a language task: ' + planned.words.join(','));
+  ok(new Set(planned.words).size >= 3 && ['rhyme', 'an', 'plural', 'pos', 'caps', 'gram', 'order'].includes(planned.words.slice(-1)[0]), 'Sounds and words mixes activities and ends with a language task: ' + planned.words.join(','));
   ok(planned.words.every((t, i) => i < 3 || !(t === planned.words[i - 1] && t === planned.words[i - 2] && t === planned.words[i - 3])), 'no activity runs more than 3 times in a row');
 
   // ---------- Phase 6: maths ----------
   const gens = await p.evaluate(() => {
     const M = LR.maths, bad = [], R = {
       count: [[2, 10], [11, 20]], numeral: [[1, 9], [10, 99]], counton: [[0, 9], [0, 100]], neighbour: [[0, 20], [0, 100]],
-      add: [[2, 9], [2, 18]], take: [[1, 8], [1, 8]], names: [[1, 10], [11, 20]], zero: [[0, 0], [0, 0]]
+      add: [[2, 9], [2, 18]], take: [[1, 8], [1, 8]], names: [[1, 10], [11, 50]], zero: [[0, 0], [0, 0]], skip: [[6, 50], [6, 100]], order: [[0, 10], [0, 50]]
     };
     M.ids.filter(s => s !== 'compare').forEach(s => [1, 2].forEach(lv => {
       for (let i = 1; i <= 300; i++) {
@@ -605,6 +614,91 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
     return [...new Set(bad)];
   });
   ok(gens.length === 0, 'every maths generator gives its answer among unique choices, inside the level\'s range (300 items per skill and level)' + (gens.length ? ': ' + gens.slice(0, 8).join(', ') : ''));
+
+  // ---------- Phase 8b: language skills ----------
+  const ggens = await p.evaluate(() => {
+    const G = LR.grammar, bad = [];
+    G.ids.forEach(g => [1, 2].forEach(lv => {
+      for (let i = 1; i <= 300; i++) {
+        const q = G.gen({ g, lv, seed: i * 7919 }), vals = q.opts.map(o => o.v);
+        if (!vals.includes(q.answer)) bad.push(`${g}${lv}: answer not offered`);
+        if (new Set(vals.map(String)).size !== vals.length) bad.push(`${g}${lv}: repeated choice ${vals}`);
+        if (q.opts.length < 2 || q.opts.length > 3) bad.push(`${g}${lv}: ${q.opts.length} choices`);
+      }
+    }));
+    /* Exactly one right kind of word, and one right opposite. */
+    for (let i = 1; i <= 300; i++) ['naming', 'doing', 'describing'].forEach(k => {
+      const q = G.gen({ g: k, lv: 1, seed: i }), list = G.BANKS[k.toUpperCase()];
+      if (q.opts.filter(o => list.includes(o.v)).length !== 1) bad.push(k + ': ' + q.opts.map(o => o.v));
+    });
+    /* The banks are decodable at the starting unit. */
+    const W = LR.words, i4 = LR.units.findIndex(u => u.id === 'p4-01'), B = G.BANKS;
+    const words = [].concat(B.NAMING, B.DOING, B.DESCRIBING, B.ADJ, B.THINGS, B.VERBS, ...B.OPPOSITES, ...B.SENTPIC.map(x => x[0].match(/[A-Za-z']+/g)), ...G.ORDER_SENTENCES.map(s => s.match(/[A-Za-z']+/g)));
+    words.forEach(w => { if (!W.decodable(w, i4) && !['Raj', 'Meena'].includes(w)) bad.push('not decodable: ' + w); });
+    B.SENTPIC.forEach(x => { if (!LR.pictures[x[1]]) bad.push('no picture: ' + x[1]); });
+    return [...new Set(bad)];
+  });
+  ok(ggens.length === 0, 'every language generator offers its answer among 2-3 unique choices; one right kind of word; banks decodable at p4-01 with pictures' + (ggens.length ? ': ' + ggens.slice(0, 8).join(', ') : ''));
+  const lsched = await p.evaluate(() => {
+    const P = LR.progress, it = LR.state.items;
+    Object.keys(it).filter(k => k.startsWith('g:') || k.startsWith('m:')).forEach(k => delete it[k]);
+    const fresh = P.langUnlocked().join();
+    it['g:vowels'] = { b: 2, d: P.today(), u: '', m: 0 };
+    const after = P.langUnlocked().join();
+    /* Someone who did sessions before the order existed keeps the five tasks they had. */
+    const old = LR.store.validate({ schema: 2, unit: 'p4-01', items: {}, days: [{ d: '2026-09-01', n: 5, r: 4, mins: 9 }] });
+    LR.store.seedKnown(old, '2026-10-01');
+    const kept5 = LR.grammar.EARLIER.every(g => old.items['g:' + g] && old.items['g:' + g].b === 1);
+    const freshState = LR.store.validate({ schema: 2, unit: 'p4-01', items: {}, days: [] }); LR.store.seedKnown(freshState, '2026-10-01');
+    const none = !Object.keys(freshState.items).some(k => k.startsWith('g:'));
+    /* A skill inserted earlier in the order (size, after count) never locks one she has practised (numeral). */
+    it['m:count'] = { b: 2, d: P.today(), u: '', m: 0 }; it['m:numeral'] = { b: 1, d: P.today(), u: '', m: 0 };
+    const kept = P.mathsUnlocked().join();
+    return { fresh, after, kept, kept5, none, maths: LR.maths.ids.join(), lang: LR.grammar.ORDER.join() };
+  });
+  ok(lsched.fresh === 'letters,vowels' && lsched.after === 'letters,vowels,next',
+    'language skills: capital/small letters and vowels are open first; the next opens when the one before reaches box 2: ' + JSON.stringify(lsched));
+  ok(lsched.lang === 'letters,vowels,next,an,plural,naming,pronoun,this,isare,pos,rhyme,doing,describing,opposites,caps,order,sentpic',
+    'all language skills follow the UKG term order: letters, vowels, alphabet order, a/an, one or many, naming words, he/she/they, this/these, is/are, in/on/under, rhymes, then doing and describing words, opposites, capital letters, sentences');
+  ok(lsched.kept5 && lsched.none, 'an existing learner keeps rhyme, a/an, plural, in/on/under and capitals open; a new install starts with the order');
+  ok(lsched.maths === 'compare,count,size,odd,numeral,counton,order,neighbour,zero,add,take,names,money,measure,longest,shapes,solids,halves,pattern,data,skip,time,clock',
+    'maths skills follow the teaching order: size words and sorting before numbers, ordering with sequencing, solids after shapes, time last');
+  ok(lsched.kept === 'compare,count,size,numeral', 'a practised skill stays open when a new skill is inserted before it: ' + lsched.kept);
+  // Two language items a day, from 2 skills, recorded per skill; the rotation keeps moving after 30 days
+  const rot = [];
+  await seed(s2({ 'w:come': { b: 2, d: t0 } }, { days: Array.from({ length: 30 }, (x, i) => ({ d: '2026-01-' + String(i + 1).padStart(2, '0'), n: 1, r: 1, mins: 1 })) }));
+  for (let d = 0; d < 5; d++) {
+    await p.evaluate(() => { LR.state.resume = null; LR.store.save(); });
+    await startSession();
+    const langs = await p.evaluate(() => LR.state.resume.steps[0].items.filter(i => i.g).map(i => i.g));
+    rot.push(langs);
+    /* Practised today: due again later, so the next day brings others. */
+    await p.evaluate(([gs, k]) => { gs.forEach(g => { LR.state.items['g:' + g] = { b: 1, d: '2030-0' + (k + 1) + '-01', u: '', m: 0 }; }); LR.store.save(); }, [langs, d]);
+  }
+  ok(rot.every(l => l.length === 2 && l[0] !== l[1]) && new Set(rot.map(l => l.slice().sort().join())).size >= 3,
+    'each day has 2 language items from 2 skills, and with 30 days recorded the skills keep rotating: ' + JSON.stringify(rot));
+  await only({ t: 'gram', g: 'doing', lv: 1, seed: 5, gg: 1 }, 'words');
+  await p.evaluate(() => { const it = LR.state.resume.steps[0].items[0]; it.g = 'doing'; });
+  const dq = await p.evaluate(() => { const q = LR.grammar.gen({ g: 'doing', lv: 1, seed: 5 }); return { wrong: q.opts.map(o => o.v).indexOf(q.opts.find(o => o.v !== q.answer).v), right: q.opts.map(o => o.v).indexOf(q.answer), ans: q.answer }; });
+  await clearSaid();
+  await p.click(`.m-opt[data-i="${dq.wrong}"]`); await p.waitForTimeout(40);
+  ok(await p.$eval(`.m-opt[data-i="${dq.wrong}"]`, e => e.classList.contains('fb-wrong') && !/red|cross/.test(e.className)), 'Find the doing word: a wrong word dims, with no red or cross');
+  await p.click(`.m-opt[data-i="${dq.right}"]`); await p.waitForTimeout(40);
+  ok((await said()).includes('Yes! ' + dq.ans + ' is a doing word.'), 'Find the doing word: the right word is praised by name');
+  // Is or are: the gap fills
+  await only({ t: 'gram', g: 'isare', lv: 1, seed: 3 }, 'words');
+  const ia = await p.evaluate(() => { const q = LR.grammar.gen({ g: 'isare', lv: 1, seed: 3 }); return { i: q.opts.map(o => o.v).indexOf(q.answer), fill: q.fill }; });
+  ok(await p.evaluate(i => { document.querySelector(`.m-opt[data-i="${i.i}"]`).click(); return document.querySelector('.s-q .s-gap').textContent === i.fill; }, ia), 'Is or are: a right answer fills the gap');
+  // Word order: a wrong tile stays; the right order completes the sentence
+  await only({ t: 'order', u: 'p4-01', k: 0 }, 'words');
+  const ws = await p.evaluate(() => LR.grammar.orderSentences(LR.progress.unitById('p4-01'))[0].split(' '));
+  await p.evaluate(x => [...document.querySelectorAll('.s-wtile')].find(t => t.textContent === x).click(), ws[ws.length - 1]); await p.waitForTimeout(40);
+  ok(await p.evaluate(x => [...document.querySelectorAll('.s-wtile')].some(t => t.textContent === x), ws[ws.length - 1]) && await p.$$eval('.s-wslot.full', x => x.length) === 0, 'Word order: a tile that does not fit stays in the tray');
+  const tileH = await p.$eval('.s-wtile', e => e.getBoundingClientRect().height);
+  await clearSaid();
+  for (const w of ws) await p.evaluate(x => [...document.querySelectorAll('.s-wtile')].find(t => t.textContent === x).click(), w);
+  await p.waitForTimeout(60);
+  ok((await said()).includes('Yes! ' + ws.join(' ')) && tileH >= 120, 'Word order: tapping the words in order completes and says the sentence; tiles are at least 120 px tall (' + tileH + ')');
   const mplan = await p.evaluate(() => {
     const t = LR.progress.today(), out = {};
     LR.state.items = {}; LR.state.equals = false;

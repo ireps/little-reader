@@ -1,7 +1,7 @@
 ## MODIFIED Requirements
 
 ### Requirement: Language tasks
-Language tasks SHALL be skills with boxes, like the maths skills: rhyme, capital letters, a or an, plural -s and in/on/under are always open; the other language skills open one at a time in school order, each when the one before reaches box 2. Every session SHALL include 2 language items, chosen from the open skills, least recently practised first. A tapped answer SHALL show its state within 100 ms.
+Language tasks SHALL be skills with boxes, like the maths skills, in one chain in UKG term order (capital and small letters, vowels, alphabet order, a or an, one or many, naming words, he/she/they, this/these, is/are, in/on/under, rhymes, then doing words, describing words, opposites, capital letters, word order, sentence and picture). The first 2 are open from the start; each later one opens when the one before reaches box 2, and one she has practised stays open. A learner who did sessions before this order keeps rhyme, a or an, plural, in/on/under and capitals open. Every session SHALL include 2 language items from the open skills, least recently practised first. A tapped answer SHALL show its state within 100 ms.
 
 #### Scenario: Rhyme right
 - **WHEN** she hears "cat" and picks the hat picture
@@ -37,9 +37,14 @@ Language tasks SHALL be skills with boxes, like the maths skills: rhyme, capital
 - **THEN** they don't all use the same language skills
 
 #### Scenario: Unlock
-- **GIVEN** capital-to-small letters is at box 1
+- **GIVEN** a new install, with vowels at box 1
 - **WHEN** a session is planned
-- **THEN** no letter-order item appears; once it reaches box 2, letter-order items can appear
+- **THEN** no alphabet-order item appears; once vowels reach box 2, alphabet-order items can appear
+
+#### Scenario: Earlier learner
+- **GIVEN** saved progress with sessions done before the language order
+- **WHEN** it is loaded
+- **THEN** rhyme, a or an, plural, in/on/under and capitals are open
 
 ## ADDED Requirements
 
