@@ -81,7 +81,7 @@ They go to `test-results/screens/`.
 
 ## Specs
 
-The app's behaviour and the planned rebuild (Phases 3 to 7) are written up with [OpenSpec](https://github.com/Fission-AI/OpenSpec) in `openspec/`. `openspec/specs/` describes what ships today, and `openspec/changes/` holds one proposed change per phase. Check them with:
+The app's behaviour is written up with [OpenSpec](https://github.com/Fission-AI/OpenSpec) in `openspec/`. `openspec/specs/` describes what ships today, `openspec/changes/` holds any change in progress, and `openspec/changes/archive/` keeps the finished ones (the rebuild, Phases 3 to 7). Check them with:
 
 ```
 npm run spec
