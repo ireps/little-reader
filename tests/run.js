@@ -127,7 +127,21 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   ok(await p.$$eval('#app [data-act=start]', x => x.length) === 1, 'Home has one Start');
   ok(await p.$$eval('#app .s-target', x => x.length) === 1, 'Home has one primary target');
   ok(await p.$eval('.garden', g => g.dataset.flowers) === '0', 'a new garden has no flowers yet');
-  ok(/6 sprouts/.test(await p.$eval('.garden', g => g.getAttribute('aria-label'))), 'the words she is learning show as sprouts');
+  ok(/15 sprouts/.test(await p.$eval('.garden', g => g.getAttribute('aria-label'))), 'the words she is learning show as sprouts (her 6 known words and the 9 base tricky words)');
+  const base = await p.evaluate(() => { const it = LR.state.items, b = LR.baseReview;
+    return { all: b.length === 9 && b.every(w => it['w:' + w] && it['w:' + w].b === 1), known: LR.knownTricky.every(w => it['w:' + w] && it['w:' + w].b === 1) }; });
+  ok(base.all && base.known, 'a new install has the, to, I, no, go, into, me, be and are in review at box 1, with her known words');
+  await p.evaluate(() => { localStorage.setItem(LR.store.KEY, JSON.stringify({ schema: 2, unit: 'p5-03', items: { 'w:the': { b: 4, d: '2030-01-01', u: '', m: 0 }, 'w:jump': { b: 2, d: '2030-01-01', u: '', m: 0 } },
+    flowers: [], confusions: {}, stories: {}, days: [], rate: 0.9 })); LR.store.load(); });
+  const old = await p.evaluate(() => { const it = LR.state.items; return { the: it['w:the'].b, jump: it['w:jump'].b, are: it['w:are'] && it['w:are'].b, i: it['w:i'] && it['w:i'].b,
+    saved: JSON.parse(localStorage.getItem(LR.store.KEY)).items['w:be'] !== undefined }; });
+  ok(old.the === 4 && old.jump === 2 && old.are === 1 && old.i === 1 && old.saved, 'existing progress gains the base tricky words once, and words already there keep their box: ' + JSON.stringify(old));
+  ok(await p.evaluate(() => LR.ui.lettersHTML('i', true).indexOf('>I<') > -1), 'the word I always shows as a capital letter');
+  const pairs = await p.evaluate(() => { const S = LR.session, st = { q: [{}, {}, {}] }, d = LR.progress.addDays('2000-01-01', 9133);
+    return { zero: S.dayNumber('2000-01-01'), day: S.dayNumber(d), today: S.questionPair(st, d), next: S.questionPair(st, LR.progress.addDays(d, 1)), after: S.questionPair(st, LR.progress.addDays(d, 2)), two: S.questionPair({ q: [{}, {}] }, d) }; });
+  ok(pairs.zero === 0 && pairs.day === 9133 && pairs.today.join() === '1,2' && pairs.next.join() === '2,0' && pairs.after.join() === '0,1' && pairs.two.join() === '0,1',
+    'story questions are asked in pairs that take turns by date (day 9133: 2 and 3, then 3 and 1, then 1 and 2): ' + JSON.stringify(pairs));
+  await seed();
   ok((await said()).length === 0, 'nothing is spoken before the first touch');
   ok(!(await p.isVisible('#bar')), 'the top bar is hidden on the child screens');
   ok(await p.evaluate(() => LR.state.unit === 'p4-01' && ['come', 'some', 'from', 'have', 'many', 'also'].every(w => LR.state.items['w:' + w].b === 1)), 'a new install starts at unit p4-01 with her known tricky words in review');
@@ -203,7 +217,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   // ---------- New tricky word ----------
   /* All of unit 1's words are known and not due, so nothing is reviewed today. */
   const later = await d(t0, 5), unitWords = {};
-  for (const w of await p.evaluate(() => LR.progress.unitById('p4-01').words)) unitWords['w:' + w] = { b: 2, d: later };
+  for (const w of await p.evaluate(() => LR.progress.unitById('p4-01').words.concat(LR.knownTricky, LR.baseReview))) unitWords['w:' + w] = { b: 2, d: later };
   await seed(s2(Object.assign({ 'w:come': { b: 2, d: later } }, unitWords))); await startSession();
   c = await item();
   ok(c.step === 'tricky' && c.it.w === 'said', 'with nothing due, the session starts with the new tricky word: ' + JSON.stringify(c));
@@ -218,7 +232,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   ok(await p.evaluate(() => LR.state.items['w:said'] && LR.state.items['w:said'].b === 0), 'the new tricky word goes into review');
 
   // ---------- Read with me ----------
-  await seed(s2(Object.assign({ 'w:come': { b: 2, d: later }, 'w:said': { b: 2, d: later }, 'w:like': { b: 2, d: later }, 'w:the': { b: 3, d: later } }, unitWords)));
+  await seed(s2(Object.assign({}, unitWords, { 'w:come': { b: 2, d: later }, 'w:said': { b: 2, d: later }, 'w:like': { b: 2, d: later }, 'w:the': { b: 3, d: later } })));
   await startSession();
   while ((await item()).step !== 'read') await answer();
   c = await item();
@@ -390,7 +404,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   ok((await p.textContent('#msg')).length > 0 && !(await p.$('.gp')), 'a wrong answer keeps Grown-ups shut');
   await openGrownups();
   ok(!!(await p.$('.gp')), 'the right answer opens Grown-ups');
-  ok((await p.textContent('.gp')).includes('Unit 4 of 21'), 'Grown-ups shows her unit (p4-01 is unit 4 of 21)');
+  ok((await p.textContent('.gp')).includes('Unit 4 of 27'), 'Grown-ups shows her unit (p4-01 is unit 4 of 27)');
   ok(await p.$$eval('.gp textarea, .gp input[type=text]', x => x.length) === 0, 'Grown-ups has no typing boxes');
   // Where is she?
   await p.evaluate(() => { LR.state.resume = { date: LR.progress.today(), steps: [{ id: 'words', items: [{ t: 'find', w: 'come' }] }], at: [0, 0], done: false, started: Date.now(), fresh: 0, right: 0, answered: 0, mode: 'day' }; });
@@ -436,23 +450,40 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
 
   // ---------- Phase 5: the course ----------
   const course = await p.evaluate(() => {
-    const W = LR.words, i4 = LR.units.findIndex(u => u.id === 'p4-01'), bad = [];
+    const W = LR.words, i4 = LR.units.findIndex(u => u.id === 'p4-01'), bad = [], perTheme = {};
+    const THEMES = ['plants', 'animals', 'food', 'body', 'transport', 'weather', 'helpers', 'family', 'home', 'school', 'festivals', 'seasons', 'safety'];
     LR.units.forEach(u => {
       const sil = u.silly || [];
       if (u.words.length < 8 || u.words.length > 12) bad.push(u.id + ' words ' + u.words.length);
       if (u.tricky.length < 1 || u.tricky.length > 3) bad.push(u.id + ' tricky ' + u.tricky.length);
-      if (u.stories.length !== 2 || u.stories.some(s => s.s.length < 4 || s.s.length > 6 || !(s.q && s.q.length))) bad.push(u.id + ' stories');
+      if (u.stories.length !== 4 || u.stories.some(s => s.s.length < 4 || s.s.length > 6)) bad.push(u.id + ' stories');
+      u.stories.forEach(s => { if (!s.q || s.q.length !== 3 || s.q.filter(q => q.first).length !== 1 || s.q.some(q => q.opts.indexOf(q.a) === -1 || q.opts.length !== 3)) bad.push(s.id + ' questions'); });
       if (sil.length !== 8 || sil.filter(x => x.ok).length !== 4) bad.push(u.id + ' silly');
-      if (['plants', 'animals', 'food', 'body', 'transport', 'weather', 'helpers'].indexOf(u.theme) === -1) bad.push(u.id + ' theme');
+      if (THEMES.indexOf(u.theme) === -1) bad.push(u.id + ' theme');
+      u.stories.forEach(s => { if (THEMES.indexOf(s.theme) === -1) bad.push(s.id + ' theme'); else perTheme[s.theme] = (perTheme[s.theme] || 0) + 1; });
+      const near = u.near || [];
+      if (near.length < 3 || near.some(g => g.length < 3 || g.some(w => w[0] !== g[0][0]) || new Set(g).size !== g.length) || !near.some(g => g.some(w => u.words.includes(w)))) bad.push(u.id + ' near');
     });
+    ['family', 'home', 'school', 'festivals', 'seasons', 'safety'].forEach(t => { if ((perTheme[t] || 0) < 2) bad.push('theme ' + t + ' has ' + (perTheme[t] || 0) + ' stories'); });
     return { problems: W.checkUnits(), bad, cake: W.decodable('cake', i4), night: W.decodable('night', i4), doTricky: W.decodable('do', i4),
       order: LR.units.map(u => u.id).join(), ship: (W.segment('ship') || []).join('|'), cakeSeg: (W.segment('cake') || []).join('|') };
   });
   ok(course.problems.length === 0, 'every word in every unit is decodable with what has been taught by then' + (course.problems.length ? ': ' + course.problems.join(', ') : ''));
   ok(!course.cake && course.night && !course.doTricky, 'the check fails on an untaught sound (cake in Phase 4) or tricky word (do in unit 1), and passes taught ones (night)');
-  ok(course.bad.length === 0, 'every unit has 8-12 words, 1-3 tricky words, 2 stories of 4-6 sentences with questions, 8 silly sentences and a theme' + (course.bad.length ? ': ' + course.bad.join(', ') : ''));
-  ok(/^p3-r1,p3-r2,p3-r3,p4-01,.*p4-06,p5-01,.*p5-12$/.test(course.order), 'units run from Phase 3 review through Phase 4 to the end of Phase 5');
+  ok(course.bad.length === 0, 'every unit has 8-12 words, 1-3 tricky words, 4 stories of 4-6 sentences with 3 questions each (one "What happened first?"), 8 silly sentences, a theme on the unit and each story, and 3 or more same-start groups; each new theme has 2 or more stories' + (course.bad.length ? ': ' + course.bad.join(', ') : ''));
+  ok(/^p3-r1,p3-r2,p3-r3,p4-01,.*p4-06,p5-01,.*p5-12,p5-r1,p5-r2,p6-01,p6-02,p6-03,p6-04$/.test(course.order), 'units run from Phase 3 review through Phases 4 and 5, then mixed review and the Phase 6 suffixes (-s/-es, -ing, -ed, -er/-est)');
   ok(course.ship === 'sh|i|p' && course.cakeSeg === 'c|a_e|k', 'words split into sounds, with split digraphs (sh-i-p, c-a_e-k)');
+  const sfx = await p.evaluate(() => { const W = LR.words, base = s => ({ graphemes: W.BASE, tricky: [], suffixes: s, all: [] });
+    return { early: W.decodable('jumping', 0, base([])), taught: W.decodable('jumping', 0, base(['ing'])), stamped: W.decodable('stamped', 0, base([])),
+      bed: W.decodable('bed', 0, base([])), letter: W.suffixOf('letter'), blacker: W.decodable('blacker', 0, base(['ing'])), blackerOk: W.decodable('blacker', 0, base(['er'])) }; });
+  ok(!sfx.early && sfx.taught && !sfx.stamped, 'a suffixed word (jumping, stamped) is decodable only once its suffix is taught: ' + JSON.stringify(sfx));
+  const near = await p.evaluate(() => { const W = LR.words, g = [['plants', 'plums', 'pots'], ['grow', 'green', 'grin']], runs = [];
+    for (let i = 0; i < 20; i++) runs.push(W.lookalikes('plants', ['cat', 'dog'], [], 2, g).sort().join());
+    return { group: [...new Set(runs)], mix: W.lookalikes('plants', [], ['pets'], 2, g), twoStart: W.lookalikes('grab', [], [], 2, g) }; });
+  ok(near.group.length === 1 && near.group[0] === 'plums,pots', 'with no mix-ups, both distractors come from the target’s same-start group: ' + JSON.stringify(near.group));
+  ok(near.mix[0] === 'pets' && ['plums', 'pots'].includes(near.mix[1]) && near.twoStart.every(w => w.slice(0, 2) === 'gr'),
+    'her mix-ups still come first, then the group; a word outside the groups gets same-start words from them: ' + JSON.stringify(near));
+  ok(sfx.bed && sfx.letter === '' && !sfx.blacker && sfx.blackerOk, 'a suffix is only split off a real root (bed and letter are plain words; blacker needs -er)');
   const pics = await p.evaluate(() => {
     /* Unicode 6.0/6.1 emoji ranges (Android 5.1 draws these), plus a few older default-emoji symbols. */
     const R = [[0x1F300, 0x1F320], [0x1F330, 0x1F335], [0x1F337, 0x1F37C], [0x1F380, 0x1F393], [0x1F3A0, 0x1F3C4], [0x1F3C6, 0x1F3CA], [0x1F3E0, 0x1F3F0],
@@ -529,6 +560,14 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   ok((await said()).includes('Who did a big jump?'), 'Story questions: the question is asked');
   await p.click('.s-answer[data-w="frog"]'); await waitAt([0, 0]);
   ok((await said()).includes('Yes! frog.'), 'Story questions: the right answer moves on');
+  // What happened first? Phrases from the story, side by side
+  await only({ t: 'q', story: 'p4-03a', k: 2 }, 'read');
+  ok(await p.$$eval('.s-cards.s-col .s-phrase', x => x.length) === 3 && (await said()).includes('What happened first?') && !(await p.textContent('[data-caption]')).includes('Raj has'),
+    'What happened first? is spoken with 3 phrase cards, and the caption never shows the answer');
+  await p.click('.s-phrase[data-w="Meena can clap"]'); await p.waitForTimeout(40);
+  ok((await said()).includes('Not that one. Think about the story.'), 'What happened first?: a later event is not the answer');
+  await p.click('.s-phrase[data-w="Raj has a red drum"]'); await waitAt([0, 0]);
+  ok((await said()).includes('Yes! Raj has a red drum.'), 'What happened first?: the first event is right, and it is spoken');
   // The help ladder: first a hint, then the word; one miss per word
   await only({ t: 'read', story: 'p4-01a', i: 2 }, 'read');
   await p.waitForSelector('[data-act=check]:not([disabled])');

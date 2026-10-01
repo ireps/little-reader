@@ -42,6 +42,10 @@
 **6. Suffixes in the checker.** Add `SUFFIX = { s: unit, es: unit, ing: unit, ed: unit, er: unit, est: unit }`, built from a new unit field `suffixes: ['ing']`. `decodable(w)` first tries the word as it is. If that fails, for each suffix taught so far (longest first) whose root is still 2 or more letters, it checks the root. A plain `-s` on a decodable root is already decodable letter by letter (*cats*), so the check only matters for *-es*, *-ing*, *-ed*, *-er* and *-est*. To stop these passing early, `allowedFor()` treats any word ending in those suffixes, whose root is decodable but whose suffix isn't taught yet, as not decodable. This is a small list check, not a grammar.
 - `-ed` is one unit whose words cover all three sounds: t (*jumped*), d (*filled*) and id (*landed*). The clips say them correctly.
 - `-er` already exists as a Phase 3 grapheme (*letter*). It counts as a suffix only when the root is a word (*taller*). Before the -er/-est unit, words like *faster* fail as intended.
+- *As built:* "a word" means a word that appears anywhere in the course data, `BANK`, `HEARTS` or the pictures, with 3 or more letters, so *bed*, *red* and *shed* are never split.
+  - A word that is a known word plus a plain *s* (*kites*, *cubes*) is not treated as *-es*.
+  - *corner* splits as corn + er, which is harmless, because it is decodable either way.
+  - Applying the rule flagged 3 existing sentences (*munches*, *brushes*, *snowing*), which were reworded.
 
 **7. Mixed review units.** `p5-r1` and `p5-r2` reuse graphemes from across Phases 4 and 5. Their words are chosen from her likely trouble spots: adjacent consonants plus a Phase 5 grapheme, such as *spray*, *street*, *crown*. They have no new `sounds` and 1 tricky word each, from Letters and Sounds Phase 5 or the Year 1 common exception words not yet taught (*our*, *once*, *friend*, *school*, *put*, *push*, *pull*, *full*, *house*). `HEARTS` and `FAMILIES` are extended for any new tricky words.
 

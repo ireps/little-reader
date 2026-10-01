@@ -19,7 +19,7 @@ function recordMixUp(target, picked){
 LR.steps.find = {
   render:function(item, ctx){
     var w = item.w, pool = P.unit().words.concat(Object.keys(LR.state.items).map(function(id){ return id.slice(2); }));
-    var opts = U.shuffle([w].concat(W.lookalikes(w, pool, mixUps(w), 2)));
+    var opts = U.shuffle([w].concat(W.lookalikes(w, pool, mixUps(w), 2, W.nearUpTo(LR.units.indexOf(P.unit())))));
     cur = { w:w, locked:false };
     ctx.screen({ main:'<div class="s-row s-cards">' + opts.map(function(o){ return K.card(o); }).join('') + '</div>' + K.replay() });
     ctx.prompt(w, { caption:FIND });

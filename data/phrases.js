@@ -17,7 +17,7 @@ LR.phrases = [
   '{w}, {w}! They rhyme.', '{w}, {w}. They rhyme.', '{w}, {w}. They don’t rhyme.', 'What rhymes with {w}?',
   'Yes! {w} means more than one.', '{w} means more than one.', '{w} means just one.', 'We say {w}.',
   'Yes! A sentence starts with a big letter.', 'The first word gets a big letter.', 'Here the ball is {w} the box.',
-  'Not {w}. Think about the story.', 'You grew {w} flower', 'You grew {w} flowers!', 'You grew 1 flower!', 'Well done! Your seeds are growing.',
+  'Not {w}. Think about the story.', 'Not that one. Think about the story.', 'First, {w}.', 'You grew {w} flower', 'You grew {w} flowers!', 'You grew 1 flower!', 'Well done! Your seeds are growing.',
   /* Comparing (the crocodile) */
   'Chomp!', '{w} is greater than {w}', '{w} is less than {w}', '{w} is equal to {w}', 'The mouth opens to {w}.', 'Yes! {w} is greater than {w}.',
   'Yes! {w} is less than {w}.', 'Yes! {w} is equal to {w}.'

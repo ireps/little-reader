@@ -10,7 +10,7 @@ LR.steps.flash = {
   render:function(item, ctx){
     var w = item.w, pool = P.unit().words.concat(Object.keys(LR.state.items).map(function(id){ return id.slice(2); }));
     var mix = Object.keys(LR.state.confusions[w] || {});
-    cur = { w:w, opts:U.shuffle([w].concat(W.lookalikes(w, pool, mix, 2))) };
+    cur = { w:w, opts:U.shuffle([w].concat(W.lookalikes(w, pool, mix, 2, W.nearUpTo(LR.units.indexOf(P.unit()))))) };
     ctx.screen({ main:'<div class="s-flash">' + K.word(w, -1) + '</div>' });
     ctx.prompt('Look!', { caption:'Look!' });
     /* The word hides after 2 s times the pace: a timed reveal, part of the activity (not a wait before moving on). */

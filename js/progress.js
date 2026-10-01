@@ -109,7 +109,6 @@ function nextStory(){
   return list[0];
 }
 
-/* The next unit opens when every word and tricky word of this one is mastered. */
 /* The next unit opens when every word and tricky word of this one is mastered, and (if it has silly sentences)
    she has answered at least 5 of them with 80% right first time. */
 function unitDone(){

@@ -56,8 +56,9 @@ Other facts:
 ```
 index.html               shell, CSP, script order
 css/app.css              all styles, including the 614 px landscape query
-data/units.js            the course, part 1: LR.units (Phase 3 review, Phase 4), LR.startUnit, LR.knownTricky
+data/units.js            the course, part 1: LR.units (Phase 3 review, Phase 4), LR.startUnit, LR.knownTricky, LR.baseReview
 data/units-p5.js         the course, part 2 (Phase 5). Every word must pass LR.words.checkUnits() (npm test)
+data/units-p6.js         the course, part 3: mixed review, then Phase 6 suffixes (a unit's `suffixes` are taught from it on)
 data/phrases.js          LR.phrases: everything said besides the course, {w} for a word (dev-only, for tools/list-clips.js)
 data/pictures.js         LR.pictures (emoji, Unicode 6 only) and LR.lang (rhymes, a/an, plurals, positions)
 js/words.js              graphemes (Letters and Sounds), segment(), decodable(), checkUnits(), hearts, families, look-alikes
@@ -136,6 +137,9 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 | 5 | `add-kg2-english` | Letters and Sounds Phase 3 to 5 units (including the old "sound patterns" plan), Flash, Picture match, Build it, Silly sentences, the help ladder, language tasks, story questions. |
 | 6 | `add-kg2-maths` | The NCF-FS KG-2 numeracy skills, with the crocodile's = behind a Grown-ups switch (off by default). |
 | 7 | `add-indian-voice-clips` (built, clips in) | Indian English clips supplied by the owner (matched to a generated list) for every string, with word timings, preloading and a coverage test. Last, because the full list of strings is only known once Phases 4 to 6 exist. |
+| 8a | `deepen-kg2-english` (built) | After a syllabus audit (NCF-FS Balvatika outcomes, Indian UKG syllabi): 4 stories per unit with 3 questions each (one "What happened first?"), new themes (family, home, school, festivals, seasons, safety), the Phase 2 and 3 tricky words in review, same-start look-alike sets against first-letter guessing, and 6 new units (2 mixed review, then -s/-es, -ing, -ed, -er/-est). |
+| 8b | (not proposed yet) | School grammar and maths gaps: naming/doing/describing words, opposites, this/that/these/those, is/are, pronouns, word order, vowels, letter order, capital-small matching; number names to 50, skip counting in 5s, ordering numbers, longest of three, capacity, 3D shapes, sorting and odd one out, simple data, o'clock. |
+| 8c | (not proposed yet) | "My world" (EVS): picture sorting (where animals live, what they eat, their young; land, water and air transport; helpers; seasons; senses; good habits and safety). Writing, reciting, drawing and Hindi are out of scope for a tap-only app. |
 
 **Superseded:** the old Phase 3 (typed weekly content). Its backup, restore and reset items moved to Phase 4.
 
@@ -161,6 +165,8 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
 
 ## Pending owner actions
 
+- Phase 8a: a week of sessions. Do new stories appear? Does "What happened first?" need explaining? Do same-start words (pots, plants, plums) still catch her (Grown-ups shows mix-ups)? Do sessions stay around 10 minutes? Then 8b is proposed.
+- Clip sync: do letters and words light as each word is heard on the tablet (Android may add audio delay)?
 - Phase 6: check that the ₹ sign shows on the coins, and whether her class teaches = yet (the Equals sign switch).
 - Phase 5: check that every picture shows on the tablet (emoji are Unicode 6, which Android 5.1 should draw), and note which new activities needed explaining over a week of sessions.
 - Phases 3 and 4: run one full session with her on the tablet. Note stray taps, "what do I do?" moments, help taps and how long it takes (target: at most 2 moments, 10 ± 2 minutes). Does it feel instant? Do the highlights keep up with the voice?
