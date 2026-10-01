@@ -71,7 +71,7 @@ function settings(){
     + LR.units.map(function(u, i){ return '<button class="btn soft small unit' + (u.id === st.unit ? ' on' : '') + '" data-act="unit" data-u="' + U.esc(u.id) + '" aria-pressed="' + (u.id === st.unit) + '">'
       + (i + 1) + '. ' + U.esc(u.title) + '</button>'; }).join('') + '</section>'
     + '<section><h2>Practise one game</h2><p class="help">Opens one activity on its own. It still counts towards her progress.</p>'
-    + [['words', 'Sounds and words'], ['lang', 'Language'], ['tricky', 'Tricky word'], ['silly', 'Silly sentences'], ['read', 'Read with me'], ['maths', 'Maths']].map(function(g){
+    + [['words', 'Sounds and words'], ['lang', 'Language'], ['tricky', 'Tricky word'], ['silly', 'Silly sentences'], ['read', 'Read with me'], ['maths', 'Maths'], ['world', 'My world']].map(function(g){
       return '<a class="btn soft small" href="#practice-' + g[0] + '">' + g[1] + '</a>'; }).join('') + '</section>'
     + '<section><h2>Voice</h2><p class="help" id="vstatus"></p><label for="rate">Speed</label><input id="rate" type="range" min="0.75" max="1.1" step="0.05">'
     + '<div class="row"><button class="btn soft small" data-act="test">Test voice</button></div>'

@@ -17,10 +17,10 @@ const sandbox = { console };
 sandbox.window = sandbox;
 vm.createContext(sandbox);
 vm.runInContext('var LR = window.LR = { ui: { esc: function(s){ return String(s); } } };', sandbox);
-['data/units.js', 'data/units-p5.js', 'data/units-p6.js', 'data/pictures.js', 'data/phrases.js', 'js/words.js', 'js/maths.js', 'js/grammar.js'].forEach(f => {
+['data/units.js', 'data/units-p5.js', 'data/units-p6.js', 'data/pictures.js', 'data/phrases.js', 'js/words.js', 'js/maths.js', 'js/grammar.js', 'js/world.js'].forEach(f => {
   vm.runInContext(fs.readFileSync(path.join(ROOT, f), 'utf8'), sandbox, { filename: f });
 });
-const LR = sandbox.LR, W = LR.words, M = LR.maths, G = LR.grammar;
+const LR = sandbox.LR, W = LR.words, M = LR.maths, G = LR.grammar, E = LR.world;
 
 /* The same rules as LR.speech.keyOf() and its clause split. */
 const keyOf = s => String(s).toLowerCase().replace(/[‘’]/g, "'").replace(/[^a-z0-9' ]+/g, ' ').replace(/\s+/g, ' ').trim();
@@ -95,6 +95,14 @@ G.ids.forEach(g => [1, 2].forEach(lv => {
   }
 }));
 G.ORDER_SENTENCES.forEach(s => { add(s); words(s); });
+
+/* 7. My world (js/world.js): every question, every right answer, and every picture's name. */
+E.TOPICS.forEach(t => t.qs.forEach(q => {
+  clauses(q.q).forEach(c => keys.add(c));
+  q.a.forEach(a => { const n = E.ITEMS[a][1], yes = q.yes.indexOf('{w}') === 5 ? q.yes.replace('{w}', n.charAt(0).toUpperCase() + n.slice(1)) : q.yes.replace('{w}', n);
+    [yes, yes.replace(/^Yes! /, '')].forEach(s => clauses(s).forEach(c => keys.add(c))); });
+}));
+Object.values(E.ITEMS).forEach(i => add(i[1]));
 
 /* File names: the key with dashes, unique. */
 const used = new Set(), lines = [...keys].sort().map(k => {

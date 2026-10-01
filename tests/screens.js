@@ -96,6 +96,7 @@ const server = http.createServer((req, res) => {
         else if (it.t === 'plural') await p.click(`.s-pic[data-n="${it.many ? 3 : 1}"]`);
         else if (it.t === 'pos') await p.click(`.s-pic[data-p="${it.p}"]`);
         else if (it.t === 'caps') await p.click('.s-sentence .w');
+        else if (it.t === 'world') await p.click(`.m-opt[data-i="${await p.evaluate(i => { const q = LR.world.gen(i); return q.opts.map(o => o.v).indexOf(q.answer); }, it)}"]`);
         else if (it.t === 'gram') await p.click(`.m-opt[data-i="${await p.evaluate(i => { const q = LR.grammar.gen(i); return q.opts.map(o => o.v).indexOf(q.answer); }, it)}"]`);
         else if (it.t === 'order') { for (const w of await p.evaluate(i => { const l = LR.grammar.orderSentences(LR.progress.unitById(i.u)); return l[i.k % l.length].split(' '); }, it)) await p.evaluate(x => [...document.querySelectorAll('.s-wtile')].find(t => t.textContent === x).click(), w); }
         else if (it.t === 'q') await p.click(`.s-answer[data-w="${await p.evaluate(i => { let f; LR.units.forEach(u => u.stories.forEach(s => { if (s.id === i.story) f = s.q[i.k].a; })); return f; }, it)}"]`);
@@ -120,7 +121,9 @@ const server = http.createServer((req, res) => {
       .reduce((a, sk) => a.concat([1, 2].map(lv => ['m-' + sk + lv, { t: 'math', s: sk, lv, seed: 777 }, null, 'maths'])), []))
       .concat(['letters', 'next', 'vowels', 'naming', 'doing', 'describing', 'opposites', 'this', 'isare', 'pronoun', 'sentpic']
       .reduce((a, g) => a.concat([1, 2].map(lv => ['g-' + g + lv, { t: 'gram', g, lv, seed: 777 }])), []))
-      .concat([['g-order', { t: 'order', u: 'p5-03', k: 0 }], ['g-order-long', { t: 'order', u: 'p6-04', k: 0 }]]);
+      .concat([['g-order', { t: 'order', u: 'p5-03', k: 0 }], ['g-order-long', { t: 'order', u: 'p6-04', k: 0 }]])
+      .concat(['body', 'senses', 'family', 'fruit', 'healthy', 'plants', 'animals', 'homes', 'sounds', 'young', 'insects', 'transport', 'helpers', 'weather', 'sky', 'safety']
+      .map(e => ['w-' + e, { t: 'world', e, seed: 777 }, null, 'world']));
     for (const [name, it, wait, step] of activities) {
       await p.goto(U + '#home');
       await p.evaluate(([it, step]) => { LR.steps.flash.SHOW_MS = 400; LR.state.resume = { date: LR.progress.today(), steps: [{ id: step || 'words', items: [it] }], at: [0, 0], done: false, started: Date.now(), fresh: 0, right: 0, answered: 0, mode: 'day' }; LR.store.save(); }, [it, step]);

@@ -73,6 +73,15 @@ function langItems(n){
   });
   return order.slice(0, n).map(function(g){ var item = langItem(g); item.g = g; return item; });
 }
+/* Two My world questions from the open topics, least recently practised first. */
+function worldItems(n){
+  var it = LR.state.items, open = U.shuffle(P.worldUnlocked()).sort(function(x, y){
+    var a = it['e:' + x], b = it['e:' + y];
+    if (!a !== !b) return a ? 1 : -1;
+    return (a ? a.d : '') < (b ? b.d : '') ? -1 : (a ? a.d : '') > (b ? b.d : '') ? 1 : 0;
+  });
+  return open.slice(0, n).map(function(e){ return { t:'world', e:e, seed:1 + U.rand(999999998) }; });
+}
 /* One item of a language skill. */
 function langItem(kind){
   var L = LR.lang;
@@ -120,6 +129,7 @@ function plan(mode, only){
       .concat(questionPair(story, t).map(function(k){ return { t:'q', story:story.id, k:k }; })));
   }
   if (mode === 'day' || only === 'maths') { if (!only || only === 'maths') add('maths', mathItems(4 + U.rand(2))); }
+  if (mode === 'day' || only === 'world') { if (!only || only === 'world') add('world', worldItems(only ? 3 : 2)); }
   if (mode !== 'practice') add('garden', []);
   return { date:t, steps:steps, at:[0, 0], done:false, started:Date.now(), fresh:0, right:0, answered:0, mode:mode };
 }
@@ -177,8 +187,9 @@ function makeCtx(r, st, item){
       finished = true;
       clearIdle();
       if (counted !== false) { r.answered++; if (firstTry) r.right++; }
-      /* Language skills keep a box, like the maths skills. */
-      if (item.g) { if (firstTry) { if (P.right('g:' + item.g)) r.fresh++; } else P.miss('g:' + item.g); LR.store.save(); }
+      /* Language skills and My world topics keep a box, like the maths skills. */
+      var skill = item.g ? 'g:' + item.g : item.e ? 'e:' + item.e : null;
+      if (skill) { if (firstTry) { if (P.right(skill)) r.fresh++; } else P.miss(skill); LR.store.save(); }
       r.at = [r.at[0], r.at[1] + 1];
       save();
       /* The answer stays on screen for a beat (Grown-ups > Pace), then the next item is drawn. */
@@ -330,7 +341,7 @@ function start(mode, only){
 }
 session.mathItems = mathItems;
 LR.routes.session = function(){ document.title = 'Little Reader'; start('day'); };
-['words', 'lang', 'tricky', 'silly', 'read', 'maths'].forEach(function(id){
+['words', 'lang', 'tricky', 'silly', 'read', 'maths', 'world'].forEach(function(id){
   LR.routes['practice-' + id] = function(){ document.title = 'Practise – Little Reader'; start('practice', id); };
 });
 

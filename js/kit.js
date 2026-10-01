@@ -15,6 +15,7 @@ kit.STEPS = [
   { id:'silly', icon:'thumb', label:'Silly sentences' },
   { id:'read', icon:'book', label:'Read with me' },
   { id:'maths', icon:'dice', label:'Maths' },
+  { id:'world', icon:'globe', label:'My world' },
   { id:'garden', icon:'flower', label:'Garden' }
 ];
 
