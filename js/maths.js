@@ -44,7 +44,7 @@ function numberLine(from, to, mark, hop){
   for (var i = 0; i <= n; i++) {
     var x = 20 + i * 60, v = from + i, q = v === mark;
     s += '<line x1="' + x + '" y1="28" x2="' + x + '" y2="52" stroke="#1E2B38" stroke-width="4"/>'
-      + (q ? '<circle cx="' + x + '" cy="78" r="16" fill="#FFC933"/><text x="' + x + '" y="86" text-anchor="middle" font-size="24" font-weight="700" fill="#1E2B38">?</text>'
+      + (q ? '<rect x="' + (x - 17) + '" y="58" width="34" height="36" rx="7" fill="#fff" stroke="#BCD3DC" stroke-width="3" stroke-dasharray="6 4"/><text x="' + x + '" y="85" text-anchor="middle" font-size="24" font-weight="700" fill="#1D5535">?</text>'
            : '<text x="' + x + '" y="84" text-anchor="middle" font-size="24" fill="#1E2B38">' + v + '</text>');
     if (hop && i > 0 && v <= mark) s += '<path d="M' + (x - 54) + ' 26 q27 -26 54 0" fill="none" stroke="#3FA34D" stroke-width="3"/>';
   }
@@ -156,7 +156,7 @@ var GEN = {
     var step = lv === 2 ? r.pick([1, 2, 10]) : 1, back = lv === 1 && r() < 0.4, max = lv === 1 ? 9 : (step === 10 ? 100 : 20);
     var start = step === 10 ? r.int(1, 6) * 10 : back ? r.int(4, max) : r.int(0, max - 3 * step);
     var d = back ? -1 : step, seq = [start, start + d, start + 2 * d], ans = start + 3 * d;
-    return { prompt:back ? 'Count back. What comes next?' : 'What comes next?', show:'<span class="m-seq">' + seq.join(', ') + ', <b>?</b></span>', key:seq.join(),
+    return { prompt:back ? 'Count back. What comes next?' : 'What comes next?', show:'<span class="m-seq">' + seq.join(', ') + ', <span class="s-gap">?</span></span>', key:seq.join(),
       opts:numOpts(near(r, ans, 0, 100, step > 1 ? [ans + step, ans - step] : [])), answer:ans, right:seq.join(', ') + ', ' + ans + '!' };
   },
   neighbour:function(r, lv){
@@ -228,7 +228,7 @@ var GEN = {
     var seq = [];
     for (var i = 0; i < len; i++) seq.push(pat.charAt(i % pat.length));
     var ans = pat.charAt(len % pat.length);
-    return { prompt:'What comes next?', show:'<span class="m-pattern">' + seq.map(bead).join('') + '<span class="m-gap">?</span></span>', answer:ans, key:pat + len,
+    return { prompt:'What comes next?', show:'<span class="m-pattern">' + seq.map(bead).join('') + '<span class="s-gap m-gap">?</span></span>', answer:ans, key:pat + len,
       right:'Yes! A ' + BEAD_NAMES[ans] + '.', opts:r.shuffle(['R', 'B', 'Y']).map(function(k){ return { v:k, html:bead(k), label:BEAD_NAMES[k] }; }) };
   },
   time:function(r, lv){
@@ -252,7 +252,7 @@ GEN.skip = function(r, lv){
   var step = r.pick([2, 5, 10]), max = lv === 2 ? 100 : (step === 2 ? 20 : 50);
   var start = step * r.int(step === 2 ? 0 : 1, Math.floor(max / step) - 3);
   var seq = [start, start + step, start + 2 * step], ans = start + 3 * step;
-  return { prompt:'Count in ' + step + 's. What comes next?', show:'<span class="m-seq">' + seq.join(', ') + ', <b>?</b></span>', key:seq.join(),
+  return { prompt:'Count in ' + step + 's. What comes next?', show:'<span class="m-seq">' + seq.join(', ') + ', <span class="s-gap">?</span></span>', key:seq.join(),
     opts:numOpts(r.shuffle([ans, ans + step, ans - 1])), answer:ans, right:seq.join(', ') + ', ' + ans + '!' };
 };
 GEN.order = function(r, lv){

@@ -717,7 +717,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   // Is or are: the gap fills
   await only({ t: 'gram', g: 'isare', lv: 1, seed: 3 }, 'words');
   const ia = await p.evaluate(() => { const q = LR.grammar.gen({ g: 'isare', lv: 1, seed: 3 }); return { i: q.opts.map(o => o.v).indexOf(q.answer), fill: q.fill }; });
-  ok(await p.evaluate(i => { document.querySelector(`.m-opt[data-i="${i.i}"]`).click(); return document.querySelector('.s-q .s-gap').textContent === i.fill; }, ia), 'Is or are: a right answer fills the gap');
+  ok(await p.evaluate(i => { document.querySelector(`.m-opt[data-i="${i.i}"]`).click(); const g = document.querySelector('.s-q .s-gap'); return g.textContent === i.fill && g.classList.contains('full'); }, ia), 'Is or are: a right answer fills the gap, which turns solid green');
   // Word order: a wrong tile stays; the right order completes the sentence
   await only({ t: 'order', u: 'p4-01', k: 0 }, 'words');
   const ws = await p.evaluate(() => LR.grammar.orderSentences(LR.progress.unitById('p4-01'))[0].split(' '));
@@ -864,8 +864,19 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   // ---------- Every child screen: fits, big targets, one primary target, no emoji ----------
   for (const [w, h] of [[1280, 614], [800, 1094]]) {
     await p.setViewportSize({ width: w, height: h });
-    const bad = [], tall = [], many = [], emo = [], space = [];
+    const bad = [], tall = [], many = [], emo = [], space = [], sun = [], replayAt = [], cardMin = new Set();
     const check = async (name) => {
+      /* Design consistency: solid sun yellow belongs only to the one target, replay sits under the guide's words,
+         and every answer card (the crocodile's number cards aside) has the same minimum size. */
+      const d = await p.evaluate(() => {
+        const SUN = ['rgb(255, 201, 51)', 'rgb(255, 203, 69)'];
+        return { sun: [...document.querySelectorAll('#app *')].filter(e => e.offsetParent && !e.closest('.s-target') && SUN.indexOf(getComputedStyle(e).backgroundColor) > -1).map(e => e.className.baseVal === undefined ? e.className : e.tagName),
+          replayInMain: document.querySelectorAll('#app .s-main .s-replay').length,
+          cardMin: [...document.querySelectorAll('#app button.s-card:not(.s-num)')].map(e => getComputedStyle(e).minWidth + ' x ' + getComputedStyle(e).minHeight) };
+      });
+      if (d.sun.length) sun.push(name + ': ' + d.sun.join(' '));
+      if (d.replayInMain) replayAt.push(name);
+      d.cardMin.forEach(x => cardMin.add(x));
       const m = await p.evaluate(() => {
         const small = [...document.querySelectorAll('#app [data-act]')].filter(el => el.offsetParent).map(el => {
           const r = el.getBoundingClientRect();
@@ -902,6 +913,9 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
     ok(!many.length, `at most one primary target at ${w}x${h}` + (many.length ? ': ' + many.join(', ') : ''));
     ok(!space.length, `child screens use at least 70% of the height at ${w}x${h}` + (space.length ? ': ' + space.join(', ') : ''));
     ok(!emo.length, `no emoji in the interface at ${w}x${h}` + (emo.length ? ': ' + emo.join(' ') : ''));
+    ok(!sun.length, `only the one target is sun yellow at ${w}x${h}` + (sun.length ? ': ' + sun.join(', ') : ''));
+    ok(!replayAt.length, `replay sits under the guide's words, never among the answers, at ${w}x${h}` + (replayAt.length ? ': ' + replayAt.join(', ') : ''));
+    ok(cardMin.size === 1, `every answer card has one minimum size at ${w}x${h}: ` + [...cardMin].join(', '));
   }
   await p.setViewportSize({ width: 1280, height: 614 });
 

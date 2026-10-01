@@ -26,12 +26,14 @@ function meet(item, ctx){
 function find(ctx){
   cur.phase = 'find';
   var main = U.app().querySelector('.s-main');
-  main.innerHTML = letters(cur.w) + K.replay();
+  main.innerHTML = letters(cur.w);
+  ctx.replay(true);
   ctx.pose('waiting');
   ctx.prompt('Find the heart letters');
 }
 function family(ctx){
   cur.phase = 'family';
+  ctx.replay(false);
   var w = cur.w, fam = W.familyOf(w);
   if (!fam) { S.say(w).then(function(){ if (ctx.live()) ctx.done(true, false); }); return; }
   var others = fam.words.filter(function(x){ return x !== w; }).slice(0, 3);

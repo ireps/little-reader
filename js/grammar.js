@@ -45,7 +45,7 @@ var ALIKE = { b:['d', 'p'], d:['b', 'q'], p:['q', 'b'], q:['p', 'g'], g:['q', 'j
 var ABC = 'abcdefghijklmnopqrstuvwxyz', VOWELS = 'aeiou', CONS = 'bcdfghjklmnprstvwz';
 
 function name(l){ return LR.words.LETTER_NAMES[l.toLowerCase()]; }
-function letterOpt(l){ return { v:l, html:'<span class="m-num g-letter">' + esc(l) + '</span>', label:name(l) }; }
+function letterOpt(l){ return { v:l, html:'<span class="m-num g-letter g-text">' + esc(l) + '</span>', label:name(l) }; }
 function wordOpt(w){ return { v:w, html:'<span class="m-word">' + esc(w) + '</span>', label:w }; }
 function pic(w, n){ var e = (LR.pictures || {})[w] || '', s = ''; for (var i = 0; i < (n || 1); i++) s += e; return '<span class="s-picimg" aria-hidden="true">' + s + '</span>'; }
 function others(r, list, not, n){ return r.shuffle(list.filter(function(x){ return not.indexOf(x) === -1; })).slice(0, n); }
@@ -55,13 +55,13 @@ var GEN = {
     var l = r.pick(Object.keys(ALIKE).concat(ABC.split(''))), big = lv === 1, alike = ALIKE[l] || others(r, ABC.split(''), [l], 2);
     var show = big ? l.toUpperCase() : l, opts = r.shuffle([l].concat(alike.slice(0, 2))).map(function(x){ return letterOpt(big ? x : x.toUpperCase()); });
     var ans = big ? l : l.toUpperCase();
-    return { prompt:big ? 'Find the small letter' : 'Find the big letter', show:'<span class="m-big">' + esc(show) + '</span>', opts:opts, answer:ans,
+    return { prompt:big ? 'Find the small letter' : 'Find the big letter', show:'<span class="m-big g-text">' + esc(show) + '</span>', opts:opts, answer:ans,
       right:'Yes! Big ' + name(l) + ', small ' + name(l) + '.', key:l };
   },
   next:function(r, lv){
     var after = lv === 1 || r() < 0.5, i = after ? r.int(0, 24) : r.int(1, 25), l = ABC.charAt(i), ans = ABC.charAt(after ? i + 1 : i - 1);
     var wrong = others(r, ABC.split(''), [ans, l], 2);
-    return { prompt:(after ? 'What comes after ' : 'What comes before ') + name(l) + '?', show:'<span class="m-big">' + l + '</span>',
+    return { prompt:(after ? 'What comes after ' : 'What comes before ') + name(l) + '?', show:'<span class="m-big g-text">' + l + '</span>',
       opts:r.shuffle([ans].concat(wrong)).map(letterOpt), answer:ans,
       right:after ? 'Yes! ' + name(l) + ', ' + name(ans) + '.' : 'Yes! ' + name(ans) + ', ' + name(l) + '.', key:(after ? 'a' : 'b') + l };
   },

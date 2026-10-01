@@ -3,7 +3,7 @@
    Level 1 is 0-10 with ten-frames; level 2 is 0-20. The other maths skills are in js/steps/math.js. */
 (function(){
 'use strict';
-var LR = window.LR, U = LR.ui, K = LR.kit, S = LR.speech, P = LR.progress;
+var LR = window.LR, U = LR.ui, S = LR.speech, P = LR.progress;
 var cur = null;
 
 function frame(n){ return LR.maths.frames(n); }
@@ -25,11 +25,11 @@ LR.steps.croc = {
   render:function(item, ctx){
     cur = { a:item.a, b:item.b, m:item.m, solved:false };
     var more = item.m === 'more', syms = item.m === 'eq' ? ['<', '=', '>'] : ['<', '>'];
-    var main = '<div class="s-row s-cards s-nums">' + num(item.a, 'a', more) + '<span class="s-sym" id="slot">' + (more ? '' : '?') + '</span>' + num(item.b, 'b', more) + '</div>';
-    main += '<div class="s-row">' + (more ? '' : syms.map(function(s){
+    var main = '<div class="s-row s-cards s-nums">' + num(item.a, 'a', more) + '<span class="s-sym" id="slot">' + (more ? '' : '<span class="s-gap">?</span>') + '</span>' + num(item.b, 'b', more) + '</div>';
+    if (!more) main += '<div class="s-row">' + syms.map(function(s){
       return '<button class="s-card s-mouth" data-act="sym" data-s="' + s + '" aria-label="' + (s === '>' ? 'greater than' : s === '<' ? 'less than' : 'equal to') + '">' + mouthSVG(s) + '</button>';
-    }).join('')) + K.replay() + '</div>';
-    ctx.screen({ main:main });
+    }).join('') + '</div>';
+    ctx.screen({ main:main, replay:true });
     ctx.prompt(more ? 'Which is more?' : 'Which mouth fits?');
   },
   tap:function(el, act, ctx){

@@ -13,7 +13,7 @@ function draw(){
   }).join('') + '</div>';
   var tray = '<div class="s-row s-tray">' + cur.tray.map(function(t, i){
     return t.used ? '' : '<button class="s-tile s-wtile" data-act="tile" data-i="' + i + '">' + U.esc(t.w) + '</button>';
-  }).join('') + K.replay() + '</div>';
+  }).join('') + '</div>';
   U.app().querySelector('.s-main').innerHTML = slots + tray;
 }
 function complete(cls){
@@ -29,7 +29,7 @@ LR.steps.order = {
     /* Never start already in order. */
     if (tray.map(function(t){ return t.w; }).join(' ') === s) tray.push(tray.shift());
     cur = { s:s, words:words, at:0, tray:tray };
-    ctx.screen({ main:'' });
+    ctx.screen({ main:'', replay:true });
     draw();
     ctx.prompt('Make the sentence');
   },

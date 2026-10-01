@@ -113,13 +113,15 @@ kit.hold = function(act, icon, label, ms, p, cls){
     + I(icon) + '</button>';
 };
 
-/* The session screen: top strip (hold to go home, the path, the seeds), the guide with her words, and the activity. */
+/* The session screen: top strip (hold to go home, the path, the seeds), the guide with her words, and the activity.
+   o.replay puts the replay control under the guide's words, the one place it ever appears. */
 kit.screen = function(o){
   return '<div class="s-screen">'
     + '<div class="s-top">' + kit.hold('home', 'home', 'Home', 1000, o.homeHold || 0, 'home')
     + (o.steps ? kit.path(o.steps, o.step) : '<span></span>')
     + (o.seeds ? kit.seeds(o.seeds[0], o.seeds[1]) : '<span></span>') + '</div>'
-    + '<div class="s-guide">' + LR.guide.svg(o.pose) + '<p class="s-bubble" data-caption aria-live="polite">' + esc(o.say || '') + '</p></div>'
+    + '<div class="s-guide">' + LR.guide.svg(o.pose) + '<p class="s-bubble" data-caption aria-live="polite">' + esc(o.say || '') + '</p>'
+    + (o.replay ? kit.replay() : '') + '</div>'
     + '<div class="s-main">' + o.main + '</div></div>';
 };
 })();

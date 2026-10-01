@@ -17,7 +17,7 @@ function slotsHTML(){
 function trayHTML(){
   return '<div class="s-row s-tray">' + cur.tray.map(function(t, i){
     return t.used ? '' : '<button class="s-tile" data-act="tile" data-i="' + i + '">' + U.esc(tileText(t.g)) + '</button>';
-  }).join('') + K.replay() + '</div>';
+  }).join('') + '</div>';
 }
 function draw(){
   var main = U.app().querySelector('.s-main');
@@ -31,7 +31,7 @@ LR.steps.build = {
     var inSplit = parts.filter(function(g){ return /_e$/.test(g); }).map(function(g){ return [g.charAt(0), 'e']; }).reduce(function(a, x){ return a.concat(x); }, []);
     var decoys = U.shuffle(DECOYS.filter(function(g){ return parts.indexOf(g) === -1 && inSplit.indexOf(g) === -1; })).slice(0, 2);
     cur = { w:w, parts:parts, at:0, tray:U.shuffle(parts.concat(decoys).map(function(g){ return { g:g, used:false }; })) };
-    ctx.screen({ main:'' });
+    ctx.screen({ main:'', replay:true });
     draw();
     ctx.prompt(w, { caption:'Build the word you hear' });
   },

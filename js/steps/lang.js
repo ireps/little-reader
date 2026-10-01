@@ -10,7 +10,7 @@ LR.steps.rhyme = {
     var pairs = LR.lang.rhymes, pair = pairs[item.k % pairs.length];
     var others = U.shuffle(pairs.filter(function(p){ return p !== pair; })).slice(0, 2).map(function(p){ return p[U.rand(2)]; });
     cur = { a:pair[0], b:pair[1] };
-    ctx.screen({ main:'<div class="s-row">' + K.pic(pair[0]) + '</div><div class="s-row s-cards">' + U.shuffle([pair[1]].concat(others)).map(function(w){ return K.picCard(w); }).join('') + '</div>' + K.replay() });
+    ctx.screen({ main:'<div class="s-row">' + K.pic(pair[0]) + '</div><div class="s-row s-cards">' + U.shuffle([pair[1]].concat(others)).map(function(w){ return K.picCard(w); }).join('') + '</div>', replay:true });
     ctx.prompt('What rhymes with ' + pair[0] + '?');
   },
   tap:function(el, act, ctx){
@@ -28,6 +28,7 @@ LR.steps.rhyme = {
 };
 
 /* ---------- a or an ---------- */
+function fillGap(t){ var g = U.app().querySelector('.s-gap'); g.textContent = t; g.classList.add('full'); }
 LR.steps.an = {
   render:function(item, ctx){
     var w = item.w;
@@ -41,8 +42,8 @@ LR.steps.an = {
     var picked = el.getAttribute('data-w'), phrase = cur.an + ' ' + cur.w;
     LR.choice(el, picked === cur.an, ctx, {
       sel:'.s-word-card', two:true,
-      right:function(){ U.app().querySelector('.s-gap').textContent = cur.an; return 'Yes! ' + phrase; },
-      reveal:function(){ U.app().querySelector('.s-gap').textContent = cur.an; return 'We say ' + phrase + '.'; },
+      right:function(){ fillGap(cur.an); return 'Yes! ' + phrase; },
+      reveal:function(){ fillGap(cur.an); return 'We say ' + phrase + '.'; },
       rightEl:function(){ return U.app().querySelector('.s-word-card[data-w="' + cur.an + '"]'); }
     });
   }

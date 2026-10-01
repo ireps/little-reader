@@ -171,7 +171,13 @@ function makeCtx(r, st, item){
     miss:function(){ return ++misses; },
     /* Draws the session screen around the step's activity. */
     screen:function(o){
-      U.app().innerHTML = K.screen({ steps:stepIds(r), step:st.id, seeds:[st.items.length, r.at[1]], pose:o.pose || 'waiting', say:'', main:o.main });
+      U.app().innerHTML = K.screen({ steps:stepIds(r), step:st.id, seeds:[st.items.length, r.at[1]], pose:o.pose || 'waiting', say:'', main:o.main, replay:o.replay });
+    },
+    /* Shows or hides the replay control under the guide, for a step that changes phase on one screen. */
+    replay:function(on){
+      var g = U.app().querySelector('.s-guide'), b = g && g.querySelector('.s-replay');
+      if (on && g && !b) g.insertAdjacentHTML('beforeend', K.replay());
+      else if (!on && b) b.parentNode.removeChild(b);
     },
     pose:setPose,
     /* Speaks the instruction (none if text is empty); if nothing is tapped for a while, says it again

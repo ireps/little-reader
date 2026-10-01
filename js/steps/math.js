@@ -29,7 +29,7 @@ LR.steps.math = LR.steps.gram = LR.steps.world = {
     var many = q.opts.length > 2;
     ctx.screen({ main:(q.show ? '<div class="s-q">' + q.show + '</div>' : '') + '<div class="s-row s-cards m-opts' + (many ? '' : ' two') + '">'
       + q.opts.map(function(o, i){ return '<button class="s-card m-opt" data-act="pick" data-i="' + i + '" aria-label="' + U.esc(o.label) + '">' + o.html + '</button>'; }).join('')
-      + '</div>' + K.replay() });
+      + '</div>', replay:true });
     ctx.prompt(q.prompt);
   },
   tap:function(el, act, ctx){
@@ -49,7 +49,7 @@ LR.steps.math = LR.steps.gram = LR.steps.world = {
       onRight:function(first){
         /* A sentence with a gap shows the word that fits. */
         var gap = q.fill && U.app().querySelector('.s-q .s-gap');
-        if (gap) gap.textContent = q.fill;
+        if (gap) { gap.textContent = q.fill; gap.classList.add('full'); }
         if (id) { if (first && P.right(id)) ctx.grew(); LR.store.save(); }
       },
       onMiss:function(n){ if (id && n === 1) { P.miss(id); LR.store.save(); } },

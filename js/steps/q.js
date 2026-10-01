@@ -21,7 +21,7 @@ LR.steps.q = {
     if (!q) { ctx.done(true, false); return; }
     cur = { q:q };
     var opts = U.shuffle(q.opts.slice());
-    ctx.screen({ pose:'thinking', main:(q.first ? '<div class="s-cards s-col">' + opts.map(phrase).join('') : '<div class="s-row s-cards">' + opts.map(answer).join('')) + '</div>' + K.replay() });
+    ctx.screen({ pose:'thinking', main:(q.first ? '<div class="s-cards s-col">' + opts.map(phrase).join('') : '<div class="s-row s-cards">' + opts.map(answer).join('')) + '</div>', replay:true });
     ctx.prompt(q.q);
   },
   tap:function(el, act, ctx){
