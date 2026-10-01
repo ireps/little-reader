@@ -27,7 +27,7 @@ at most 6 spoken words per prompt, 120 px targets, instant feedback.
 - *ow* has two entries, `ow1` (snow) and `ow2` (cow). The two families are taught side by side in
   Picture match and sorting.
 
-### D2. Unit file format (`data/units/<id>.js`)
+### D2. Unit file format (`data/units.js`: Phase 3 review and Phase 4; `data/units-p5.js`: Phase 5)
 ```
 LR.units.push({ id:'p4-02', phase:4, theme:'animals', graphemes:['st','nd'], tricky:['said'],
   words:['stop','hand','nest', ...8-12], pictures:{ nest:'🐦' ...},
@@ -37,10 +37,14 @@ LR.units.push({ id:'p4-02', phase:4, theme:'animals', graphemes:['st','nd'], tri
 ```
 
 ### D3. Decodability test (`tests/decodable.js`, called from `tests/run.js`)
-- For each unit, the allowed set is the graphemes and tricky words of this unit and every earlier
-  unit, plus a small list of names.
-- Every word in `words`, `stories`, `silly` and `questions` must split into allowed graphemes or be
-  an allowed tricky word.
+- For each unit, the allowed set is the Phase 2-3 graphemes, the Phase 5 graphemes of this and earlier
+  units, the Phase 2-3 tricky words, her known words, and the tricky words of this and earlier units,
+  plus a small list of names.
+- Each word is first split the way it is really read (all graphemes, longest first; a split digraph
+  needs exactly one consonant before the final e). Every part must be allowed. A known tricky word
+  is never "decodable" by its letters: it must have been taught.
+- Checked: `words`, story sentences, `silly`, and question answer choices. The questions themselves are
+  spoken, so they are exempt. The check lives in `LR.words.checkUnits()` and runs in `npm test`.
 - A failure names the unit, sentence and word.
 
 ### D4. Activities
@@ -50,9 +54,11 @@ LR.units.push({ id:'p4-02', phase:4, theme:'animals', graphemes:['st','nd'], tri
   whose words share a grapheme.
 - **Build it:**
   - she hears the word, then taps tiles that fill the slots left to right, so there is no dragging;
-  - a digraph is one tile, and there are 2 decoys;
-  - a wrong tile goes back with a dim state and a soft tone;
-  - heart letters show their heart when placed.
+  - a digraph is one tile ("sh"), and a split digraph is one tile ("a–e");
+  - there are 2 decoys, never a letter of a split digraph;
+  - a wrong tile stays in the tray with a brief dim state and a soft tone;
+  - the errorless finish comes after 2 wrong tiles;
+  - tricky words aren't built (they use Find it or Flash).
 - **Silly sentences:** she reads the sentence and taps 👍 or 👎 (SVG, not emoji); then it plays and
   the right answer is shown.
 - **Rhyme:** she hears 1 word and picks the rhyming picture from 3.
@@ -74,7 +80,12 @@ LR.units.push({ id:'p4-02', phase:4, theme:'animals', graphemes:['st','nd'], tri
   item's box: box 0 to 1 favours Build it and Picture match (mapping), and box 2+ favours Flash
   (fluency).
 - Silly sentences uses 3 items per session.
-- The rhyme, capitals, a/an, plural and position tasks rotate as one "language" item a day.
+- The rhyme, capitals, a/an, plural and position tasks rotate as one "language" item a day, at the end
+  of Sounds and words.
+- **Pictures:** emoji from Unicode 6.0/6.1 only (Android 5.1's font), with a code-point check in the
+  tests. A word without a picture never appears in a picture task, so no SVG pictures are needed yet.
+- **Silly-sentence accuracy** is kept per unit in `state.silly` (`{ unit: [answered, right] }`). A unit
+  opens the next one at 5+ answers and 80%+ right, as well as all its words mastered.
 
 ## Risks / Trade-offs
 

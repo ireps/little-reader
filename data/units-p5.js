@@ -2,7 +2,7 @@
    Original text, written for this app. See data/units.js for the format. */
 LR.units.push(
   {
-    id: 'p5-01', phase: 5, title: 'ay, ou', sounds: ['ay', 'ou'],
+    id: 'p5-01', phase: 5, theme: 'weather', title: 'ay, ou', sounds: ['ay', 'ou'],
     words: ['day', 'play', 'tray', 'clay', 'spray', 'cloud', 'shout', 'mouth', 'round', 'found'],
     tricky: ['people'],
     stories: [
@@ -29,7 +29,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p5-02', phase: 5, title: 'ie, ea', sounds: ['ie', 'ea'],
+    id: 'p5-02', phase: 5, theme: 'plants', title: 'ie, ea', sounds: ['ie', 'ea'],
     words: ['pie', 'tie', 'cried', 'dried', 'sea', 'eat', 'leaf', 'dream', 'team', 'beach'],
     tricky: ['could'],
     stories: [
@@ -56,7 +56,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p5-03', phase: 5, title: 'oy, ir', sounds: ['oy', 'ir'],
+    id: 'p5-03', phase: 5, theme: 'body', title: 'oy, ir', sounds: ['oy', 'ir'],
     words: ['boy', 'toy', 'joy', 'bird', 'girl', 'shirt', 'first', 'third', 'skirt', 'stir'],
     tricky: ['called', 'asked'],
     stories: [
@@ -83,7 +83,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p5-04', phase: 5, title: 'ue, ew, aw', sounds: ['ue', 'ew', 'aw'],
+    id: 'p5-04', phase: 5, theme: 'plants', title: 'ue, ew, aw', sounds: ['ue', 'ew', 'aw'],
     words: ['blue', 'glue', 'true', 'clue', 'new', 'few', 'grew', 'saw', 'paw', 'draw'],
     tricky: ['looked'],
     stories: [
@@ -110,7 +110,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p5-05', phase: 5, title: 'wh, ph, au, oe', sounds: ['wh', 'ph', 'au', 'oe'],
+    id: 'p5-05', phase: 5, theme: 'animals', title: 'wh, ph, au, oe', sounds: ['wh', 'ph', 'au', 'oe'],
     words: ['whip', 'wheel', 'which', 'whisk', 'dolphin', 'graph', 'toe', 'goes', 'haul', 'launch'],
     tricky: ['water'],
     stories: [
@@ -137,7 +137,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p5-06', phase: 5, title: 'a_e (cake)', sounds: ['a_e'],
+    id: 'p5-06', phase: 5, theme: 'food', title: 'a_e (cake)', sounds: ['a_e'],
     words: ['cake', 'make', 'gate', 'game', 'plate', 'snake', 'name', 'lake', 'made', 'shape'],
     tricky: ['where'],
     stories: [
@@ -164,7 +164,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p5-07', phase: 5, title: 'i_e (kite)', sounds: ['i_e'],
+    id: 'p5-07', phase: 5, theme: 'transport', title: 'i_e (kite)', sounds: ['i_e'],
     words: ['kite', 'bike', 'time', 'five', 'line', 'smile', 'ride', 'slide', 'white', 'shine'],
     tricky: ['who'],
     stories: [
@@ -191,7 +191,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p5-08', phase: 5, title: 'o_e (home)', sounds: ['o_e'],
+    id: 'p5-08', phase: 5, theme: 'helpers', title: 'o_e (home)', sounds: ['o_e'],
     words: ['home', 'bone', 'rope', 'note', 'nose', 'stone', 'hope', 'those', 'woke', 'broke'],
     tricky: ['again'],
     stories: [
@@ -218,7 +218,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p5-09', phase: 5, title: 'u_e and e_e (cube, these)', sounds: ['u_e', 'e_e'],
+    id: 'p5-09', phase: 5, theme: 'body', title: 'u_e and e_e (cube, these)', sounds: ['u_e', 'e_e'],
     words: ['cube', 'tube', 'flute', 'huge', 'mule', 'use', 'these', 'rude', 'tune', 'prune'],
     tricky: ['any'],
     stories: [
@@ -245,7 +245,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p5-10', phase: 5, title: 'ow two ways: snow and cow', sounds: ['ow'],
+    id: 'p5-10', phase: 5, theme: 'weather', title: 'ow two ways: snow and cow', sounds: ['ow'],
     words: ['snow', 'grow', 'show', 'slow', 'blow', 'cow', 'now', 'how', 'town', 'down'],
     tricky: ['work'],
     stories: [
@@ -272,7 +272,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p5-11', phase: 5, title: 'y (happy, fly) and ey (key)', sounds: ['y', 'ey'],
+    id: 'p5-11', phase: 5, theme: 'animals', title: 'y (happy, fly) and ey (key)', sounds: ['y', 'ey'],
     words: ['happy', 'funny', 'sunny', 'puppy', 'fly', 'sky', 'try', 'why', 'key', 'monkey'],
     tricky: ['mr', 'mrs'],
     stories: [
@@ -299,7 +299,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p5-12', phase: 5, title: 'Review: ai, ay, oi, oy, ou, ow', sounds: [],
+    id: 'p5-12', phase: 5, theme: 'animals', title: 'Review: ai, ay, oi, oy, ou, ow', sounds: [],
     words: ['paint', 'spray', 'coin', 'enjoy', 'mouth', 'brown', 'soil', 'owl', 'frown', 'cloud'],
     tricky: ['because'],
     stories: [

@@ -1,5 +1,6 @@
 /* The built-in course, part 1: Phase 3 review and Phase 4 (adjacent consonants). Original text, written for this app.
-   Letters and Sounds order (the order Oxford's phonics follows). Each unit: its sounds, 10 decodable words, its tricky
+   Letters and Sounds order (the order Oxford's phonics follows). Each unit: a theme (plants, animals, food, body,
+   transport, weather, helpers), its sounds, 10 decodable words, its tricky
    words, 2 stories of 5 sentences with questions, and 8 silly sentences (ok: does it make sense?).
    tests/run.js checks that every word is decodable with what has been taught up to its unit. */
 window.LR = window.LR || {};
@@ -11,7 +12,7 @@ LR.knownTricky = ['come', 'some', 'from', 'have', 'many', 'also'];
 
 LR.units.push(
   {
-    id: 'p3-r1', phase: 3, title: 'Review: ch, sh, th, ng, qu', sounds: ['ch', 'sh', 'th', 'ng', 'qu'],
+    id: 'p3-r1', phase: 3, theme: 'food', title: 'Review: ch, sh, th, ng, qu', sounds: ['ch', 'sh', 'th', 'ng', 'qu'],
     words: ['chip', 'shop', 'thin', 'ring', 'quiz', 'chop', 'fish', 'moth', 'song', 'shed'],
     tricky: ['he', 'she', 'we'],
     stories: [
@@ -38,7 +39,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p3-r2', phase: 3, title: 'Review: ai, ee, igh, oa, oo', sounds: ['ai', 'ee', 'igh', 'oa', 'oo'],
+    id: 'p3-r2', phase: 3, theme: 'weather', title: 'Review: ai, ee, igh, oa, oo', sounds: ['ai', 'ee', 'igh', 'oa', 'oo'],
     words: ['rain', 'tail', 'feet', 'seed', 'night', 'light', 'boat', 'coat', 'moon', 'book'],
     tricky: ['was', 'you', 'they'],
     stories: [
@@ -65,7 +66,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p3-r3', phase: 3, title: 'Review: ar, or, ur, ow, oi, ear, air, er', sounds: ['ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'],
+    id: 'p3-r3', phase: 3, theme: 'animals', title: 'Review: ar, or, ur, ow, oi, ear, air, er', sounds: ['ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'],
     words: ['car', 'star', 'fork', 'corn', 'burn', 'cow', 'coin', 'ear', 'hair', 'letter'],
     tricky: ['my', 'her', 'all'],
     stories: [
@@ -92,7 +93,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p4-01', phase: 4, title: 'Ends: st, nd, mp, nk, lk, lt', sounds: ['st', 'nd', 'mp', 'nk', 'lk', 'lt'],
+    id: 'p4-01', phase: 4, theme: 'animals', title: 'Ends: st, nd, mp, nk, lk, lt', sounds: ['st', 'nd', 'mp', 'nk', 'lk', 'lt'],
     words: ['jump', 'lamp', 'hand', 'pond', 'nest', 'tent', 'milk', 'sink', 'desk', 'belt'],
     tricky: ['said', 'like'],
     stories: [
@@ -119,7 +120,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p4-02', phase: 4, title: 'Starts: st, sp, sn, sl, sw', sounds: ['st', 'sp', 'sn', 'sl', 'sw'],
+    id: 'p4-02', phase: 4, theme: 'food', title: 'Starts: st, sp, sn, sl, sw', sounds: ['st', 'sp', 'sn', 'sl', 'sw'],
     words: ['stop', 'step', 'spot', 'spin', 'snap', 'snack', 'slip', 'slug', 'swim', 'star'],
     tricky: ['so', 'do'],
     stories: [
@@ -146,7 +147,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p4-03', phase: 4, title: 'Starts: fl, cl, pl, gl, dr, fr, gr, tr, cr', sounds: ['fl', 'cl', 'pl', 'gl', 'dr', 'fr', 'gr', 'tr', 'cr'],
+    id: 'p4-03', phase: 4, theme: 'transport', title: 'Starts: fl, cl, pl, gl, dr, fr, gr, tr, cr', sounds: ['fl', 'cl', 'pl', 'gl', 'dr', 'fr', 'gr', 'tr', 'cr'],
     words: ['flag', 'clap', 'plum', 'glad', 'drum', 'frog', 'grin', 'trip', 'crab', 'trunk'],
     tricky: ['were', 'there'],
     stories: [
@@ -173,9 +174,9 @@ LR.units.push(
     ]
   },
   {
-    id: 'p4-04', phase: 4, title: 'Both ends: plant, stand, drink', sounds: ['CCVCC'],
+    id: 'p4-04', phase: 4, theme: 'plants', title: 'Both ends: plant, stand, drink', sounds: ['CCVCC'],
     words: ['plant', 'stand', 'drink', 'crisp', 'stamp', 'blink', 'twist', 'frost', 'spend', 'crust'],
-    tricky: ['little', 'one', 'what', 'when'],
+    tricky: ['little', 'one', 'what'],
     stories: [
       { id: 'p4-04a', title: 'The little plant', s: [
         'Meena has a little plant in a pot.',
@@ -188,7 +189,7 @@ LR.units.push(
         'Raj can stand on one leg.',
         'Can Meena stand on one leg?',
         'She can! Then she tips.',
-        'When she tips, Raj tips!',
+        'Raj tips as well!',
         'Bump! Meena and Raj grin.'
       ], q: [{ q: 'Who stands on one leg first?', a: 'Raj', opts: ['Raj', 'Mum', 'Dad'] }] }
     ],
@@ -200,9 +201,9 @@ LR.units.push(
     ]
   },
   {
-    id: 'p4-05', phase: 4, title: 'Three together: str, spr, scr, spl, shr, thr', sounds: ['str', 'spr', 'scr', 'spl', 'shr', 'thr'],
+    id: 'p4-05', phase: 4, theme: 'weather', title: 'Three together: str, spr, scr, spl, shr, thr', sounds: ['str', 'spr', 'scr', 'spl', 'shr', 'thr'],
     words: ['string', 'strap', 'scrub', 'splash', 'shrimp', 'thrill', 'spring', 'street', 'scrap', 'strong'],
-    tricky: ['out'],
+    tricky: ['out', 'when'],
     stories: [
       { id: 'p4-05a', title: 'Spring', s: [
         'It is spring.',
@@ -227,7 +228,7 @@ LR.units.push(
     ]
   },
   {
-    id: 'p4-06', phase: 4, title: 'Clusters with ch, sh, th', sounds: ['nch', 'sh', 'ch'],
+    id: 'p4-06', phase: 4, theme: 'food', title: 'Clusters with ch, sh, th', sounds: ['nch', 'sh', 'ch'],
     words: ['chest', 'bench', 'lunch', 'shelf', 'crash', 'flash', 'brush', 'champ', 'munch', 'chimp'],
     tricky: ['oh', 'their'],
     stories: [

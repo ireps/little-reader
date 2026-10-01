@@ -76,6 +76,24 @@ const server = http.createServer((req, res) => {
         if (!taken.has(key)) await shot('maths-' + it.m);
         if (it.m === 'more') await p.click(`[data-act=num][data-side="${it.a > it.b ? 'a' : 'b'}"]`);
         else await p.click(`[data-act=sym][data-s="${it.a > it.b ? '>' : '<'}"]`);
+      } else {
+        /* The Phase 5 activities are captured on their own below; here they are just answered. */
+        await p.evaluate(() => { LR.steps.flash.SHOW_MS = 50; });
+        if (it.t === 'flash') { await p.waitForSelector('.s-card'); await p.click(`.s-card[data-w="${it.w}"]`); }
+        else if (it.t === 'pic') await p.click(`.s-pic[data-w="${it.w}"]`);
+        else if (it.t === 'build') {
+          for (const g of await p.evaluate(w => LR.words.segment(w) || w.split(''), it.w)) {
+            const label = /_e$/.test(g) ? g.charAt(0) + '–e' : g;
+            await p.evaluate(l => [...document.querySelectorAll('.s-tile')].find(t => t.textContent === l).click(), label);
+          }
+        }
+        else if (it.t === 'silly') await p.click(`.s-thumb[data-ok="${await p.evaluate(i => LR.units.find(u => u.id === i.u).silly[i.k].ok, it)}"]`);
+        else if (it.t === 'rhyme') await p.click(`.s-pic[data-w="${await p.evaluate(k => LR.lang.rhymes[k][1], it.k)}"]`);
+        else if (it.t === 'an') await p.click(`.s-word-card[data-w="${/^[aeiou]/.test(it.w) ? 'an' : 'a'}"]`);
+        else if (it.t === 'plural') await p.click(`.s-pic[data-n="${it.many ? 3 : 1}"]`);
+        else if (it.t === 'pos') await p.click(`.s-pic[data-p="${it.p}"]`);
+        else if (it.t === 'caps') await p.click('.s-sentence .w');
+        else if (it.t === 'q') await p.click(`.s-answer[data-w="${await p.evaluate(i => { let f; LR.units.forEach(u => u.stories.forEach(s => { if (s.id === i.story) f = s.q[i.k].a; })); return f; }, it)}"]`);
       }
       taken.add(key);
       await next(c.at);
@@ -84,6 +102,25 @@ const server = http.createServer((req, res) => {
     // Go on, after the re-prompts
     await p.evaluate(() => { const t = LR.progress.today(); LR.state.resume = null; LR.state.items['w:come'] = { b: 2, d: t, u: '', m: 0 }; LR.session.IDLE_MS = 60; });
     await p.click('[data-act=start]'); await p.waitForSelector('[data-act=goon]', { timeout: 5000 }).catch(() => {}); await shot('go-on');
+    // Each Phase 5 activity on its own
+    const activities = [
+      ['flash-word', { t: 'flash', w: 'frost' }], ['flash-pick', { t: 'flash', w: 'frost' }, '.s-card'], ['pic', { t: 'pic', w: 'ship' }],
+      ['build', { t: 'build', w: 'shrimp' }], ['build-split', { t: 'build', w: 'snake' }], ['silly', { t: 'silly', u: 'p4-03', k: 1 }, null, 'silly'],
+      ['rhyme', { t: 'rhyme', k: 5 }], ['a-an', { t: 'an', w: 'egg' }], ['plural', { t: 'plural', w: 'bird', many: true }],
+      ['position', { t: 'pos', p: 'on' }], ['capitals', { t: 'caps', story: 'p5-06a', i: 0 }], ['question', { t: 'q', story: 'p4-03a', k: 0 }, null, 'read'],
+      ['read-hint', { t: 'read', story: 'p5-03a', i: 2 }, '[data-act=check]:not([disabled])', 'read']
+    ];
+    for (const [name, it, wait, step] of activities) {
+      await p.goto(U + '#home');
+      await p.evaluate(([it, step]) => { LR.steps.flash.SHOW_MS = 400; LR.state.resume = { date: LR.progress.today(), steps: [{ id: step || 'words', items: [it] }], at: [0, 0], done: false, started: Date.now(), fresh: 0, right: 0, answered: 0, mode: 'day' }; LR.store.save(); }, [it, step]);
+      await p.reload(); await p.evaluate(() => { LR.steps.flash.SHOW_MS = 400; });
+      await p.mouse.click(640, 5); await p.click('[data-act=start]');
+      await p.evaluate(() => { window.__endMs = 1500; });
+      if (wait) await p.waitForSelector(wait); else await p.waitForTimeout(150);
+      if (name === 'read-hint') { await p.click('.s-sentence .w[data-w="asked"]'); await p.waitForTimeout(80); }
+      await shot(name);
+      await p.evaluate(() => { window.__endMs = 20; });
+    }
     // Grown-ups
     await p.goto(U + '#grownups'); await shot('grownups-gate');
     const [a, bb] = (await p.textContent('.gate .prompt')).match(/(\d+) \+ (\d+)/).slice(1).map(Number);

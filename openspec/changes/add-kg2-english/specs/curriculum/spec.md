@@ -1,10 +1,10 @@
 ## ADDED Requirements
 
 ### Requirement: Decodable guarantee
-Every sentence SHALL use only graphemes and tricky words taught up to its unit.
+Every word she reads (unit words, story sentences, silly sentences and answer choices) SHALL use only graphemes and tricky words taught up to its unit; spoken questions are exempt.
 
 #### Scenario: Untaught word
-- **GIVEN** a story in unit p4-02 uses "night" before "igh" is taught
+- **GIVEN** a story in unit p4-02 uses "cake" before "a_e" is taught
 - **WHEN** npm test runs
 - **THEN** the decodability test fails and names the word and unit
 

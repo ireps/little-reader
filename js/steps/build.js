@@ -27,7 +27,9 @@ function draw(){
 LR.steps.build = {
   render:function(item, ctx){
     var w = item.w, parts = W.segment(w) || w.split('');
-    var decoys = U.shuffle(DECOYS.filter(function(g){ return parts.indexOf(g) === -1; })).slice(0, 2);
+    /* Decoys never repeat a sound in the word, nor a letter of a split digraph (no "e" beside "a–e"). */
+    var inSplit = parts.filter(function(g){ return /_e$/.test(g); }).map(function(g){ return [g.charAt(0), 'e']; }).reduce(function(a, x){ return a.concat(x); }, []);
+    var decoys = U.shuffle(DECOYS.filter(function(g){ return parts.indexOf(g) === -1 && inSplit.indexOf(g) === -1; })).slice(0, 2);
     cur = { w:w, parts:parts, at:0, tray:U.shuffle(parts.concat(decoys).map(function(g){ return { g:g, used:false }; })) };
     ctx.screen({ main:'' });
     draw();

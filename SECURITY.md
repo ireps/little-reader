@@ -7,7 +7,7 @@ Little Reader is a static site with no server, no accounts, no analytics and no 
 Only in the tablet's browser storage (`localStorage`, key `littleReader.v1`):
 
 - her progress on each word (a review box, a due date and a count of misses)
-- her garden (which words she has mastered) and her Word detective mix-ups
+- her garden (which words she has mastered), her mix-ups, and how many silly sentences she got right per unit
 - which stories she has read, and today's session plan
 - minutes and first-try accuracy for the last 30 days
 - the speech speed

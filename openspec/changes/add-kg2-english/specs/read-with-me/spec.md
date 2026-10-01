@@ -17,4 +17,4 @@ After the last sentence, Read with me SHALL ask 1 or 2 who or what questions wit
 
 #### Scenario: Wrong
 - **WHEN** she picks the hen
-- **THEN** it dims and the sentence with the answer is shown and spoken
+- **THEN** it dims; after a second miss the right answer is shown and spoken

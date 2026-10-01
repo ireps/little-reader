@@ -20,22 +20,22 @@ Flash SHALL show a word for 2 s, hide it, and ask her to pick it from 3 look-ali
 
 #### Scenario: Wrong
 - **WHEN** she picks a look-alike
-- **THEN** it dims, the flashed word is shown again and spoken
+- **THEN** it dims and the look-alike is named; after a second miss the flashed word is shown and spoken
 
 ### Requirement: Picture match
-Picture match SHALL show a decodable word and 3 pictures whose words share a sound, and ask her to pick the picture.
+Picture match SHALL show a decodable word with sound buttons and 3 pictures (preferring words that start the same way), and ask her to pick the picture; only words with a picture are used.
 
 #### Scenario: Right
-- **GIVEN** the word "boat" with pictures of a boat, a goat and a coat
-- **WHEN** she taps the boat
-- **THEN** it turns green and "boat" is spoken
+- **GIVEN** the word "ship" with its picture and two others
+- **WHEN** she taps the ship
+- **THEN** it turns green and "ship" is spoken
 
 #### Scenario: Wrong
-- **WHEN** she taps the goat
-- **THEN** it dims and "goat" is spoken
+- **WHEN** she taps another picture
+- **THEN** it dims and that picture's word is spoken
 
 ### Requirement: Build it
-Build it SHALL speak a word and let her build it by tapping tiles into slots, with each digraph as one tile and 2 decoy tiles.
+Build it SHALL speak a word and let her build it by tapping tiles into slots, with each digraph (and split digraph) as one tile and 2 decoy tiles; tricky words are practised with Find it and Flash instead.
 
 #### Scenario: Right order
 - **WHEN** she taps the tiles in the right order
@@ -48,10 +48,6 @@ Build it SHALL speak a word and let her build it by tapping tiles into slots, wi
 #### Scenario: Digraph tile
 - **WHEN** "ship" is built
 - **THEN** "sh" is a single tile and fills one slot
-
-#### Scenario: Heart letter placed
-- **WHEN** a heart letter is placed in a tricky word
-- **THEN** it shows its heart
 
 ### Requirement: Sound buttons
 Picture match and Build it SHALL show a dot under each single-letter grapheme and a dash under each digraph.
@@ -95,11 +91,11 @@ Rhyme, capital letters, a or an, plural -s and in/on/under SHALL each be offered
 
 #### Scenario: Rhyme wrong
 - **WHEN** she picks the dog picture
-- **THEN** it dims and "cat, hat" is spoken
+- **THEN** it dims and "cat, dog. They don't rhyme." is spoken
 
 #### Scenario: Capitals
-- **WHEN** she taps the first letter of the sentence
-- **THEN** it becomes a capital
+- **WHEN** she taps the first word of a sentence written with a small first letter
+- **THEN** it gets its capital letter
 
 #### Scenario: a or an
 - **WHEN** she picks "an" for the apple picture

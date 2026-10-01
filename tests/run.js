@@ -410,6 +410,119 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   await p.click('[data-act=grownups]'); await p.waitForTimeout(40);
   ok(await p.evaluate(() => location.hash) === '#home', 'a quick tap on the lock does not open Grown-ups');
 
+  // ---------- Phase 5: the course ----------
+  const course = await p.evaluate(() => {
+    const W = LR.words, i4 = LR.units.findIndex(u => u.id === 'p4-01'), bad = [];
+    LR.units.forEach(u => {
+      const sil = u.silly || [];
+      if (u.words.length < 8 || u.words.length > 12) bad.push(u.id + ' words ' + u.words.length);
+      if (u.tricky.length < 1 || u.tricky.length > 3) bad.push(u.id + ' tricky ' + u.tricky.length);
+      if (u.stories.length !== 2 || u.stories.some(s => s.s.length < 4 || s.s.length > 6 || !(s.q && s.q.length))) bad.push(u.id + ' stories');
+      if (sil.length !== 8 || sil.filter(x => x.ok).length !== 4) bad.push(u.id + ' silly');
+      if (['plants', 'animals', 'food', 'body', 'transport', 'weather', 'helpers'].indexOf(u.theme) === -1) bad.push(u.id + ' theme');
+    });
+    return { problems: W.checkUnits(), bad, cake: W.decodable('cake', i4), night: W.decodable('night', i4), doTricky: W.decodable('do', i4),
+      order: LR.units.map(u => u.id).join(), ship: (W.segment('ship') || []).join('|'), cakeSeg: (W.segment('cake') || []).join('|') };
+  });
+  ok(course.problems.length === 0, 'every word in every unit is decodable with what has been taught by then' + (course.problems.length ? ': ' + course.problems.join(', ') : ''));
+  ok(!course.cake && course.night && !course.doTricky, 'the check fails on an untaught sound (cake in Phase 4) or tricky word (do in unit 1), and passes taught ones (night)');
+  ok(course.bad.length === 0, 'every unit has 8-12 words, 1-3 tricky words, 2 stories of 4-6 sentences with questions, 8 silly sentences and a theme' + (course.bad.length ? ': ' + course.bad.join(', ') : ''));
+  ok(/^p3-r1,p3-r2,p3-r3,p4-01,.*p4-06,p5-01,.*p5-12$/.test(course.order), 'units run from Phase 3 review through Phase 4 to the end of Phase 5');
+  ok(course.ship === 'sh|i|p' && course.cakeSeg === 'c|a_e|k', 'words split into sounds, with split digraphs (sh-i-p, c-a_e-k)');
+  const pics = await p.evaluate(() => {
+    /* Unicode 6.0/6.1 emoji ranges (Android 5.1 draws these), plus a few older default-emoji symbols. */
+    const R = [[0x1F300, 0x1F320], [0x1F330, 0x1F335], [0x1F337, 0x1F37C], [0x1F380, 0x1F393], [0x1F3A0, 0x1F3C4], [0x1F3C6, 0x1F3CA], [0x1F3E0, 0x1F3F0],
+      [0x1F400, 0x1F43E], [0x1F440, 0x1F440], [0x1F442, 0x1F4F7], [0x1F4F9, 0x1F4FC], [0x1F500, 0x1F53D], [0x1F550, 0x1F567], [0x1F5FB, 0x1F640],
+      [0x1F645, 0x1F64F], [0x1F680, 0x1F6C5]];
+    const BMP = [0x2B50, 0x2614, 0x26C4, 0x2615, 0x26BD, 0x26FA, 0x26F5, 0x231A, 0x23F0, 0x270B];
+    return Object.entries(LR.pictures).filter(([w, e]) => { const c = e.codePointAt(0); return [...e].length !== 1 || !(BMP.includes(c) || R.some(([a, b]) => c >= a && c <= b)); }).map(([w]) => w);
+  });
+  ok(pics.length === 0, 'every picture is an emoji from Unicode 6 or older' + (pics.length ? ': ' + pics.join(', ') : ''));
+
+  // ---------- Phase 5: each activity, right and wrong ----------
+  await seed(s2({ 'w:come': { b: 2, d: t0 } }));
+  // Flash: the word shows, then hides; nothing is said before she answers
+  await clearSaid();
+  await only({ t: 'flash', w: 'jump' });
+  ok((await p.textContent('.s-flash')).includes('jump') && !(await said()).includes('jump'), 'Flash shows the word without saying it');
+  await p.waitForSelector('.s-card');
+  ok(!(await p.$('.s-flash')), 'Flash hides the word, then offers 3 look-alikes');
+  await p.click('.s-card:not([data-w="jump"])'); await p.waitForTimeout(30);
+  ok(await p.$eval('.s-card.fb-wrong', e => e.disabled), 'Flash: a wrong pick dims');
+  await p.click('.s-card[data-w="jump"]'); await waitAt([0, 0]);
+  ok((await said()).includes('Yes! jump'), 'Flash: the right pick is praised and it moves on');
+  // Picture match, with sound buttons
+  await only({ t: 'pic', w: 'ship' });
+  ok(await p.$$eval('.s-sw .sb.dash', x => x.length) === 1 && await p.$$eval('.s-sw .sb.dot', x => x.length) === 2, 'Picture match shows sound buttons: a dash under sh, dots under i and p');
+  await p.click('.s-pic:not([data-w="ship"])'); await p.waitForTimeout(30);
+  ok((await said()).some(t => /^That is a /.test(t)), 'Picture match: a wrong picture is named');
+  await p.click('.s-pic[data-w="ship"]'); await waitAt([0, 0]);
+  ok(true, 'Picture match: the right picture moves on');
+  // Build it: sh is one tile; a wrong tile stays in the tray
+  await only({ t: 'build', w: 'ship' });
+  ok(await p.$$eval('.s-slot', x => x.length) === 3 && await p.$$eval('.s-tile', x => x.some(t => t.textContent === 'sh')), 'Build it: "ship" has 3 slots and "sh" is a single tile');
+  const decoy = await p.$$eval('.s-tile', x => x.map(t => t.textContent).find(t => !['sh', 'i', 'p'].includes(t)));
+  await p.evaluate(l => [...document.querySelectorAll('.s-tile')].find(t => t.textContent === l).click(), decoy); await p.waitForTimeout(30);
+  ok(await p.$$eval('.s-tile', (x, l) => x.some(t => t.textContent === l), decoy) && await p.$eval('.s-slot', s => !s.classList.contains('full')), 'Build it: a wrong tile stays in the tray and fills nothing');
+  const mBefore = await p.evaluate(() => LR.state.items['w:ship'].m);
+  await answer();
+  ok(await p.evaluate(m => LR.state.items['w:ship'].m === m, mBefore) && mBefore >= 1, 'Build it: the miss is recorded once');
+  // Silly sentences
+  await only({ t: 'silly', u: 'p4-01', k: 1 }, 'silly');
+  ok(!(await said()).includes('A tent can drink milk.'), 'Silly sentences: the sentence is not read before she answers');
+  await p.click('.s-thumb[data-ok="true"]'); await waitAt([0, 0]);
+  ok((await said()).some(t => t.startsWith('A tent can drink milk.')) && await p.evaluate(() => JSON.stringify(LR.state.silly['p4-01'])) === '[1,0]', 'Silly sentences: a wrong thumb shows the answer, reads the sentence and is counted');
+  await only({ t: 'silly', u: 'p4-01', k: 0 }, 'silly');
+  await p.click('.s-thumb[data-ok="true"]'); await waitAt([0, 0]);
+  ok(await p.evaluate(() => JSON.stringify(LR.state.silly['p4-01'])) === '[2,1]', 'Silly sentences: a right thumb is counted');
+  // Rhyme, a/an, one or many, in/on/under, capitals
+  await only({ t: 'rhyme', k: 0 });
+  ok((await said()).includes('What rhymes with cat?'), 'Rhyme: she hears the word');
+  await p.click('.s-pic:not([data-w="hat"])'); await p.waitForTimeout(30);
+  ok(await p.$$eval('.s-pic.fb-wrong', x => x.length) === 1, 'Rhyme: a wrong picture dims');
+  await p.click('.s-pic[data-w="hat"]'); await waitAt([0, 0]);
+  await only({ t: 'an', w: 'apple' });
+  await p.click('.s-word-card[data-w="a"]'); await waitAt([0, 0]);
+  ok((await said()).includes('We say an apple.'), 'a or an: a wrong choice shows and says "an apple"');
+  await only({ t: 'plural', w: 'cat', many: true });
+  ok((await p.textContent('.s-main .s-word')) === 'cats', 'One or many: she reads "cats"');
+  await p.click('.s-pic[data-n="3"]'); await waitAt([0, 0]);
+  ok((await said()).includes('Yes! cats.'), 'One or many: three cats is right');
+  await only({ t: 'pos', p: 'under' });
+  await p.click('.s-pic[data-p="in"]'); await p.waitForTimeout(30);
+  await p.click('.s-pic[data-p="under"]'); await waitAt([0, 0]);
+  ok((await said()).includes('Yes! The ball is under the box.'), 'In, on, under: the matching scene is right after a miss');
+  await only({ t: 'caps', story: 'p4-01a', i: 0 });
+  ok((await p.textContent('.s-sentence')).startsWith('a frog'), 'Capitals: the sentence starts with a small letter');
+  await p.click('.s-sentence .w:nth-of-type(2)'); await p.waitForTimeout(30);
+  await p.evaluate(() => { __tts.endMs = 600; });
+  await p.click('.s-sentence .w'); await p.waitForTimeout(30);
+  ok((await p.textContent('.s-sentence')).startsWith('A frog'), 'Capitals: tapping the first word gives it a capital');
+  await waitAt([0, 0]);
+  await p.evaluate(() => { __tts.endMs = 20; });
+  // Story questions
+  await only({ t: 'q', story: 'p4-01a', k: 0 }, 'read');
+  ok((await said()).includes('Who did a big jump?'), 'Story questions: the question is asked');
+  await p.click('.s-answer[data-w="frog"]'); await waitAt([0, 0]);
+  ok((await said()).includes('Yes! frog.'), 'Story questions: the right answer moves on');
+  // The help ladder: first a hint, then the word; one miss per word
+  await only({ t: 'read', story: 'p4-01a', i: 2 }, 'read');
+  await p.waitForSelector('[data-act=check]:not([disabled])');
+  await clearSaid();
+  await p.click('.s-sentence .w[data-w="said"]'); await p.waitForTimeout(40);
+  const hint = (await said()).slice(-1)[0];
+  ok(hint && hint !== 'said' && await p.evaluate(() => LR.state.items['w:said'].m) === 1, 'help ladder: the first tap gives a hint, not the word (' + hint + ')');
+  await p.click('.s-sentence .w[data-w="said"]'); await p.waitForTimeout(40);
+  await p.click('.s-sentence .w[data-w="said"]'); await p.waitForTimeout(40);
+  ok((await said()).includes('said') && await p.evaluate(() => LR.state.items['w:said'].m) === 1, 'help ladder: the second tap says the word, and the word counts as one miss');
+  // The day's plan: questions follow the story; Sounds and words mixes activities
+  await seed(s2({ 'w:come': { b: 2, d: t0 }, 'w:jump': { b: 0, d: t0 }, 'w:lamp': { b: 1, d: t0 }, 'w:some': { b: 2, d: t0 } }));
+  await startSession();
+  const planned = await p.evaluate(() => { const r = LR.state.resume; return { words: r.steps[0].items.map(i => i.t), read: (r.steps.find(s => s.id === 'read') || { items: [] }).items.map(i => i.t) }; });
+  ok(planned.read.slice(-1)[0] === 'q' && planned.read[0] === 'read', 'story questions come after the story\'s sentences: ' + planned.read.join(','));
+  ok(new Set(planned.words).size >= 3 && ['rhyme', 'an', 'plural', 'pos', 'caps'].includes(planned.words.slice(-1)[0]), 'Sounds and words mixes activities and ends with a language task: ' + planned.words.join(','));
+  ok(planned.words.every((t, i) => i < 3 || !(t === planned.words[i - 1] && t === planned.words[i - 2] && t === planned.words[i - 3])), 'no activity runs more than 3 times in a row');
+
   // ---------- Speed, captions, feedback (Phase 3 rules, in the session) ----------
   await seed(s2({ 'w:come': { b: 2, d: t0 }, 'w:some': { b: 2, d: t0 }, 'w:from': { b: 2, d: t0 } }));
   await p.goto(U + '#session'); await p.waitForTimeout(80);

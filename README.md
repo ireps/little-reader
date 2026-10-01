@@ -10,9 +10,10 @@ Home is her garden and one **Start**. A session takes about 10 minutes and moves
 
 | Step | What it helps with |
 | --- | --- |
-| Sounds and words (Find it) | She hears a word and finds it among look-alikes that start the same way (*jump* among *junk* and *jam*). Words she has mixed up before come back as the distractors. Breaks the first-letter-guessing habit. Words come back on a spaced schedule until she knows them. |
+| Sounds and words | Each word gets the activity that fits how well she knows it. New words: **Build it** (she hears the word and taps sound tiles into slots; *sh* or *a–e* is one tile) or **Picture match** (she reads the word, with Oxford-style sound buttons, and taps its picture). Known words: **Find it** (she hears a word and finds it among look-alikes that start the same way; her past mix-ups come back as the distractors) or **Flash** (the word shows for 2 seconds, then she picks it). Words come back on a spaced schedule until she knows them. The step ends with one language task a day, in turn: rhyme, *a* or *an*, one or many, in/on/under, capital letters. |
 | New tricky word | One or two a day. The word is said and spelled with its letters lit, she taps the ♥ letters (the ones that don't sound the way they look), then sees its family (*said*, *again*, *says*). |
-| Read with me | She reads a short story to her grown-up, one sentence at a time. Nothing is read to her first. The grown-up taps any word she stumbles on (it is said and noted), then the tick plays the sentence with each word lit. *Not today* (a 2 s hold) skips it. |
+| Silly sentences | She reads three sentences and gives each a thumbs up (makes sense) or a thumbs down (silly). The sentence is read only after she answers. |
+| Read with me | She reads a short story to her grown-up, one sentence at a time. Nothing is read to her first. The grown-up taps any word she stumbles on: the first tap gives a hint (its ♥ letters light, and a word with the same trick or its first sound), the second says the word, and it is noted. Then the tick plays the sentence with each word lit. One or two questions about the story follow. *Not today* (a 2 s hold) skips it. |
 | Maths | The hungry crocodile: which is more, and which mouth fits (< or >). The mouth always opens toward the bigger number. |
 | Garden | A flower for every word she has mastered (right on the first try on 3 separate days), and a sprout for every word she is learning. The garden only grows. |
 
@@ -30,7 +31,9 @@ Hold the lock on Home for 2 seconds, then answer a sum on the number pad (a chil
 
 ## The course
 
-The words and stories are built in, so there is nothing to type or load each week. The first four units follow Letters and Sounds Phase 4 (adjacent consonants), the order Oxford's phonics uses; Phase 5 of this project adds the rest. All stories are original, written for this app.
+The words and stories are built in, so there is nothing to type or load each week. There are 21 units in the Letters and Sounds order that Oxford's phonics uses: a Phase 3 review, Phase 4 (adjacent consonants, where a new install starts) and Phase 5 (*ay*, *ou*, *ie*, *ea*, *oy*, *ir*, *ue*, *ew*, *aw*, *wh*, *ph*, *au*, *oe*, the split digraphs *a_e* to *u_e*, *ow* as in *snow* and *cow*, *y* and *ey*). Each unit has 10 words, its tricky words, two stories with questions and eight silly sentences. A check in the tests makes sure every word she reads uses only sounds and tricky words taught by then. The next unit opens by itself when every word is mastered and silly sentences are 80% right.
+
+All stories are original, written for this app. Pictures are emoji the tablet can draw (Unicode 6).
 
 ## How it feels
 
@@ -92,8 +95,10 @@ Open `/tools/device-check.html` on the tablet, tap each button, and copy the res
 ```
 index.html               shell, Content Security Policy, script order
 css/app.css
-data/units.js            the built-in course (words, tricky words, stories)
-js/words.js              heart letters, families, look-alikes
+data/units.js            the course, Phase 3 review and Phase 4 (words, tricky words, stories, silly sentences)
+data/units-p5.js         the course, Phase 5
+data/pictures.js         pictures for words (emoji), rhymes, a/an, plurals, in/on/under
+js/words.js              graphemes, splitting and decodability, heart letters, families, look-alikes
 js/progress.js           spaced review, flowers, unit progress
 js/store.js              load/save with validation, migration, reset
 js/speech.js             clip first (if any), then the tablet's voice; captions
@@ -102,7 +107,7 @@ js/ui.js                 router, letters and hearts, finger sweep, feedback
 js/guide.js, garden.js   Tilly the tortoise, and her garden
 js/kit.js                session screen components
 js/session.js            Home, today's plan, the session runner
-js/steps/*.js            find, tricky, read, maths
+js/steps/*.js            find, flash, pic, build, tricky, silly, read, q, lang, maths, and the help ladder
 js/lessons/grownups.js   Grown-ups
 js/main.js               start
 fonts/                   Andika (Regular and Bold, Latin), SIL OFL
