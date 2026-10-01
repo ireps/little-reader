@@ -14,15 +14,38 @@ function save(){ LR.store.save(); }
 function stepIds(r){ return r.steps.map(function(s){ return s.id; }); }
 
 /* ---------- Planning ---------- */
-function crocItems(n){
-  var out = [], last = null;
+/* A comparing round: level 1 is 0-10 with dots, level 2 is 0-20. With the = switch on, 1 round in 4 may be equal. */
+function crocItem(i, last){
+  var lv = P.mathsLevel('compare'), hi = lv === 2 ? 20 : 10, eq = LR.state.equals && U.rand(4) === 0, a, b;
+  do { a = U.rand(hi + 1); b = eq ? a : U.rand(hi + 1); } while ((!eq && a === b) || (last && last.a === a && last.b === b));
+  return { t:'croc', a:a, b:b, m:LR.state.equals && (eq || U.rand(3) === 0) ? 'eq' : i % 2 ? 'mouth' : 'more', lv:lv };
+}
+/* The Maths step: 4 or 5 items from the skills she has unlocked, due or newest first, comparing included,
+   never the same numbers twice in a row. */
+function mathItems(n){
+  var it = LR.state.items, open = P.mathsUnlocked(), t = P.today();
+  var order = open.slice().sort(function(x, y){
+    var a = it['m:' + x], b = it['m:' + y];
+    if (!a !== !b) return a ? 1 : -1;
+    return (a ? a.d : '') < (b ? b.d : '') ? -1 : 1;
+  });
+  var out = [], last = {};
   for (var i = 0; i < n; i++) {
-    var a, b;
-    do { a = U.rand(11); b = U.rand(11); } while (a === b || (last && last.a === a && last.b === b));
-    last = { t:'croc', a:a, b:b, m:i % 2 ? 'mouth' : 'more' };
-    out.push(last);
+    var s = order[i % order.length], prev = last[s], item;
+    if (s === 'compare') item = crocItem(i, prev);
+    else {
+      var lv = P.mathsLevel(s), seed, key;
+      for (var k = 0; k < 20; k++) {
+        seed = 1 + U.rand(999999998);
+        key = LR.maths.gen({ s:s, lv:lv, seed:seed }).key;
+        if (!prev || key !== prev.key) break;
+      }
+      item = { t:'math', s:s, lv:lv, seed:seed, key:key };
+    }
+    last[s] = item;
+    out.push(item);
   }
-  return out;
+  return out.map(function(x){ var c = {}; Object.keys(x).forEach(function(k){ if (k !== 'key') c[k] = x[k]; }); return c; });
 }
 /* Sounds and words: each word gets the activity that fits how well she knows it. Box 0-1: Build it or Picture match
    (matching sounds to letters); box 2 or more: Flash or Find it (reading at a glance). Tricky words use Find it or Flash. */
@@ -73,7 +96,7 @@ function plan(mode, only){
     if (!only || only === 'read') add('read', story.s.map(function(s, i){ return { t:'read', story:story.id, i:i }; })
       .concat((story.q || []).slice(0, 2).map(function(q, k){ return { t:'q', story:story.id, k:k }; })));
   }
-  if (mode === 'day' || only === 'maths') { if (!only || only === 'maths') add('maths', crocItems(4)); }
+  if (mode === 'day' || only === 'maths') { if (!only || only === 'maths') add('maths', mathItems(4 + U.rand(2))); }
   if (mode !== 'practice') add('garden', []);
   return { date:t, steps:steps, at:[0, 0], done:false, started:Date.now(), fresh:0, right:0, answered:0, mode:mode };
 }
@@ -275,6 +298,7 @@ function start(mode, only){
   U.app().onclick = click;
   run();
 }
+session.mathItems = mathItems;
 LR.routes.session = function(){ document.title = 'Little Reader'; start('day'); };
 ['words', 'tricky', 'silly', 'read', 'maths'].forEach(function(id){
   LR.routes['practice-' + id] = function(){ document.title = 'Practise – Little Reader'; start('practice', id); };

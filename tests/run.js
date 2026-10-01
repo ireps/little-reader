@@ -78,8 +78,9 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
     else if (it.t === 'read') { await p.waitForSelector('[data-act=check]:not([disabled])'); await p.click('[data-act=check]'); }
     else if (it.t === 'croc') {
       if (it.m === 'more') await p.click(`[data-act=num][data-side="${it.a > it.b ? 'a' : 'b'}"]`);
-      else await p.click(`[data-act=sym][data-s="${it.a > it.b ? '>' : '<'}"]`);
+      else await p.click(`[data-act=sym][data-s="${it.a > it.b ? '>' : it.a < it.b ? '<' : '='}"]`);
     }
+    else if (it.t === 'math') await p.click(`.m-opt[data-i="${await p.evaluate(i => { const q = LR.maths.gen(i); return q.opts.map(o => o.v).indexOf(q.answer); }, it)}"]`);
     else if (it.t === 'flash') { await p.waitForSelector('.s-card'); await p.click(`.s-card[data-w="${it.w}"]`); }
     else if (it.t === 'pic') await p.click(`.s-pic[data-w="${it.w}"]`);
     else if (it.t === 'build') {
@@ -375,7 +376,7 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   // Practise one game
   await p.click('a[href="#practice-maths"]'); await p.waitForTimeout(60);
   ok(await p.evaluate(() => !!document.querySelector('[data-act=num],[data-act=sym]') && LR.state.resume === null), 'Practise one game opens the game without replacing the day\'s plan');
-  for (let i = 0; i < 4; i++) { const cc = await p.evaluate(() => LR.session.ctx && LR.session.ctx.item); if (!cc) break;
+  for (let i = 0; i < 6; i++) { const cc = await p.evaluate(() => location.hash === '#practice-maths' && LR.session.ctx && LR.session.ctx.item); if (!cc) break;
     if (cc.m === 'more') await p.click(`[data-act=num][data-side="${cc.a > cc.b ? 'a' : 'b'}"]`); else await p.click(`[data-act=sym][data-s="${cc.a > cc.b ? '>' : '<'}"]`);
     await p.waitForFunction(o => !LR.session.ctx || LR.session.ctx.item !== o || location.hash === '#grownups', cc, { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(30); }
   await p.waitForFunction(() => location.hash === '#grownups', null, { timeout: 5000 }).catch(() => {});
@@ -523,6 +524,97 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   ok(new Set(planned.words).size >= 3 && ['rhyme', 'an', 'plural', 'pos', 'caps'].includes(planned.words.slice(-1)[0]), 'Sounds and words mixes activities and ends with a language task: ' + planned.words.join(','));
   ok(planned.words.every((t, i) => i < 3 || !(t === planned.words[i - 1] && t === planned.words[i - 2] && t === planned.words[i - 3])), 'no activity runs more than 3 times in a row');
 
+  // ---------- Phase 6: maths ----------
+  const gens = await p.evaluate(() => {
+    const M = LR.maths, bad = [], R = {
+      count: [[2, 10], [11, 20]], numeral: [[1, 9], [10, 99]], counton: [[0, 9], [0, 100]], neighbour: [[0, 20], [0, 100]],
+      add: [[2, 9], [2, 18]], take: [[1, 8], [1, 8]], names: [[1, 10], [11, 20]], zero: [[0, 0], [0, 0]]
+    };
+    M.ids.filter(s => s !== 'compare').forEach(s => [1, 2].forEach(lv => {
+      for (let i = 1; i <= 300; i++) {
+        const q = M.gen({ s, lv, seed: i * 104729 }), vals = q.opts.map(o => o.v);
+        if (!vals.includes(q.answer)) bad.push(`${s}${lv}: answer not offered`);
+        if (new Set(vals.map(String)).size !== vals.length) bad.push(`${s}${lv}: repeated choice`);
+        if (q.opts.length < 2 || q.opts.length > 3) bad.push(`${s}${lv}: ${q.opts.length} choices`);
+        if (R[s] && (q.answer < R[s][lv - 1][0] || q.answer > R[s][lv - 1][1])) bad.push(`${s}${lv}: ${q.answer} out of range`);
+        if (s === 'money' && lv === 1 && ![1, 2, 5, 10].includes(q.answer)) bad.push('money1: ' + q.answer);
+      }
+    }));
+    return [...new Set(bad)];
+  });
+  ok(gens.length === 0, 'every maths generator gives its answer among unique choices, inside the level\'s range (300 items per skill and level)' + (gens.length ? ': ' + gens.slice(0, 8).join(', ') : ''));
+  const mplan = await p.evaluate(() => {
+    const t = LR.progress.today(), out = {};
+    LR.state.items = {}; LR.state.equals = false;
+    out.first = LR.progress.mathsUnlocked().join();
+    LR.state.items['m:compare'] = { b: 2, d: t, u: '', m: 0 }; LR.state.items['m:count'] = { b: 1, d: t, u: '', m: 0 };
+    out.second = LR.progress.mathsUnlocked().join();
+    let repeats = 0, sizes = new Set(), eqOff = 0;
+    for (let k = 0; k < 60; k++) {
+      const items = LR.session.mathItems(4 + (k % 2));
+      sizes.add(items.length);
+      items.forEach((x, i) => {
+        if (x.t === 'croc' && (x.m === 'eq' || x.a === x.b)) eqOff++;
+        const prev = items.slice(0, i).reverse().find(y => (y.s || 'compare') === (x.s || 'compare'));
+        if (prev && (x.t === 'croc' ? prev.a === x.a && prev.b === x.b : LR.maths.gen(prev).key === LR.maths.gen(x).key)) repeats++;
+      });
+    }
+    LR.state.equals = true;
+    let eqOn = 0;
+    for (let k = 0; k < 60; k++) LR.session.mathItems(5).forEach(x => { if (x.t === 'croc' && x.a === x.b && x.m === 'eq') eqOn++; });
+    LR.state.equals = false;
+    LR.state.items['m:compare'] = { b: 3, d: t, u: '', m: 0 };
+    out.level2 = LR.progress.mathsLevel('compare') === 2 && LR.progress.mathsLevel('count') === 1;
+    Object.assign(out, { repeats, sizes: [...sizes].join(), eqOff, eqOn });
+    return out;
+  });
+  ok(mplan.first === 'compare' && mplan.second === 'compare,count', 'maths skills unlock in order, each when the one before reaches box 2: ' + mplan.first + ' / ' + mplan.second);
+  ok(mplan.repeats === 0, 'a skill never repeats the same numbers in a row');
+  ok(mplan.sizes === '4,5', 'the Maths step has 4 or 5 items');
+  ok(mplan.eqOff === 0 && mplan.eqOn > 0, 'equal amounts and = appear only when the Equals sign switch is on (' + mplan.eqOn + ' when on)');
+  ok(mplan.level2, 'a skill moves to level 2 at box 3');
+  // Each skill: right, and wrong with the answer shown (count-along for counting)
+  await seed(s2({ 'w:come': { b: 2, d: t0 } }));
+  const skillIds = await p.evaluate(() => LR.maths.ids.filter(s => s !== 'compare'));
+  const mres = [];
+  for (const s of skillIds) {
+    await only({ t: 'math', s, lv: 1, seed: 12345 }, 'maths');
+    const info = await p.evaluate(() => { const q = LR.maths.gen(LR.session.ctx.item); return { right: q.opts.map(o => o.v).indexOf(q.answer), n: q.opts.length, count: q.count || 0 }; });
+    const wrongs = [...Array(info.n).keys()].filter(i => i !== info.right);
+    const tries = wrongs.slice(0, info.n === 2 ? 1 : 2);
+    for (const [k, w] of tries.entries()) {
+      /* The last wrong tap starts the reveal: slow the voice so the count-along can be seen. */
+      await p.evaluate(slow => { __tts.endMs = slow ? 1500 : 120; }, k === tries.length - 1);
+      await p.click(`.m-opt[data-i="${w}"]`); await p.waitForTimeout(40);
+    }
+    const shown = await p.$eval(`.m-opt[data-i="${info.right}"]`, e => e.classList.contains('fb-right'));
+    let lit = true;
+    if (info.count && ['count', 'add', 'take'].includes(s)) { await p.waitForTimeout(300); lit = await p.$$eval('.s-q .lit', x => x.length) > 0; }
+    await p.evaluate(() => { __tts.endMs = 20; });
+    await waitAt([0, 0]).catch(() => {});
+    const moved = await p.evaluate(() => LR.state.resume.at[1] === 1);
+    await only({ t: 'math', s, lv: 1, seed: 999 }, 'maths');
+    const r2 = await p.evaluate(() => { const q = LR.maths.gen(LR.session.ctx.item); return q.opts.map(o => o.v).indexOf(q.answer); });
+    await p.click(`.m-opt[data-i="${r2}"]`); await waitAt([0, 0]);
+    const up = await p.evaluate(sk => (LR.state.items['m:' + sk] || {}).b, s);
+    if (!(shown && lit && moved && up >= 1)) mres.push(`${s}: shown ${shown}, lit ${lit}, moved ${moved}, box ${up}`);
+  }
+  ok(mres.length === 0, 'every maths skill: a wrong answer shows the right one (counting along where there is something to count) and moves on; a right answer moves it up' + (mres.length ? ': ' + mres.join('; ') : ''));
+  await only({ t: 'math', s: 'count', lv: 1, seed: 4 }, 'maths');
+  const dots = await p.evaluate(() => ({ n: LR.maths.gen(LR.session.ctx.item).answer, frames: document.querySelectorAll('.s-q .frame').length, fill: document.querySelectorAll('.s-q .cell.fill').length, cells: document.querySelectorAll('.s-q .cell').length }));
+  ok(dots.frames >= 1 && dots.fill === dots.n && dots.cells % 10 === 0, 'amounts are shown as ten-frames, never scattered: ' + JSON.stringify(dots));
+  await only({ t: 'croc', a: 4, b: 4, m: 'eq' }, 'maths');
+  ok(await p.$$eval('[data-act=sym]', x => x.map(e => e.dataset.s).join('')) === '<=>', 'with = on, the crocodile offers <, = and >');
+  await p.click('[data-act=sym][data-s="="]'); await waitAt([0, 0]);
+  ok((await said()).some(t => /4 is equal to 4/.test(t)), 'equal amounts: = is right and "4 is equal to 4" is said');
+  // Grown-ups: maths rows and the Equals sign switch
+  await p.goto(U + '#grownups');
+  if (await p.$('.gate')) { const [a, bb] = (await p.textContent('.gate .prompt')).match(/(\d+) \+ (\d+)/).slice(1).map(Number); for (const k of String(a + bb)) await p.click(`[data-k="${k}"]`); await p.click('[data-k="OK"]'); await p.waitForTimeout(40); }
+  ok((await p.textContent('.gp')).includes('Comparing (< and >): level'), 'Grown-ups lists her maths skills with their level');
+  ok((await p.textContent('[data-act=equals]')).includes('off'), 'the Equals sign switch starts off');
+  await p.click('[data-act=equals]'); await p.waitForTimeout(30);
+  ok(await p.evaluate(() => LR.state.equals === true && JSON.parse(localStorage.getItem('littleReader.v1')).equals === true), 'turning Equals sign on is saved');
+
   // ---------- Speed, captions, feedback (Phase 3 rules, in the session) ----------
   await seed(s2({ 'w:come': { b: 2, d: t0 }, 'w:some': { b: 2, d: t0 }, 'w:from': { b: 2, d: t0 } }));
   await p.goto(U + '#session'); await p.waitForTimeout(80);
@@ -626,6 +718,9 @@ const ok = (c, m) => { if (!c) failed++; console.log((c ? 'PASS ' : 'FAIL ') + m
   const font = await p.evaluate(async () => { await document.fonts.ready; return { loaded: [...document.fonts].some(f => /Andika/.test(f.family) && f.status === 'loaded'), family: getComputedStyle(document.querySelector('.s-main .s-card, .s-main .s-tile, .s-main .s-word')).fontFamily }; });
   ok(font.loaded && /^"?Andika/.test(font.family), 'Andika is loaded and used: ' + font.family);
 
+  const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8'), refs = html.match(/(?:src|href)="(?:js|data|css)\/[^"]+"/g) || [];
+  const vers = new Set(refs.map(r => (r.match(/\?v=(\d+)/) || [])[1]));
+  ok(refs.length > 20 && vers.size === 1 && !vers.has(undefined), 'every script and stylesheet in index.html carries the same ?v= version: ' + [...vers].join(','));
   ok([...hosts].every(h => h.startsWith('localhost')), 'no requests leave the site: ' + [...hosts].join(', '));
   ok(errs.length === 0, 'no page errors or CSP violations' + (errs.length ? ': ' + errs.join(' | ') : ''));
 

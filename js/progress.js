@@ -129,6 +129,16 @@ function advance(){
   return false;
 }
 
+/* ---------- Maths ---------- */
+/* Skills unlock in order: each opens when the one before it reaches box 2. Comparing is always open. */
+function mathsUnlocked(){
+  var it = items(), ids = LR.maths.ids, out = [ids[0]];
+  for (var i = 1; i < ids.length; i++) { var prev = it['m:' + ids[i - 1]]; if (prev && prev.b >= 2) out.push(ids[i]); else break; }
+  return out;
+}
+/* Level 2 (bigger numbers) once a skill reaches box 3. */
+function mathsLevel(id){ var r = items()['m:' + id]; return r && r.b >= 3 ? 2 : 1; }
+
 /* Adds a session's results to the day's record (last 30 days kept). */
 function recordDay(n, r, mins){
   var t = today(), days = LR.state.days, d = days.length && days[days.length - 1].d === t ? days[days.length - 1] : null;
@@ -140,6 +150,6 @@ function recordDay(n, r, mins){
 LR.progress = {
   INTERVALS:INTERVALS, localDate:localDate, today:today, addDays:addDays, ensure:ensure, right:right, miss:miss, isMastered:isMastered,
   unit:unit, unitById:unitById, planWords:planWords, planExtra:planExtra, newTricky:newTricky, newTrickyCount:newTrickyCount,
-  lastAccuracy:lastAccuracy, growing:growing, sillyResult:sillyResult, nextStory:nextStory, unitDone:unitDone, advance:advance, recordDay:recordDay, wid:wid
+  lastAccuracy:lastAccuracy, growing:growing, sillyResult:sillyResult, mathsUnlocked:mathsUnlocked, mathsLevel:mathsLevel, nextStory:nextStory, unitDone:unitDone, advance:advance, recordDay:recordDay, wid:wid
 };
 })();

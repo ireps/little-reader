@@ -39,11 +39,16 @@ Each skill has an id, a range that grows (level 1, then level 2) and a represent
 | 15 | Days and months; time of day | days | months; morning / afternoon / night | IL 3.29 |
 
 ### D2. How skills unlock and level up
-- A skill unlocks when the previous skill reaches box 2.
-- Level 2 unlocks when the skill reaches box 3.
-- The = variant of Compare is enabled by the Grown-ups switch and adds equal pairs to 1 in 4 rounds.
-- **State:** adds `equals: false` (boolean) and per-skill `level` (1 or 2) to schema 2, both checked in
-  `validate()`. No schema bump is needed, because a missing field defaults.
+- A skill unlocks when the previous skill reaches box 2. Comparing is always open, since < and > are
+  her known difficulty.
+- Level 2 starts when the skill reaches box 3. The level is read from the box, so it isn't stored.
+- The = variant of Compare is enabled by the Grown-ups switch. Rounds may then offer <, = and >, and
+  about 1 in 4 uses equal amounts. With the switch off, equal amounts never appear.
+- **State:** adds `equals: false` (boolean) to schema 2, checked in `validate()`. A missing field
+  defaults, so no schema bump is needed.
+- **Plan items:** a maths item is `{ t: 'math', s: skill, lv, seed }`. The question is regenerated
+  from the seed (mulberry32), so a resumed session shows the same question and validation is simple.
+  Comparing keeps its own `{ t: 'croc', a, b, m: 'more'|'mouth'|'eq', lv }`.
 
 ### D3. Generators
 - `gen(skill, level, rnd)` returns `{ prompt, rep, options, answer }`.
@@ -58,8 +63,13 @@ Each skill has an id, a range that grows (level 1, then level 2) and a represent
 - **Shapes and scenes:** inline SVG with `currentColor` fills and no inline styles.
 
 ### D5. Wrong answers
-- The right answer is shown with a count-along: each dot or step lights in time with the spoken
-  numbers, using the Phase 3 timing engine. There is no red and no cross.
+- After 2 misses (or 1, with only 2 choices), the right answer is shown. Where there is something to
+  count (ten-frame dots, things to add, things left), each one lights in time with the spoken numbers,
+  using the Phase 3 timing engine. Otherwise the answer is said. There is no red and no cross.
+- Shapes level 2 asks for a property (no corners, 3 sides, 4 equal sides) rather than the faces of
+  3-D shapes, which are hard to draw clearly at this size.
+- Money uses the ₹ sign. Andika's Latin subset lacks it, so it comes from the tablet's own font; check
+  it on the tablet.
 
 ## Risks / Trade-offs
 

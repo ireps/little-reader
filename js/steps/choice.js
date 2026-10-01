@@ -14,7 +14,8 @@ function dimOthers(keep, sel){
 
 /* o: { sel: answer selector, right(first): what to say when right, wrong(el): what to say after a miss,
         reveal(el): what to say when showing the answer, rightEl(): the right answer's element,
-        two: only two choices, onRight(first), onMiss(n), counted: false to leave the day's accuracy alone } */
+        two: only two choices, onRight(first), onMiss(n), counted: false to leave the day's accuracy alone,
+        revealWith(): instead of reveal, a function returning a promise (e.g. a count-along) } */
 LR.choice = function(el, ok, ctx, o){
   if (ctx.locked) return;
   U.stopAll();
@@ -36,7 +37,7 @@ LR.choice = function(el, ok, ctx, o){
     ctx.locked = true;
     var r = o.rightEl();
     if (r) { U.feedback(r, 'right'); dimOthers(r, o.sel); }
-    S.say(o.reveal(el)).then(function(){ if (ctx.live()) ctx.done(false, o.counted); });
+    (o.revealWith ? o.revealWith() : S.say(o.reveal(el))).then(function(){ if (ctx.live()) ctx.done(false, o.counted); });
   } else S.say(o.wrong(el));
   if (o.onMiss) o.onMiss(n);
   ctx.pose('thinking');

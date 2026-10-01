@@ -60,6 +60,7 @@ data/units.js            the course, part 1: LR.units (Phase 3 review, Phase 4),
 data/units-p5.js         the course, part 2 (Phase 5). Every word must pass LR.words.checkUnits() (npm test)
 data/pictures.js         LR.pictures (emoji, Unicode 6 only) and LR.lang (rhymes, a/an, plurals, positions)
 js/words.js              graphemes (Letters and Sounds), segment(), decodable(), checkUnits(), hearts, families, look-alikes
+js/maths.js              LR.maths: the 15 KG-2 skills in unlock order, seeded question generators, ten-frames
 js/progress.js           LR.progress: boxes, due dates, flowers, review plan, pacing, unit advance, dates
 js/store.js              LR.state schema 2, load/save/validate, migration from schema 1 and readingGarden.v1, reset
 js/speech.js             LR.speech: voice choice, clip hook, say() with timings and captions, cancel()
@@ -68,7 +69,7 @@ js/ui.js                 LR.ui helpers, letters and hearts, finger sweep, feedba
 js/guide.js, garden.js   Tilly the tortoise (4 still poses) and her garden (flowers and sprouts)
 js/kit.js                LR.kit: session screen components (path, seeds, target, cards, sentence, hold)
 js/session.js            Home, today's plan, the runner (routes home, session, practice-<step>)
-js/steps/*.js            find, flash, pic, build, tricky, silly, read, q, lang (rhyme, an, plural, pos, caps), maths:
+js/steps/*.js            find, flash, pic, build, tricky, silly, read, q, lang (rhyme, an, plural, pos, caps), maths (crocodile), math:
                          each registers LR.steps.<type> = { render, tap }; choice.js (shared answer logic), help.js (help ladder)
 js/lessons/grownups.js   Grown-ups (route grownups)
 js/main.js               load state, start router
@@ -89,7 +90,12 @@ openspec/                specs: config.yaml, specs/ (shipped), changes/ (Phases 
 { schema: 2, unit: "p4-01", items: { "w:come": { b: 0-5, d: due date, u: last up-move date, m: misses } },
   flowers: [item ids ever mastered], confusions: { target: { pickedInstead: count } },
   stories: { storyId: last read date }, silly: { unitId: [answered, right] }, resume: today's plan { date, steps: [{ id, items }], at: [step, item],
-  done, started, fresh, right, answered, mode }, days: [{ d, n, r, mins }] (last 30), rate: 0.9, last: date }
+  done, started, fresh, right, answered, mode }, days: [{ d, n, r, mins }] (last 30), rate: 0.9, last: date, equals: false }
+```
+
+Maths skills are items too (`m:compare`, `m:count`, …): their box drives unlocking (box 2 opens the next) and level (box 3 means level 2).
+
+```
 ```
 
 Dates are local `YYYY-MM-DD`; "today" never goes back past `last`. Schema 1 and Reading Garden data migrate on load. Backups wrap the state as `{ app: "little-reader", schema, saved, state }`.
@@ -116,7 +122,7 @@ The rebuild is specified in OpenSpec under `openspec/` (see "How to work"). Each
 folder in `openspec/changes/`, one commit or pull request, and the owner tries it on the tablet before
 the next phase starts.
 
-Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phases 3, 4 and 5 are built and wait for a try on the tablet (then `openspec archive` for `rebuild-speech-for-speed`, `add-guided-daily-session` and `add-kg2-english`, in that order).
+Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements). Phases 3 to 6 are built and merged to `main`; the owner archives them together after trying them (`openspec archive` for `rebuild-speech-for-speed`, `add-guided-daily-session`, `add-kg2-english`, `add-kg2-maths`, in that order).
 
 | Phase | Change | What it delivers |
 | --- | --- | --- |
@@ -145,10 +151,12 @@ Done: Phase 0 (device check), Phase 1 (foundation), Phase 2 (lesson improvements
   3. No console errors or CSP violations, and no requests to other hosts.
   4. Nothing personal is committed: her name, voice, photos, school, backups or help-word data.
   5. README.md and SECURITY.md still match the behaviour.
+  6. Bump the `?v=` number on every file in `index.html` when a release changes JS or CSS, so the tablet doesn't keep stale copies.
 - Add a test to `tests/run.js` for each new behaviour.
 
 ## Pending owner actions
 
+- Phase 6: check that the ₹ sign shows on the coins, and whether her class teaches = yet (the Equals sign switch).
 - Phase 5: check that every picture shows on the tablet (emoji are Unicode 6, which Android 5.1 should draw), and note which new activities needed explaining over a week of sessions.
 - Phases 3 and 4: run one full session with her on the tablet. Note stray taps, "what do I do?" moments, help taps and how long it takes (target: at most 2 moments, 10 ± 2 minutes). Does it feel instant? Do the highlights keep up with the voice?
 - Phase 7: supply the voice clips for `tools/clip-list.txt` (an Indian English computer voice; `tools/make-clips.ps1` can make them with Heera on Windows).

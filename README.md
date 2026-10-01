@@ -14,7 +14,7 @@ Home is her garden and one **Start**. A session takes about 10 minutes and moves
 | New tricky word | One or two a day. The word is said and spelled with its letters lit, she taps the ♥ letters (the ones that don't sound the way they look), then sees its family (*said*, *again*, *says*). |
 | Silly sentences | She reads three sentences and gives each a thumbs up (makes sense) or a thumbs down (silly). The sentence is read only after she answers. |
 | Read with me | She reads a short story to her grown-up, one sentence at a time. Nothing is read to her first. The grown-up taps any word she stumbles on: the first tap gives a hint (its ♥ letters light, and a word with the same trick or its first sound), the second says the word, and it is noted. Then the tick plays the sentence with each word lit. One or two questions about the story follow. *Not today* (a 2 s hold) skips it. |
-| Maths | The hungry crocodile: which is more, and which mouth fits (< or >). The mouth always opens toward the bigger number. |
+| Maths | Four or five questions from the skills she has unlocked, in the KG-2 (NCF-FS) order: comparing with the hungry crocodile (< and >; = once a grown-up switches it on), counting with ten-frames, numbers and amounts (then tens and ones), counting on and back, before/after/between on a number line, zero, adding, taking away, number names, Indian coins and notes, measuring, shapes, halves, patterns, and days, months and times of day. Each skill unlocks when the one before is going well, and moves to bigger numbers once mastered. After two misses the answer is shown, counting along where there is something to count. |
 | Garden | A flower for every word she has mastered (right on the first try on 3 separate days), and a sprout for every word she is learning. The garden only grows. |
 
 After two misses the answer is shown and said, and the session moves on. If nothing is tapped for a while, the instruction is repeated (three times), then a single **Go on** appears. Leaving mid-session needs a 1 s hold on Home, and Start picks up where she left off. When today's session is done, Home says *See you tomorrow!* and Start offers a little extra practice.
@@ -24,6 +24,7 @@ After two misses the answer is shown and said, and the session moves on. If noth
 Hold the lock on Home for 2 seconds, then answer a sum on the number pad (a child lock, not security). Nothing is typed.
 
 - **Progress:** her unit, flowers, words to watch, mix-ups, and the last few days' minutes and first-try accuracy.
+- **Maths:** each skill she has unlocked, its level, and the **Equals sign** switch (off until her class teaches =).
 - **Where is she?** Tap a unit to start there next time. The app moves on by itself when a unit is mastered.
 - **Practise one game:** any step on its own.
 - **Voice:** speed and a test.
@@ -99,7 +100,8 @@ data/units.js            the course, Phase 3 review and Phase 4 (words, tricky w
 data/units-p5.js         the course, Phase 5
 data/pictures.js         pictures for words (emoji), rhymes, a/an, plurals, in/on/under
 js/words.js              graphemes, splitting and decodability, heart letters, families, look-alikes
-js/progress.js           spaced review, flowers, unit progress
+js/maths.js              the maths skills and their question generators
+js/progress.js           spaced review, flowers, unit progress, maths unlocking
 js/store.js              load/save with validation, migration, reset
 js/speech.js             clip first (if any), then the tablet's voice; captions
 js/icons.js              interface icons as inline SVG
